@@ -88,9 +88,13 @@ Avant de commencer, assurez-vous d'avoir installé :
    ```
 
 6. **Migration et Seed de la base de données** :
-
+   Pour initialiser la base de données avec des données de test (création de 50 utilisateurs et remplissage des propriétés via `PropertySeeder`) :
    ```bash
    php artisan migrate --seed
+   ```
+   *Ou si la base est déjà migrée :*
+   ```bash
+   php artisan db:seed
    ```
 
 7. **Configuration de Laravel Herd** :
