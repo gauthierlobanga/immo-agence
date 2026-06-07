@@ -59,7 +59,7 @@ const toastStyles: Record<ToastType, { light: ToastTheme; dark: ToastTheme }> = 
     },
 };
 
-export function getToastStyle(type: ToastType): React.CSSProperties {
+export default function getToastStyle(type: ToastType): React.CSSProperties {
     const isDark = document.documentElement.classList.contains('dark');
 
     return (isDark ? toastStyles[type].dark : toastStyles[type].light) as React.CSSProperties;

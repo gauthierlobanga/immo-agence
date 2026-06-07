@@ -2,6 +2,8 @@
 
 namespace App\Filament\Admin\Resources\Offers\Tables;
 
+use App\Models\Offer;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -77,6 +79,20 @@ class OffersTable
             ])
             ->recordActions([
                 EditAction::make(),
+
+                Action::make('accept')
+                    ->label('Accepter')
+                    ->icon('heroicon-o-check')
+                    ->color('success')
+                    ->action(fn (Offer $record) => $record->update(['status' => 'accepted']))
+                    ->visible(fn (Offer $record) => $record->status === 'pending'),
+
+                Action::make('reject')
+                    ->label('Refuser')
+                    ->icon('heroicon-o-x-mark')
+                    ->color('danger')
+                    ->action(fn (Offer $record) => $record->update(['status' => 'rejected']))
+                    ->visible(fn (Offer $record) => $record->status === 'pending'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

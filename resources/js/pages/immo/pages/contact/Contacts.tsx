@@ -18,7 +18,6 @@ import {
     UserIcon,
     LoaderIcon,
 } from 'lucide-react';
-import type { FormEvent } from 'react';
 import { toast } from 'sonner';
 import InputError from '@/components/input-error';
 import { Badge } from '@/components/ui/badge';
@@ -106,7 +105,7 @@ const categoryDetails: Record<
     },
 };
 
- function Contact({ categories, contactMeta = {} }: Props) {
+function Contacts({ categories, contactMeta = {} }: Props) {
     const { name: appName } = usePage<{ name: string }>().props;
 
     const meta = {
@@ -378,7 +377,7 @@ const categoryDetails: Record<
                                             onSubmit={handleSubmit}
                                             className="space-y-6"
                                         >
-                                            {/* Catégories Carousel */}
+                                            {/* Catégories Carousel (inchangé) */}
                                             <div className="space-y-3">
                                                 <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
                                                     Catégorie
@@ -483,7 +482,18 @@ const categoryDetails: Record<
                                                                 )
                                                             }
                                                             placeholder="Dupont"
-                                                            className="h-12 border-slate-300 pl-10 text-base focus:border-teal-500 focus:ring-teal-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                                                            className={cn(
+                                                                'h-12 rounded-xl border px-3 pl-10 text-base transition-all duration-200',
+                                                                'border-slate-200 bg-white/80 text-slate-900 shadow-sm backdrop-blur placeholder:text-slate-400',
+                                                                'hover:border-teal-300 hover:bg-white',
+                                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-white dark:placeholder:text-slate-500',
+                                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                                errors.nom
+                                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
+                                                                    : '',
+                                                            )}
                                                         />
                                                     </div>
                                                     <InputError
@@ -510,7 +520,18 @@ const categoryDetails: Record<
                                                                 )
                                                             }
                                                             placeholder="Jean"
-                                                            className="h-12 border-slate-300 pl-10 text-base focus:border-teal-500 focus:ring-teal-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                                                            className={cn(
+                                                                'h-12 rounded-xl border px-3 pl-10 text-base transition-all duration-200',
+                                                                'border-slate-200 bg-white/80 text-slate-900 shadow-sm backdrop-blur placeholder:text-slate-400',
+                                                                'hover:border-teal-300 hover:bg-white',
+                                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-white dark:placeholder:text-slate-500',
+                                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                                errors.prenom
+                                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
+                                                                    : '',
+                                                            )}
                                                         />
                                                     </div>
                                                     <InputError
@@ -542,7 +563,18 @@ const categoryDetails: Record<
                                                                 )
                                                             }
                                                             placeholder="jean@exemple.com"
-                                                            className="h-12 border-slate-300 pl-10 text-base focus:border-teal-500 focus:ring-teal-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                                                            className={cn(
+                                                                'h-12 rounded-xl border px-3 pl-10 text-base transition-all duration-200',
+                                                                'border-slate-200 bg-white/80 text-slate-900 shadow-sm backdrop-blur placeholder:text-slate-400',
+                                                                'hover:border-teal-300 hover:bg-white',
+                                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-white dark:placeholder:text-slate-500',
+                                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                                errors.email
+                                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
+                                                                    : '',
+                                                            )}
                                                         />
                                                     </div>
                                                     <InputError
@@ -571,7 +603,18 @@ const categoryDetails: Record<
                                                                 )
                                                             }
                                                             placeholder="+33 6 12 34 56 78"
-                                                            className="h-12 border-slate-300 pl-10 text-base focus:border-teal-500 focus:ring-teal-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                                                            className={cn(
+                                                                'h-12 rounded-xl border px-3 pl-10 text-base transition-all duration-200',
+                                                                'border-slate-200 bg-white/80 text-slate-900 shadow-sm backdrop-blur placeholder:text-slate-400',
+                                                                'hover:border-teal-300 hover:bg-white',
+                                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-white dark:placeholder:text-slate-500',
+                                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                                errors.telephone
+                                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
+                                                                    : '',
+                                                            )}
                                                         />
                                                     </div>
                                                     <InputError
@@ -602,7 +645,18 @@ const categoryDetails: Record<
                                                             )
                                                         }
                                                         placeholder="Demande de renseignements"
-                                                        className="h-12 border-slate-300 pl-10 text-base focus:border-teal-500 focus:ring-teal-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                                                        className={cn(
+                                                            'h-12 rounded-xl border px-3 pl-10 text-base transition-all duration-200',
+                                                            'border-slate-200 bg-white/80 text-slate-900 shadow-sm backdrop-blur placeholder:text-slate-400',
+                                                            'hover:border-teal-300 hover:bg-white',
+                                                            'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                            'dark:border-slate-700 dark:bg-slate-900/80 dark:text-white dark:placeholder:text-slate-500',
+                                                            'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                            'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                            errors.sujet
+                                                                ? 'border-red-400 focus:border-red-500 dark:border-red-500'
+                                                                : '',
+                                                        )}
                                                     />
                                                 </div>
                                                 <InputError
@@ -642,7 +696,18 @@ const categoryDetails: Record<
                                                     }
                                                     placeholder="Décrivez votre demande en détail..."
                                                     rows={7}
-                                                    className="min-h-40 resize-none border-slate-300 pl-10 text-base focus:border-teal-500 focus:ring-teal-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                                                    className={cn(
+                                                        'min-h-40 rounded-xl border px-3 py-2 text-base transition-all duration-200',
+                                                        'border-slate-200 bg-white/80 text-slate-900 shadow-sm backdrop-blur placeholder:text-slate-400',
+                                                        'hover:border-teal-300 hover:bg-white',
+                                                        'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                        'dark:border-slate-700 dark:bg-slate-900/80 dark:text-white dark:placeholder:text-slate-500',
+                                                        'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                        'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                        errors.message
+                                                            ? 'border-red-400 focus:border-red-500 dark:border-red-500'
+                                                            : '',
+                                                    )}
                                                 />
                                                 <InputError
                                                     message={errors.message}
@@ -672,7 +737,7 @@ const categoryDetails: Record<
                                             <Button
                                                 type="submit"
                                                 size="lg"
-                                                className="h-12 w-full bg-teal-600 text-base font-semibold text-white hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
+                                                className="h-12 w-full rounded-xl bg-teal-600 text-base font-semibold text-white shadow-md shadow-teal-200 transition-all hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-300 dark:bg-teal-500 dark:shadow-teal-900/30 dark:hover:bg-teal-600 dark:hover:shadow-teal-800/40"
                                                 disabled={processing}
                                             >
                                                 {processing ? (
@@ -755,7 +820,7 @@ const categoryDetails: Record<
     );
 }
 
-Contact.layout = (page: React.ReactNode) => (
+Contacts.layout = (page: React.ReactNode) => (
     <AppPublicLayout>{page}</AppPublicLayout>
 );
-export default Contact;
+export default Contacts;

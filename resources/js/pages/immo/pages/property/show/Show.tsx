@@ -27,8 +27,8 @@ import {
     LoaderIcon,
     Send,
     Loader2,
+    BadgeDollarSign,
 } from 'lucide-react';
-
 import { useState } from 'react';
 import { toast } from 'sonner';
 import InputError from '@/components/input-error';
@@ -43,11 +43,19 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import AppPublicLayout from '@/layouts/app-public-layout';
 import { SafeHtmlContent } from '@/lib/SafeHtmlContent';
-import { getToastStyle } from '@/lib/toast-style';
+import getToastStyle from '@/lib/toast-style';
+import { cn } from '@/lib/utils';
 import type { Property } from '@/types/immo/property';
 
 // Icônes par équipement
@@ -185,32 +193,62 @@ function PropertyShow({ property, similarProperties }: Props) {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [initialImageIndex, setInitialImageIndex] = useState(0);
 
-    const { data, setData, post, processing, reset, errors } = useForm({
+    const { data, setData, processing, errors } = useForm({
         name: '',
         email: '',
         phone: '',
         message: `${p.title}`,
     });
 
-    // Fonction de soumission modifiée
-    const submitContact = (e: React.SubmitEvent<HTMLFormElement>) => {
+    const visitForm = useForm({
+        name: '',
+        email: '',
+        phone: '',
+        message: `${p.title}`,
+    });
+
+    // Formulaire d'offre
+    const offerForm = useForm({
+        amount: '',
+        currency: 'USD',
+        type: 'purchase',
+        message: '',
+    });
+
+    const submitContact = (e: React.SubmitEvent) => {
         e.preventDefault();
-        post(route('properties.contact', p.id), {
+        visitForm.post(route('properties.contact', p.id), {
             preserveScroll: true,
             showProgress: false,
             onSuccess: () => {
-                reset();
+                visitForm.reset();
                 toast.success('Demande envoyée !', {
-                    description:
-                        "Votre message a été envoyé à l'agent. Il vous contactera bientôt.",
+                    description: "Votre message a été envoyé à l'agent.",
                     style: getToastStyle('success'),
-                    duration: 5000,
                 });
             },
             onError: () => {
-                toast.error('Veuillez corriger les erreurs du formulaire.', {
-                    description:
-                        'Assurez-vous que tous les champs sont correctement remplis.',
+                toast.error('Erreur dans le formulaire.', {
+                    style: getToastStyle('error'),
+                });
+            },
+        });
+    };
+
+    const submitOffer = (e: React.SubmitEvent) => {
+        e.preventDefault();
+        offerForm.post(route('offers.store', p.id), {
+            preserveScroll: true,
+            showProgress: false,
+            onSuccess: () => {
+                offerForm.reset();
+                toast.success('Offre envoyée !', {
+                    description: "Votre proposition a été transmise à l'agent.",
+                    style: getToastStyle('success'),
+                });
+            },
+            onError: () => {
+                toast.error("Erreur lors de l'envoi de l'offre.", {
                     style: getToastStyle('error'),
                 });
             },
@@ -834,6 +872,236 @@ function PropertyShow({ property, similarProperties }: Props) {
                             </CardContent>
                         </Card>
 
+                        {/* Formulaire d'offre */}
+                        <Card className="overflow-hidden border-slate-200 bg-white/80 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+                                    <BadgeDollarSign className="h-5 w-5 text-teal-500" />
+                                    Faire une offre
+                                </CardTitle>
+                                <CardDescription>
+                                    Proposez un prix pour ce bien.
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <form
+                                    onSubmit={submitOffer}
+                                    className="space-y-5"
+                                >
+                                    {/* Type d'offre */}
+                                    <div className="space-y-2">
+                                        <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                            Type{' '}
+                                            <span className="text-red-400">
+                                                *
+                                            </span>
+                                        </Label>
+                                        <Select
+                                            value={offerForm.data.type}
+                                            onValueChange={(value) =>
+                                                offerForm.setData('type', value)
+                                            }
+                                        >
+                                            <SelectTrigger
+                                                className={cn(
+                                                    'h-11 w-full rounded-xl border px-3 text-sm font-medium transition-all duration-200',
+                                                    'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
+                                                    'hover:border-teal-300 hover:bg-white',
+                                                    'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                    'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
+                                                    'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                    'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                    offerForm.errors.type
+                                                        ? 'border-red-400 focus:border-red-500 dark:border-red-500'
+                                                        : '',
+                                                )}
+                                            >
+                                                <SelectValue placeholder="Choisir le type" />
+                                            </SelectTrigger>
+                                            <SelectContent
+                                                position="popper"
+                                                side="bottom"
+                                                align="start"
+                                                sideOffset={8}
+                                                className={cn(
+                                                    'rounded-xl border border-slate-200/80 bg-white/95 p-1 shadow-lg backdrop-blur-xl',
+                                                    'dark:border-slate-800/80 dark:bg-slate-950/95',
+                                                )}
+                                            >
+                                                <SelectItem
+                                                    value="purchase"
+                                                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                                >
+                                                    Achat
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="rent"
+                                                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                                >
+                                                    Location
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <InputError
+                                            message={offerForm.errors.type}
+                                        />
+                                    </div>
+
+                                    {/* Devise */}
+                                    <div className="space-y-2">
+                                        <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                            Devise
+                                        </Label>
+                                        <Select
+                                            value={offerForm.data.currency}
+                                            onValueChange={(value) =>
+                                                offerForm.setData(
+                                                    'currency',
+                                                    value,
+                                                )
+                                            }
+                                        >
+                                            <SelectTrigger
+                                                className={cn(
+                                                    'h-11 w-full rounded-xl border px-3 text-sm font-medium transition-all duration-200',
+                                                    'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
+                                                    'hover:border-teal-300 hover:bg-white',
+                                                    'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                    'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
+                                                    'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                    'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                    offerForm.errors.currency
+                                                        ? 'border-red-400 focus:border-red-500 dark:border-red-500'
+                                                        : '',
+                                                )}
+                                            >
+                                                <SelectValue placeholder="Choisir la devise" />
+                                            </SelectTrigger>
+                                            <SelectContent
+                                                position="popper"
+                                                side="bottom"
+                                                align="start"
+                                                sideOffset={8}
+                                                className={cn(
+                                                    'rounded-xl border border-slate-200/80 bg-white/95 p-1 shadow-lg backdrop-blur-xl',
+                                                    'dark:border-slate-800/80 dark:bg-slate-950/95',
+                                                )}
+                                            >
+                                                <SelectItem
+                                                    value="USD"
+                                                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                                >
+                                                    USD
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="CDF"
+                                                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                                >
+                                                    CDF
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="EUR"
+                                                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                                >
+                                                    EUR
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <InputError
+                                            message={offerForm.errors.currency}
+                                        />
+                                    </div>
+
+                                    {/* Montant */}
+                                    <div className="space-y-2">
+                                        <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                            Montant{' '}
+                                            <span className="text-red-400">
+                                                *
+                                            </span>
+                                        </Label>
+                                        <Input
+                                            type="number"
+                                            placeholder="Ex: 150000"
+                                            value={offerForm.data.amount}
+                                            onChange={(e) =>
+                                                offerForm.setData(
+                                                    'amount',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className={cn(
+                                                'h-11 w-full rounded-xl border px-3 text-sm font-medium transition-all duration-200',
+                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
+                                                'hover:border-teal-300 hover:bg-white',
+                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
+                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                offerForm.errors.amount
+                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
+                                                    : '',
+                                            )}
+                                        />
+                                        <InputError
+                                            message={offerForm.errors.amount}
+                                        />
+                                    </div>
+
+                                    {/* Message optionnel */}
+                                    <div className="space-y-2">
+                                        <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                            Message
+                                        </Label>
+                                        <Textarea
+                                            rows={3}
+                                            placeholder="Ajoutez un message..."
+                                            value={offerForm.data.message}
+                                            onChange={(e) =>
+                                                offerForm.setData(
+                                                    'message',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className={cn(
+                                                'w-full rounded-xl border px-3 py-2 text-sm font-medium transition-all duration-200',
+                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
+                                                'hover:border-teal-300 hover:bg-white',
+                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
+                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                offerForm.errors.message
+                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
+                                                    : '',
+                                            )}
+                                        />
+                                        <InputError
+                                            message={offerForm.errors.message}
+                                        />
+                                    </div>
+
+                                    <Button
+                                        type="submit"
+                                        size="lg"
+                                        className="h-12 w-full rounded-xl bg-teal-600 text-base font-semibold text-white shadow-md shadow-teal-200 transition-all hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-300 dark:bg-teal-500 dark:shadow-teal-900/30 dark:hover:bg-teal-600 dark:hover:shadow-teal-800/40"
+                                        disabled={offerForm.processing}
+                                    >
+                                        {offerForm.processing ? (
+                                            <>
+                                                <LoaderIcon className="h-6 w-6 animate-spin" />{' '}
+                                                Envoi en cours...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Send className="h-6 w-6" />{' '}
+                                                 Envoyer l'offre
+                                            </>
+                                        )}
+                                    </Button>
+                                </form>
+                            </CardContent>
+                        </Card>
                         {/* Similaires */}
                         <div className="space-y-4">
                             <h3 className="text-lg font-bold text-slate-900 dark:text-white">
