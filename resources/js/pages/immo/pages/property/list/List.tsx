@@ -40,6 +40,7 @@ import {
 } from '@/components/ui/sheet'; // <-- Ajout de Sheet
 import { Slider } from '@/components/ui/slider';
 import AppPublicLayout from '@/layouts/app-public-layout';
+import { cn } from '@/lib/utils';
 import type { Property } from '@/types/immo/property';
 
 interface Props {
@@ -110,36 +111,36 @@ function PropertyList({ properties, filters, communes, propertyTypes }: Props) {
         let count = 0;
 
         if (type) {
-count++;
-}
+            count++;
+        }
 
         if (bedrooms.length) {
-count++;
-}
+            count++;
+        }
 
         if (minPrice || maxPrice) {
-count++;
-}
+            count++;
+        }
 
         if (areaMin || areaMax) {
-count++;
-}
+            count++;
+        }
 
         if (hasParking) {
-count++;
-}
+            count++;
+        }
 
         if (hasPool) {
-count++;
-}
+            count++;
+        }
 
         if (hasElevator) {
-count++;
-}
+            count++;
+        }
 
         if (hasGarden) {
-count++;
-}
+            count++;
+        }
 
         return count;
     }, [
@@ -161,58 +162,58 @@ count++;
             const params: Record<string, any> = {};
 
             if (search) {
-params.search = search;
-}
+                params.search = search;
+            }
 
             if (type) {
-params.type = type;
-}
+                params.type = type;
+            }
 
             if (bedrooms.length) {
-params.bedrooms = bedrooms.join(',');
-}
+                params.bedrooms = bedrooms.join(',');
+            }
 
             if (minPrice) {
-params.min_price = minPrice;
-}
+                params.min_price = minPrice;
+            }
 
             if (maxPrice) {
-params.max_price = maxPrice;
-}
+                params.max_price = maxPrice;
+            }
 
             if (areaMin) {
-params.area_min = areaMin;
-}
+                params.area_min = areaMin;
+            }
 
             if (areaMax) {
-params.area_max = areaMax;
-}
+                params.area_max = areaMax;
+            }
 
             if (hasParking) {
-params.has_parking = '1';
-}
+                params.has_parking = '1';
+            }
 
             if (hasPool) {
-params.has_pool = '1';
-}
+                params.has_pool = '1';
+            }
 
             if (hasElevator) {
-params.has_elevator = '1';
-}
+                params.has_elevator = '1';
+            }
 
             if (hasGarden) {
-params.has_garden = '1';
-}
+                params.has_garden = '1';
+            }
 
             if (communeId.length) {
-params.commune_id = communeId.join(',');
-}
+                params.commune_id = communeId.join(',');
+            }
 
             params.sort = sort;
 
             if (page && page > 1) {
-params.page = page;
-}
+                params.page = page;
+            }
 
             return params;
         },
@@ -317,8 +318,8 @@ params.page = page;
 
     const renderPagination = () => {
         if (lastPage <= 1) {
-return null;
-}
+            return null;
+        }
 
         const pages: (number | string)[] = [];
         const delta = 2;
@@ -411,15 +412,53 @@ return null;
                         </p>
                         <form
                             onSubmit={(e) => e.preventDefault()}
-                            className="relative mt-8 max-w-lg"
+                            className="group relative mx-auto mt-8 max-w-2xl"
                         >
-                            <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-slate-300" />
-                            <Input
-                                placeholder="Ville, adresse, mot-clé..."
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                className="h-14 rounded-xl border border-white/20 bg-white/10 pr-4 pl-12 text-white backdrop-blur-sm placeholder:text-slate-300 focus:border-transparent focus:ring-2 focus:ring-teal-400"
-                            />
+                            {/* Halo lumineux au focus */}
+                            <div className="pointer-events-none absolute -inset-1 rounded-2xl bg-teal-400/20 opacity-0 blur-xl transition-opacity duration-500 group-focus-within:opacity-100 dark:bg-teal-500/20" />
+
+                            <div className="relative flex items-center">
+                                {/* Icône de recherche */}
+                                <Search className="absolute left-5 h-5 w-5 text-slate-400 transition-colors duration-300 group-focus-within:text-teal-500 dark:text-slate-500 dark:group-focus-within:text-teal-400" />
+
+                                {/* Champ de saisie */}
+                                <Input
+                                    placeholder="Ville, adresse, mot-clé..."
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    className={cn(
+                                        'h-14 w-full rounded-2xl border pr-14 pl-12 text-base backdrop-blur-xl transition-all duration-300',
+                                        'border-slate-200 bg-white/80 text-slate-900 placeholder:text-slate-400',
+                                        'hover:border-teal-300 hover:bg-white hover:shadow-md',
+                                        'focus:border-teal-500 focus:bg-white focus:shadow-lg focus:ring-2 focus:ring-teal-500/20',
+                                        'dark:border-slate-700 dark:bg-slate-900/70 dark:text-white dark:placeholder:text-slate-500',
+                                        'dark:hover:border-teal-700 dark:hover:bg-slate-900/90',
+                                        'dark:focus:border-teal-400 dark:focus:bg-slate-900 dark:focus:ring-teal-400/20',
+                                    )}
+                                />
+
+                                {/* Bouton de recherche */}
+                                <button
+                                    type="submit"
+                                    className={cn(
+                                        'absolute right-2 flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-300',
+                                        'bg-teal-600 text-white shadow-sm hover:bg-teal-700',
+                                        'dark:bg-teal-500 dark:hover:bg-teal-600',
+                                    )}
+                                    aria-label="Rechercher"
+                                >
+                                    <Search className="h-4 w-4" />
+                                </button>
+                            </div>
+
+                            {/* Suggestions ou message d'aide (optionnel) */}
+                            <p className="mt-2 text-center text-xs text-slate-400 dark:text-slate-500">
+                                Appuyez sur{' '}
+                                <kbd className="rounded-md border border-slate-200 bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+                                    Entrée
+                                </kbd>{' '}
+                                pour lancer la recherche
+                            </p>
                         </form>
                     </motion.div>
                 </div>
@@ -435,7 +474,7 @@ return null;
                     <div className="absolute -top-20 left-1/4 h-40 w-96 rounded-full bg-teal-400/10 blur-3xl dark:bg-teal-500/5" />
                 </div>
 
-                <div className="mx-auto max-w-7xl px-4">
+                <div className="mx-auto max-w-360 px-4">
                     <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
                             {activeFiltersCount > 0 && (
@@ -500,16 +539,46 @@ return null;
 
                         <div className="flex items-center gap-3">
                             <Select value={sort} onValueChange={setSort}>
-                                <SelectTrigger className="h-9 w-40 rounded-xl border-slate-200 bg-white/80 text-sm backdrop-blur-sm">
-                                    <ArrowUpDown className="mr-2 h-4 w-4 text-slate-500" />
+                                <SelectTrigger
+                                    className={cn(
+                                        'h-10 w-44 rounded-xl border px-3 text-sm font-medium transition-all duration-200',
+                                        'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
+                                        'hover:border-teal-300 hover:bg-white',
+                                        'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                        'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
+                                        'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                        'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                    )}
+                                >
+                                    <ArrowUpDown className="mr-2 h-4 w-4 text-slate-400 dark:text-slate-500" />
                                     <SelectValue placeholder="Trier" />
                                 </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="created_at">
+                                <SelectContent
+                                    position="popper"
+                                    side="bottom"
+                                    align="start"
+                                    sideOffset={8}
+                                    className={cn(
+                                        'rounded-xl border border-slate-200/80 bg-white/95 p-1 shadow-lg backdrop-blur-xl',
+                                        'dark:border-slate-800/80 dark:bg-slate-950/95',
+                                    )}
+                                >
+                                    <SelectItem
+                                        value="created_at"
+                                        className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                    >
                                         Nouveautés
                                     </SelectItem>
-                                    <SelectItem value="price">Prix</SelectItem>
-                                    <SelectItem value="views_count">
+                                    <SelectItem
+                                        value="price"
+                                        className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                    >
+                                        Prix
+                                    </SelectItem>
+                                    <SelectItem
+                                        value="views_count"
+                                        className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                    >
                                         Les plus vus
                                     </SelectItem>
                                 </SelectContent>
@@ -545,7 +614,7 @@ return null;
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="text-slate-500"
+                                    className="cursor-pointer text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
                                     onClick={clearAllFilters}
                                 >
                                     <FilterX className="mr-1 h-4 w-4" />
@@ -744,26 +813,36 @@ return null;
             <div className="mx-auto max-w-7xl px-4 py-8">
                 {properties.data.length === 0 ? (
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="flex flex-col items-center justify-center py-20 text-center"
+                        initial={{ opacity: 0, y: 40, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                        className="flex flex-col items-center justify-center py-24 text-center"
                     >
-                        <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-teal-50 text-teal-600 dark:bg-teal-950 dark:text-teal-400">
-                            <Search className="h-10 w-10" />
+                        {/* Icône avec effet de halo */}
+                        <div className="relative mb-8">
+                            <div className="absolute inset-0 rounded-full bg-teal-200/30 blur-2xl dark:bg-teal-500/20" />
+                            <div className="relative flex h-28 w-28 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-lg shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-900 dark:shadow-slate-900/50">
+                                <Search className="h-10 w-10 text-teal-500 dark:text-teal-400" />
+                            </div>
                         </div>
-                        <h3 className="mb-2 text-2xl font-bold text-slate-900 dark:text-white">
+
+                        {/* Texte */}
+                        <h3 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl dark:text-white">
                             Aucun bien trouvé
                         </h3>
-                        <p className="max-w-md text-slate-500">
-                            Essayez d'élargir votre recherche.
+                        <p className="mt-3 max-w-md text-base text-slate-500 dark:text-slate-400">
+                            Essayez d'élargir votre recherche en supprimant
+                            certains filtres ou en modifiant vos critères.
                         </p>
+
+                        {/* Bouton */}
                         <Button
                             variant="outline"
-                            className="mt-6 rounded-full"
                             onClick={clearAllFilters}
+                            className="mt-8 h-11 rounded-xl border-slate-300 bg-white/80 px-6 text-sm font-medium text-slate-700 shadow-sm backdrop-blur transition-all hover:border-teal-300 hover:bg-white hover:text-teal-700 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300 dark:hover:border-teal-700 dark:hover:text-teal-400"
                         >
-                            <RotateCcw className="mr-2 h-4 w-4" /> Réinitialiser
-                            les filtres
+                            <RotateCcw className="mr-2 h-4 w-4" />
+                            Réinitialiser les filtres
                         </Button>
                     </motion.div>
                 ) : (
@@ -773,7 +852,7 @@ return null;
                         animate="show"
                         className={
                             view === 'grid'
-                                ? 'grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3'
+                                ? 'grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4'
                                 : 'flex flex-col gap-4'
                         }
                     >

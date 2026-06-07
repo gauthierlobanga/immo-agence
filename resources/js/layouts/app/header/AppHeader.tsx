@@ -19,6 +19,7 @@ import { login } from '@/routes';
 import type { BreadcrumbItem, NavItem } from '@/types';
 import { MainNavigation } from './MainNavigation';
 import { MobileNavigation } from './MobileNavigation';
+import { UserNavigation } from './UserNavigation';
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];
@@ -41,7 +42,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
 
         {
             title: 'Services',
-            href:'#',
+            href: '#',
         },
         {
             title: 'Support',
@@ -131,43 +132,46 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                         <AppearanceToogle />
 
                         {auth.user ? (
-                            <Button
-                                size="lg"
-                                className="group relative overflow-hidden rounded-full bg-linear-to-r from-emerald-600 to-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-emerald-200 transition-all hover:shadow-lg hover:shadow-emerald-300 dark:shadow-emerald-900/30 dark:hover:shadow-emerald-800/40"
-                                asChild
-                            >
-                                <Link href={route('dashboard')}>
-                                    <span className="relative z-10 flex items-center">
-                                        Tableau de bord
-                                        <ArrowRight className="ml-2 h-5 w-4 transition-transform group-hover:translate-x-1" />
-                                    </span>
-                                    <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
-                                </Link>
-                            </Button>
+                            <div className="flex items-center gap-3">
+                                <Button
+                                    size="lg"
+                                    className="group relative overflow-hidden rounded-lg bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
+                                    asChild
+                                >
+                                    <Link href={route('dashboard')}>
+                                        <span className="relative z-10 flex items-center">
+                                            Tableau de bord
+                                            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                        </span>
+                                        <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+                                    </Link>
+                                </Button>
+                                <UserNavigation user={auth.user} />
+                            </div>
                         ) : (
-                            <>
+                            <div className="flex items-center gap-3">
                                 <Button
                                     variant="ghost"
                                     size="sm"
                                     asChild
-                                    className="hidden text-sm font-medium text-slate-700 hover:text-slate-900 sm:inline-flex dark:text-slate-300 dark:hover:text-white"
+                                    className="text-sm font-medium text-slate-700 hover:text-teal-600 dark:text-slate-300 dark:hover:text-teal-400"
                                 >
                                     <Link href={login()}>Se connecter</Link>
                                 </Button>
                                 <Button
                                     size="lg"
-                                    className="group relative overflow-hidden rounded-full bg-linear-to-r from-emerald-600 to-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-emerald-200 transition-all hover:shadow-lg hover:shadow-emerald-300 dark:shadow-emerald-900/30 dark:hover:shadow-emerald-800/40"
+                                    className="group relative overflow-hidden rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-teal-200 transition-all hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-300 dark:bg-teal-500 dark:shadow-teal-900/30 dark:hover:bg-teal-600 dark:hover:shadow-teal-800/40"
                                     asChild
                                 >
-                                    <Link href={'#'}>
+                                    <Link href={route('properties.index')}>
                                         <span className="relative z-10 flex items-center">
-                                            Visitez les biens
-                                            <ArrowRight className="ml-2 h-5 w-4 transition-transform group-hover:translate-x-1" />
+                                            Voir les biens
+                                            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                                         </span>
                                         <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
                                     </Link>
                                 </Button>
-                            </>
+                            </div>
                         )}
                     </div>
                 </div>

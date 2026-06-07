@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import { cn } from '@/lib/utils';
 import { update } from '@/routes/password';
 
 type Props = {
@@ -16,7 +17,7 @@ type Props = {
 export default function ResetPassword({ token, email, passwordRules }: Props) {
     return (
         <>
-            <Head title="Reset password" />
+            <Head title="Réinitialiser le mot de passe" />
 
             <Form
                 {...update.form()}
@@ -24,64 +25,89 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                 resetOnSuccess={['password', 'password_confirmation']}
             >
                 {({ processing, errors }) => (
-                    <div className="grid gap-6">
+                    <div className="grid gap-5">
+                        {/* Email (lecture seule) */}
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label
+                                htmlFor="email"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                            >
+                                Email
+                            </Label>
                             <Input
                                 id="email"
                                 type="email"
                                 name="email"
                                 autoComplete="email"
                                 value={email}
-                                className="mt-1 block w-full"
                                 readOnly
+                                className={cn(
+                                    'h-11 rounded-xl border-slate-200 bg-slate-50 text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300',
+                                )}
                             />
-                            <InputError
-                                message={errors.email}
-                                className="mt-2"
-                            />
+                            <InputError message={errors.email} />
                         </div>
 
+                        {/* Nouveau mot de passe */}
                         <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label
+                                htmlFor="password"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                            >
+                                Nouveau mot de passe
+                            </Label>
                             <PasswordInput
                                 id="password"
                                 name="password"
                                 autoComplete="new-password"
-                                className="mt-1 block w-full"
                                 autoFocus
-                                placeholder="Password"
+                                placeholder="••••••••"
                                 passwordrules={passwordRules}
+                                className={cn(
+                                    errors.password &&
+                                        'border-red-400 focus:border-red-500 dark:border-red-500',
+                                )}
                             />
                             <InputError message={errors.password} />
                         </div>
 
+                        {/* Confirmation du mot de passe */}
                         <div className="grid gap-2">
-                            <Label htmlFor="password_confirmation">
-                                Confirm password
+                            <Label
+                                htmlFor="password_confirmation"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                            >
+                                Confirmer le mot de passe
                             </Label>
                             <PasswordInput
                                 id="password_confirmation"
                                 name="password_confirmation"
                                 autoComplete="new-password"
-                                className="mt-1 block w-full"
-                                placeholder="Confirm password"
+                                placeholder="••••••••"
                                 passwordrules={passwordRules}
+                                className={cn(
+                                    errors.password_confirmation &&
+                                        'border-red-400 focus:border-red-500 dark:border-red-500',
+                                )}
                             />
-                            <InputError
-                                message={errors.password_confirmation}
-                                className="mt-2"
-                            />
+                            <InputError message={errors.password_confirmation} />
                         </div>
 
+                        {/* Bouton de réinitialisation */}
                         <Button
                             type="submit"
-                            className="mt-4 w-full"
+                            className="h-11 w-full rounded-xl bg-teal-600 text-sm font-semibold text-white shadow-md shadow-teal-200 transition-all hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-300 dark:bg-teal-500 dark:shadow-teal-900/30 dark:hover:bg-teal-600 dark:hover:shadow-teal-800/40"
                             disabled={processing}
                             data-test="reset-password-button"
                         >
-                            {processing && <Spinner />}
-                            Reset password
+                            {processing ? (
+                                <span className="flex items-center gap-2">
+                                    <Spinner className="h-4 w-4" />
+                                    Réinitialisation...
+                                </span>
+                            ) : (
+                                'Réinitialiser le mot de passe'
+                            )}
                         </Button>
                     </div>
                 )}
@@ -91,6 +117,6 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
 }
 
 ResetPassword.layout = {
-    title: 'Reset password',
-    description: 'Please enter your new password below',
+    title: 'Réinitialiser le mot de passe',
+    description: 'Veuillez entrer votre nouveau mot de passe ci-dessous.',
 };

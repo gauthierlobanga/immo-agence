@@ -1,6 +1,22 @@
+import { usePage } from '@inertiajs/react';
 import type { SVGAttributes } from 'react';
 
 export default function AppLogoIcon(props: SVGAttributes<SVGElement>) {
+    const { app_logo } = usePage<{ app_logo: string | null }>().props;
+
+    // Si un logo est configuré, on affiche une image avec les classes transmises
+    if (app_logo) {
+        return (
+            <img
+                src={app_logo}
+                alt="Logo de l'application"
+                className={props.className}
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            />
+        );
+    }
+
+    // Sinon, on affiche une icône vectorielle de maison moderne (teal)
     return (
         <svg {...props} viewBox="0 0 40 42" xmlns="http://www.w3.org/2000/svg">
             <path

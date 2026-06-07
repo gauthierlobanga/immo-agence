@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Link } from '@inertiajs/react';
-import {  LogIn } from 'lucide-react';
+import { ChevronDown, LogIn, ShieldCheck } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,13 +21,20 @@ interface UserNavigationProps {
 export function UserNavigation({ user }: UserNavigationProps) {
     const getInitials = useInitials();
 
+    // ----- État non connecté -----
     if (!user) {
         return (
             <Button
                 variant="ghost"
                 size="sm"
                 asChild
-                className="group h-10 rounded-full border border-slate-200 bg-white/80 px-4 text-sm font-medium text-slate-700 shadow-sm backdrop-blur transition-all hover:border-emerald-300 hover:bg-white hover:text-emerald-700 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:border-emerald-600 dark:hover:text-emerald-400"
+                className={cn(
+                    'group h-10 rounded-xl border px-4 text-sm font-medium transition-all duration-300',
+                    'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
+                    'hover:border-teal-300 hover:bg-white hover:text-teal-700',
+                    'dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300',
+                    'dark:hover:border-teal-600 dark:hover:text-teal-400',
+                )}
             >
                 <Link href={login()}>
                     <LogIn className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
@@ -36,6 +44,7 @@ export function UserNavigation({ user }: UserNavigationProps) {
         );
     }
 
+    // ----- État connecté -----
     const avatarUrl =
         user.avatar_url?.startsWith('http') || user.avatar_url?.startsWith('/')
             ? user.avatar_url
@@ -50,24 +59,28 @@ export function UserNavigation({ user }: UserNavigationProps) {
                 <Button
                     variant="ghost"
                     className={cn(
-                        'group relative h-10 rounded-full px-1.5 pr-2',
-                        'bg-white/80',
-                        'transition-all duration-300',
-                        'hover:bg-white',
-                        'dark:bg-slate-900/80',
-                        'dark:hover:bg-slate-900',
+                        'group relative h-11 rounded-xl px-1.5 pr-3 transition-all duration-300',
+                        'border border-slate-200/80 bg-white/80 ',
+                        'hover:border-teal-300 hover:bg-white',
+                        'dark:border-slate-700 dark:bg-slate-900/80',
+                        'dark:hover:border-teal-700 dark:hover:bg-slate-900',
                     )}
                 >
-                    <Avatar className="h-8 w-8">
-                        {avatarUrl ? (
-                            <AvatarImage src={avatarUrl} alt={userName} />
-                        ) : (
-                            <AvatarFallback className="bg-linear-to-br from-emerald-500 to-emerald-600 text-xs font-semibold text-white">
-                                {userInitials}
-                            </AvatarFallback>
-                        )}
-                    </Avatar>
-                    {/* <ChevronDown className="ml-2 h-4 w-4 text-slate-400 transition-all duration-300 group-hover:rotate-180 group-hover:text-emerald-500" /> */}
+                    <div className="flex items-center gap-3">
+                        <Avatar className="h-8 w-8 ring-2 ring-teal-100 dark:ring-teal-900/50">
+                            {avatarUrl ? (
+                                <AvatarImage src={avatarUrl} alt={userName} />
+                            ) : (
+                                <AvatarFallback className="bg-teal-600 text-xs font-bold text-white">
+                                    {userInitials}
+                                </AvatarFallback>
+                            )}
+                        </Avatar>
+                        <span className="hidden text-sm font-medium text-slate-700 sm:inline dark:text-slate-200">
+                            {userName}
+                        </span>
+
+                    </div>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent

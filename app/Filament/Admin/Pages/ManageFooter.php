@@ -7,6 +7,7 @@ use App\Settings\SettingApp;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\SettingsPage;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -54,9 +55,9 @@ class ManageFooter extends SettingsPage
     {
         return $schema
             ->components([
-                Section::make('Identité de l’agence')
+                Section::make('Logo de l\'application')
                     ->icon('heroicon-o-building-office')
-                    ->description('Nom et logo affichés sur toute la plateforme.')
+                    ->description('Le logo et nom de votre application, affiché dans le pied de page, header Format recommandé : PNG ou SVG, fond transparent.')
                     ->schema([
                         TextInput::make('name')
                             ->label('Nom de l’application')
@@ -74,54 +75,55 @@ class ManageFooter extends SettingsPage
                             ->helperText('Format recommandé : PNG ou SVG, fond transparent.'),
                     ]),
 
-                Section::make('Coordonnées de l’agence')
-                    ->icon('heroicon-o-map-pin')
-                    ->description('Adresse, téléphone et email affichés dans le footer et la page contact.')
-                    ->schema([
-                        TextInput::make('address')
-                            ->label('Adresse')
-                            ->required()
-                            ->maxLength(255)
-                            ->placeholder('123 Avenue de l’Immobilier, Kinshasa'),
-
-                        TextInput::make('phone')
-                            ->label('Téléphone')
-                            ->required()
-                            ->tel()
-                            ->maxLength(30)
-                            ->placeholder('+243 123 456 789'),
-
-                        TextInput::make('email')
-                            ->label('Email')
-                            ->required()
-                            ->email()
-                            ->maxLength(255)
-                            ->placeholder('contact@immo-rdc.cd'),
-                    ]),
-                Section::make('Réseaux sociaux')
+                Section::make('Identité de l’agence')
                     ->icon('heroicon-o-share')
-                    ->description('Liens vers vos profils sociaux (laisser vide pour masquer).')
+                    ->description('Informations de contact et réseaux sociaux affichés dans le pied de page.')
                     ->schema([
-                        TextInput::make('facebook_url')
-                            ->label('Facebook')
-                            ->url()
-                            ->placeholder('https://facebook.com/votrepage'),
-                        TextInput::make('instagram_url')
-                            ->label('Instagram')
-                            ->url()
-                            ->placeholder('https://instagram.com/votrecompte'),
-                        TextInput::make('x_url')
-                            ->label('X (Twitter)')
-                            ->url()
-                            ->placeholder('https://x.com/votrecompte'),
-                        TextInput::make('linkedin_url')
-                            ->label('LinkedIn')
-                            ->url()
-                            ->placeholder('https://linkedin.com/company/votreentreprise'),
-                        TextInput::make('youtube_url')
-                            ->label('YouTube')
-                            ->url()
-                            ->placeholder('https://youtube.com/@votrechaine'),
+                        Grid::make(2)
+                            ->schema([
+
+                                TextInput::make('address')
+                                    ->label('Adresse')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->placeholder('123 Avenue de l’Immobilier, Kinshasa'),
+
+                                TextInput::make('phone')
+                                    ->label('Téléphone')
+                                    ->required()
+                                    ->tel()
+                                    ->maxLength(30)
+                                    ->placeholder('+243 123 456 789'),
+
+                                TextInput::make('email')
+                                    ->label('Email')
+                                    ->required()
+                                    ->email()
+                                    ->maxLength(255)
+                                    ->placeholder('contact@immo-rdc.cd'),
+
+                                TextInput::make('facebook_url')
+                                    ->label('Facebook')
+                                    ->url()
+                                    ->placeholder('https://facebook.com/votrepage'),
+                                TextInput::make('instagram_url')
+                                    ->label('Instagram')
+                                    ->url()
+                                    ->placeholder('https://instagram.com/votrecompte'),
+                                TextInput::make('x_url')
+                                    ->label('X (Twitter)')
+                                    ->url()
+                                    ->placeholder('https://x.com/votrecompte'),
+                                TextInput::make('linkedin_url')
+                                    ->label('LinkedIn')
+                                    ->url()
+                                    ->placeholder('https://linkedin.com/company/votreentreprise'),
+                                TextInput::make('youtube_url')
+                                    ->label('YouTube')
+                                    ->url()
+                                    ->placeholder('https://youtube.com/@votrechaine'),
+                            ]),
+
                     ]),
             ]);
     }
