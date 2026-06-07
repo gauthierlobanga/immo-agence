@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Property;
 
+use App\Http\Resources\Review\ReviewResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -82,6 +83,8 @@ class PropertyResource extends JsonResource
                 'thumb' => $media->getUrl('thumb'),
                 'medium' => $media->getUrl('medium'),
             ])),
+
+            'reviews' => ReviewResource::collection($this->whenLoaded('reviews')),
 
             'main_image' => $this->main_image,
         ];

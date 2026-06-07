@@ -11,6 +11,7 @@ use App\Http\Controllers\Immo\Central\Pages\Help\HelpController;
 use App\Http\Controllers\Immo\Central\Pages\Home\HeroController;
 use App\Http\Controllers\Immo\Central\Pages\Offer\OfferController;
 use App\Http\Controllers\Immo\Central\Pages\Privacy\PrivacyController;
+use App\Http\Controllers\Immo\Central\Pages\Review\ReviewController;
 use App\Http\Controllers\Immo\Central\Pages\Support\SupportController;
 use App\Http\Controllers\Immo\Central\Pages\Term\TermController;
 use App\Http\Controllers\Immo\Central\Pages\Testimonials\TestimonialController;
@@ -45,6 +46,10 @@ Route::prefix('agencies')->name('agencies.')->group(function () {
 Route::post('/properties/{property}/offers', [OfferController::class, 'store'])
     ->middleware('auth')
     ->name('offers.store');
+
+Route::post('/properties/{property}/reviews', [ReviewController::class, 'store'])
+    ->middleware('auth')
+    ->name('reviews.store');
 
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])

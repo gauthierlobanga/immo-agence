@@ -2,9 +2,14 @@
 
 namespace App\Filament\Admin\Resources\Reviews\Tables;
 
+use App\Models\Review;
+use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Notifications\Notification;
+use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -69,10 +74,52 @@ class ReviewsTable
                     ->label('Auteur'),
             ])
             ->recordActions([
+                // Action pour approuver
+                Action::make('approve')
+                    ->label('Approuver')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn (Review $record) => !$record->is_approved)
+                    ->action(function (Review $record) {
+                        $record->update(['is_approved' => true]);
+                        Notification::make()
+                            ->title('Avis approuvé')
+                            ->success()
+                            ->send();
+                    }),
+                // Action pour rejeter
+                Action::make('reject')
+                    ->label('Rejeter')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->visible(fn (Review $record) => $record->is_approved)
+                    ->action(function (Review $record) {
+                        $record->update(['is_approved' => false]);
+                        Notification::make()
+                            ->title('Avis rejeté')
+                            ->warning()
+                            ->send();
+                    }),
                 EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    // Approbation en masse
+                   BulkAction::make('approve')
+                        ->label('Approuver la sélection')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->action(fn ($records) => $records->each->update(['is_approved' => true]))
+                        ->deselectRecordsAfterCompletion()
+                        ->requiresConfirmation(),
+                    // Rejet en masse
+                    BulkAction::make('reject')
+                        ->label('Rejeter la sélection')
+                        ->icon('heroicon-o-x-circle')
+                        ->color('danger')
+                        ->action(fn ($records) => $records->each->update(['is_approved' => false]))
+                        ->deselectRecordsAfterCompletion()
+                        ->requiresConfirmation(),
                     DeleteBulkAction::make(),
                 ]),
             ])

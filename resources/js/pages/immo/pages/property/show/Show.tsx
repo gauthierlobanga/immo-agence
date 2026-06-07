@@ -1,7 +1,7 @@
-/* eslint-disable react-hooks/static-components */
-
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Head, Link, useForm } from '@inertiajs/react';
+/* eslint-disable react-hooks/static-components */
+// resources/js/Pages/immo/pages/property/show/Show.tsx
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     MapPin,
@@ -20,17 +20,21 @@ import {
     X,
     ChevronLeft,
     ChevronRight as ChevronRightIcon,
-    Grid3X3,
     Camera,
     Sparkles,
     ArrowRight,
-    LoaderIcon,
     Send,
     Loader2,
     BadgeDollarSign,
+    LoaderIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import InputError from '@/components/input-error';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -53,7 +57,6 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import AppPublicLayout from '@/layouts/app-public-layout';
-import { SafeHtmlContent } from '@/lib/SafeHtmlContent';
 import getToastStyle from '@/lib/toast-style';
 import { cn } from '@/lib/utils';
 import type { Property } from '@/types/immo/property';
@@ -78,7 +81,7 @@ interface Props {
     similarProperties: { data: Property[] };
 }
 
-// ---- Lightbox (inchangée) ----
+// ---- Lightbox ----
 function Lightbox({
     images,
     initialIndex = 0,
@@ -94,7 +97,6 @@ function Lightbox({
             setCurrent(index);
         }
     };
-
     const next = () => goTo(current + 1);
     const prev = () => goTo(current - 1);
 
@@ -169,11 +171,7 @@ function Lightbox({
                             e.stopPropagation();
                             goTo(idx);
                         }}
-                        className={`h-12 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition ${
-                            idx === current
-                                ? 'border-teal-400 opacity-100'
-                                : 'border-transparent opacity-60 hover:opacity-100'
-                        }`}
+                        className={`h-12 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition ${idx === current ? 'border-teal-400 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}
                     >
                         <img
                             src={img.url}
@@ -207,7 +205,6 @@ function PropertyShow({ property, similarProperties }: Props) {
         message: `${p.title}`,
     });
 
-    // Formulaire d'offre
     const offerForm = useForm({
         amount: '',
         currency: 'USD',
@@ -215,7 +212,9 @@ function PropertyShow({ property, similarProperties }: Props) {
         message: '',
     });
 
-    const submitContact = (e: React.SubmitEvent) => {
+    const reviewForm = useForm({ rating: 5, title: '', comment: '' });
+
+    const submitContact = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         visitForm.post(route('properties.contact', p.id), {
             preserveScroll: true,
@@ -227,15 +226,14 @@ function PropertyShow({ property, similarProperties }: Props) {
                     style: getToastStyle('success'),
                 });
             },
-            onError: () => {
+            onError: () =>
                 toast.error('Erreur dans le formulaire.', {
                     style: getToastStyle('error'),
-                });
-            },
+                }),
         });
     };
 
-    const submitOffer = (e: React.SubmitEvent) => {
+    const submitOffer = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         offerForm.post(route('offers.store', p.id), {
             preserveScroll: true,
@@ -247,9 +245,23 @@ function PropertyShow({ property, similarProperties }: Props) {
                     style: getToastStyle('success'),
                 });
             },
-            onError: () => {
+            onError: () =>
                 toast.error("Erreur lors de l'envoi de l'offre.", {
                     style: getToastStyle('error'),
+                }),
+        });
+    };
+
+    const submitReview = (e: React.SubmitEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        reviewForm.post(route('reviews.store', p.id), {
+            preserveScroll: true,
+            showProgress: false,
+            onSuccess: () => {
+                reviewForm.reset();
+                toast.success('Avis soumis !', {
+                    description: 'Votre avis sera publié après validation.',
+                    style: getToastStyle('success'),
                 });
             },
         });
@@ -260,10 +272,8 @@ function PropertyShow({ property, similarProperties }: Props) {
             style: 'currency',
             currency,
             minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
         }).format(price);
 
-    // Features normalisées
     const featuresList: string[] = (() => {
         if (!p.features) {
             return [];
@@ -282,7 +292,6 @@ function PropertyShow({ property, similarProperties }: Props) {
         }
     })();
 
-    // Images (main + gallery)
     const allImages: { url: string; alt: string }[] = (() => {
         const images: { url: string; alt: string }[] = [];
 
@@ -325,18 +334,14 @@ function PropertyShow({ property, similarProperties }: Props) {
         <>
             <Head title={p.title} />
 
-            {/* HERO FULL WIDTH avec image principale et infos superposées */}
-            <section className="relative h-125 w-full overflow-hidden lg:h-162.5">
-                {/* Image de fond */}
+            {/* HERO */}
+            <section className="relative h-120 w-full overflow-hidden lg:h-140">
                 <img
                     src={mainImageUrl}
                     alt={p.title}
                     className="absolute inset-0 h-full w-full object-cover"
                 />
-                {/* Overlay gradient sombre */}
                 <div className="absolute inset-0 bg-linear-to-r from-slate-900/80 via-slate-900/50 to-slate-900/30" />
-
-                {/* Contenu superposé */}
                 <div className="relative z-10 mx-auto flex h-full max-w-7xl items-end px-4 pb-12 sm:px-6 lg:px-8 lg:pb-20">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -346,7 +351,7 @@ function PropertyShow({ property, similarProperties }: Props) {
                     >
                         <div className="flex flex-wrap items-start justify-between gap-4">
                             <div>
-                                <Badge className="mb-4 gap-1.5 border-teal-300 bg-teal-500/20 px-4 py-1.5 text-sm text-teal-100 backdrop-blur-sm">
+                                <Badge className="mb-4 gap-1.5 border-teal-300 bg-teal-500/20 px-4 py-2.5 text-sm text-teal-100 backdrop-blur-sm">
                                     <Sparkles className="h-3.5 w-3.5" />
                                     {p.type === 'maison'
                                         ? 'Maison'
@@ -378,20 +383,18 @@ function PropertyShow({ property, similarProperties }: Props) {
                                     )}
                                 </div>
                                 <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-200">
-                                    {p.bedrooms !== null &&
-                                        p.bedrooms !== undefined && (
-                                            <span className="flex items-center gap-1">
-                                                <Bed className="h-4 w-4" />{' '}
-                                                {p.bedrooms} ch.
-                                            </span>
-                                        )}
-                                    {p.bathrooms !== null &&
-                                        p.bathrooms !== undefined && (
-                                            <span className="flex items-center gap-1">
-                                                <Bath className="h-4 w-4" />{' '}
-                                                {p.bathrooms} sdb
-                                            </span>
-                                        )}
+                                    {p.bedrooms !== null && (
+                                        <span className="flex items-center gap-1">
+                                            <Bed className="h-4 w-4" />{' '}
+                                            {p.bedrooms} ch.
+                                        </span>
+                                    )}
+                                    {p.bathrooms !== null && (
+                                        <span className="flex items-center gap-1">
+                                            <Bath className="h-4 w-4" />{' '}
+                                            {p.bathrooms} sdb
+                                        </span>
+                                    )}
                                     {p.area && (
                                         <span className="flex items-center gap-1">
                                             <Maximize className="h-4 w-4" />{' '}
@@ -442,7 +445,6 @@ function PropertyShow({ property, similarProperties }: Props) {
             </section>
 
             <div className="mx-auto max-w-7xl px-4 py-4 lg:py-8">
-                {/* Breadcrumbs (inchangés) */}
                 <nav className="mb-6 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                     <Link href="/" className="hover:text-teal-600">
                         Accueil
@@ -517,7 +519,7 @@ function PropertyShow({ property, similarProperties }: Props) {
                             }
                         />
 
-                        {/* Équipements (inchangé) */}
+                        {/* Équipements  */}
                         <div className="space-y-4">
                             <h2 className="text-xl font-bold text-slate-900 dark:text-white">
                                 Équipements & Caractéristiques
@@ -548,7 +550,7 @@ function PropertyShow({ property, similarProperties }: Props) {
                             </Card>
                         </div>
 
-                        {/* Détails (inchangé) */}
+                        {/* Détails */}
                         <div className="space-y-4">
                             <h2 className="text-xl font-bold text-slate-900 dark:text-white">
                                 Détails du bien
@@ -622,6 +624,132 @@ function PropertyShow({ property, similarProperties }: Props) {
                                     )}
                                 </CardContent>
                             </Card>
+                        </div>
+
+                        {/* ---- NOUVEAU : Propriétés similaires en carrousel ---- */}
+                        {similarProperties.data.length > 0 && (
+                            <div className="space-y-4">
+                                <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                                    Propriétés similaires
+                                </h2>
+                                <Swiper
+                                    modules={[Navigation]}
+                                    navigation
+                                    spaceBetween={16}
+                                    slidesPerView={1}
+                                    breakpoints={{
+                                        640: { slidesPerView: 2 },
+                                        1024: { slidesPerView: 3 },
+                                    }}
+                                    className="w-full"
+                                >
+                                    {similarProperties.data.map((sim) => (
+                                        <SwiperSlide key={sim.id}>
+                                            <Link
+                                                href={route(
+                                                    'properties.show',
+                                                    sim.slug,
+                                                )}
+                                                className="group block h-full"
+                                            >
+                                                <Card className="overflow-hidden border-slate-200 bg-white/80 shadow-sm backdrop-blur transition-all hover:-translate-y-1 hover:shadow-md dark:border-slate-800 dark:bg-slate-900/80">
+                                                    <div className="relative aspect-4/3 overflow-hidden">
+                                                        <img
+                                                            src={sim.main_image}
+                                                            alt={sim.title}
+                                                            className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+                                                        />
+                                                        <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
+                                                        <div className="absolute bottom-2 left-2">
+                                                            <Badge className="bg-teal-600 text-white">
+                                                                {sim.type}
+                                                            </Badge>
+                                                        </div>
+                                                    </div>
+                                                    <CardContent className="p-4">
+                                                        <h4 className="truncate font-bold text-slate-900 group-hover:text-teal-600 dark:text-white">
+                                                            {sim.title}
+                                                        </h4>
+                                                        <p className="text-xs text-slate-500">
+                                                            {sim.city?.name}
+                                                        </p>
+                                                        <p className="mt-2 text-lg font-bold text-teal-600">
+                                                            {formatPrice(
+                                                                sim.price,
+                                                                sim.currency,
+                                                            )}
+                                                        </p>
+                                                    </CardContent>
+                                                </Card>
+                                            </Link>
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            </div>
+                        )}
+
+                        {/* ---- NOUVEAU : Avis des clients  ---- */}
+                        <div className="space-y-4">
+                            <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                                Avis des clients
+                            </h2>
+                            {p.reviews && p.reviews.length > 0 ? (
+                                <div className="space-y-4">
+                                    {p.reviews.map((review) => (
+                                        <Card
+                                            key={review.id}
+                                            className="border-slate-200 bg-white/80 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80"
+                                        >
+                                            <CardContent className="p-4">
+                                                <div className="flex items-start gap-3">
+                                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-100 text-sm font-bold text-teal-700">
+                                                        {review.user?.name?.charAt(
+                                                            0,
+                                                        ) || '?'}
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center justify-between">
+                                                            <h4 className="font-semibold text-slate-900 dark:text-white">
+                                                                {review.user
+                                                                    ?.name ||
+                                                                    'Anonyme'}
+                                                            </h4>
+                                                            <span className="text-xs text-slate-500">
+                                                                {new Date(
+                                                                    review.created_at,
+                                                                ).toLocaleDateString()}
+                                                            </span>
+                                                        </div>
+                                                        <div className="mt-1 flex items-center gap-1">
+                                                            {Array.from({
+                                                                length: 5,
+                                                            }).map((_, i) => (
+                                                                <Star
+                                                                    key={i}
+                                                                    className={`h-4 w-4 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-slate-300'}`}
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                        {review.title && (
+                                                            <p className="mt-2 font-medium text-slate-800 dark:text-slate-200">
+                                                                {review.title}
+                                                            </p>
+                                                        )}
+                                                        <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                                                            {review.comment}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-sm text-slate-500">
+                                    Aucun avis pour le moment. Soyez le premier
+                                    à donner votre avis !
+                                </p>
+                            )}
                         </div>
                     </div>
 
@@ -764,11 +892,19 @@ function PropertyShow({ property, similarProperties }: Props) {
                                         </Label>
                                         <Input
                                             placeholder="Votre nom"
-                                            className={`h-11 rounded-xl border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-400/20 ${
-                                                errors.name
+                                            className={cn(
+                                                'w-full rounded border px-3 py-2 text-sm font-medium transition-all duration-200',
+                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
+                                                'hover:border-teal-300 hover:bg-white',
+                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
+                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                 errors.name
                                                     ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                    : ''
-                                            }`}
+                                                    : '',
+                                            )}
+
                                             value={data.name}
                                             onChange={(e) =>
                                                 setData('name', e.target.value)
@@ -788,11 +924,18 @@ function PropertyShow({ property, similarProperties }: Props) {
                                         <Input
                                             type="email"
                                             placeholder="votre@email.com"
-                                            className={`h-11 rounded-xl border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-400/20 ${
-                                                errors.email
+                                            className={cn(
+                                                'w-full rounded border px-3 py-2 text-sm font-medium transition-all duration-200',
+                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
+                                                'hover:border-teal-300 hover:bg-white',
+                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
+                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                 errors.email
                                                     ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                    : ''
-                                            }`}
+                                                    : '',
+                                            )}
                                             value={data.email}
                                             onChange={(e) =>
                                                 setData('email', e.target.value)
@@ -809,11 +952,18 @@ function PropertyShow({ property, similarProperties }: Props) {
                                         <Input
                                             type="tel"
                                             placeholder="+243 123 456 789"
-                                            className={`h-11 rounded-xl border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-400/20 ${
-                                                errors.phone
+                                             className={cn(
+                                                'w-full rounded border px-3 py-2 text-sm font-medium transition-all duration-200',
+                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
+                                                'hover:border-teal-300 hover:bg-white',
+                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
+                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                 errors.phone
                                                     ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                    : ''
-                                            }`}
+                                                    : '',
+                                            )}
                                             value={data.phone}
                                             onChange={(e) =>
                                                 setData('phone', e.target.value)
@@ -833,11 +983,19 @@ function PropertyShow({ property, similarProperties }: Props) {
                                         <Textarea
                                             placeholder="Votre message..."
                                             rows={5}
-                                            className={`rounded-xl border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-400/20 ${
+                                             className={cn(
+                                                'w-full rounded border px-3 py-2 text-sm font-medium transition-all duration-200',
+                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
+                                                'hover:border-teal-300 hover:bg-white',
+                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
+                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
                                                 errors.message
                                                     ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                    : ''
-                                            }`}
+                                                    : '',
+                                            )}
+
                                             value={data.message}
                                             onChange={(e) =>
                                                 setData(
@@ -853,7 +1011,7 @@ function PropertyShow({ property, similarProperties }: Props) {
                                     <Button
                                         type="submit"
                                         size="lg"
-                                        className="h-12 w-full rounded-xl bg-teal-600 text-base font-semibold text-white shadow-lg shadow-teal-500/20 transition-all hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
+                                        className="h-8 w-full rounded bg-teal-600 text-base font-semibold text-white shadow-lg shadow-teal-500/20 transition-all hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
                                         disabled={processing}
                                     >
                                         {processing ? (
@@ -904,7 +1062,7 @@ function PropertyShow({ property, similarProperties }: Props) {
                                         >
                                             <SelectTrigger
                                                 className={cn(
-                                                    'h-11 w-full rounded-xl border px-3 text-sm font-medium transition-all duration-200',
+                                                    'h-11 w-full rounded border px-3 text-sm font-medium transition-all duration-200',
                                                     'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
                                                     'hover:border-teal-300 hover:bg-white',
                                                     'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
@@ -924,19 +1082,19 @@ function PropertyShow({ property, similarProperties }: Props) {
                                                 align="start"
                                                 sideOffset={8}
                                                 className={cn(
-                                                    'rounded-xl border border-slate-200/80 bg-white/95 p-1 shadow-lg backdrop-blur-xl',
+                                                    'rounded border border-slate-200/80 bg-white/95 p-1 shadow-lg backdrop-blur-xl',
                                                     'dark:border-slate-800/80 dark:bg-slate-950/95',
                                                 )}
                                             >
                                                 <SelectItem
                                                     value="purchase"
-                                                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                                    className="rounded px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
                                                 >
                                                     Achat
                                                 </SelectItem>
                                                 <SelectItem
                                                     value="rent"
-                                                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                                    className="rounded px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
                                                 >
                                                     Location
                                                 </SelectItem>
@@ -963,7 +1121,7 @@ function PropertyShow({ property, similarProperties }: Props) {
                                         >
                                             <SelectTrigger
                                                 className={cn(
-                                                    'h-11 w-full rounded-xl border px-3 text-sm font-medium transition-all duration-200',
+                                                    'h-11 w-full rounded border px-3 text-sm font-medium transition-all duration-200',
                                                     'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
                                                     'hover:border-teal-300 hover:bg-white',
                                                     'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
@@ -1031,7 +1189,7 @@ function PropertyShow({ property, similarProperties }: Props) {
                                                 )
                                             }
                                             className={cn(
-                                                'h-11 w-full rounded-xl border px-3 text-sm font-medium transition-all duration-200',
+                                                'h-11 w-full rounded border px-3 text-sm font-medium transition-all duration-200',
                                                 'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
                                                 'hover:border-teal-300 hover:bg-white',
                                                 'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
@@ -1064,7 +1222,7 @@ function PropertyShow({ property, similarProperties }: Props) {
                                                 )
                                             }
                                             className={cn(
-                                                'w-full rounded-xl border px-3 py-2 text-sm font-medium transition-all duration-200',
+                                                'w-full rounded border px-3 py-2 text-sm font-medium transition-all duration-200',
                                                 'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
                                                 'hover:border-teal-300 hover:bg-white',
                                                 'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
@@ -1084,7 +1242,7 @@ function PropertyShow({ property, similarProperties }: Props) {
                                     <Button
                                         type="submit"
                                         size="lg"
-                                        className="h-12 w-full rounded-xl bg-teal-600 text-base font-semibold text-white shadow-md shadow-teal-200 transition-all hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-300 dark:bg-teal-500 dark:shadow-teal-900/30 dark:hover:bg-teal-600 dark:hover:shadow-teal-800/40"
+                                        className="h-8 w-full rounded bg-teal-600 text-base font-semibold text-white shadow-md shadow-teal-200 transition-all hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-300 dark:bg-teal-500 dark:shadow-teal-900/30 dark:hover:bg-teal-600 dark:hover:shadow-teal-800/40"
                                         disabled={offerForm.processing}
                                     >
                                         {offerForm.processing ? (
@@ -1095,58 +1253,139 @@ function PropertyShow({ property, similarProperties }: Props) {
                                         ) : (
                                             <>
                                                 <Send className="h-6 w-6" />{' '}
-                                                 Envoyer l'offre
+                                                Envoyer l'offre
                                             </>
                                         )}
                                     </Button>
                                 </form>
                             </CardContent>
                         </Card>
-                        {/* Similaires */}
-                        <div className="space-y-4">
-                            <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                                Propriétés similaires
-                                <Link
-                                    href={route('properties.index')}
-                                    className="ml-2 text-sm text-teal-600 hover:underline"
-                                >
-                                    Voir tout
-                                </Link>
-                            </h3>
-                            {similarProperties.data.map((sim) => (
-                                <Link
-                                    key={sim.id}
-                                    href={route('properties.show', sim.slug)}
-                                    className="group flex gap-4 rounded-2xl border border-slate-200 bg-white/80 p-3 transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900/80"
-                                >
-                                    <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl">
-                                        <img
-                                            src={sim.main_image}
-                                            alt={sim.title}
-                                            className="h-full w-full object-cover transition group-hover:scale-110"
-                                        />
-                                    </div>
-                                    <div className="min-w-0">
-                                        <h4 className="truncate font-bold text-slate-900 group-hover:text-teal-600 dark:text-white dark:group-hover:text-teal-400">
-                                            {sim.title}
-                                        </h4>
-                                        <p className="text-xs text-slate-500">
-                                            {sim.city?.name}
-                                        </p>
-                                        <p className="mt-1 text-sm font-bold text-teal-600">
-                                            {formatPrice(
-                                                sim.price,
-                                                sim.currency,
+
+                        {/* Formulaire avis */}
+                        {usePage().props.auth.user ? (
+                            <Card className="border-slate-200 bg-white/80 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
+                                <CardHeader>
+                                    <CardTitle className="text-lg text-slate-900 dark:text-white">
+                                        Laisser un avis
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <form
+                                        onSubmit={submitReview}
+                                        className="space-y-4"
+                                    >
+                                        {/* Note */}
+                                        <div className="space-y-2">
+                                            <Label className="text-sm font-medium">
+                                                Note{' '}
+                                                <span className="text-red-400">
+                                                    *
+                                                </span>
+                                            </Label>
+                                            <div className="flex items-center gap-1">
+                                                {[1, 2, 3, 4, 5].map((star) => (
+                                                    <button
+                                                        key={star}
+                                                        type="button"
+                                                        onClick={() =>
+                                                            reviewForm.setData(
+                                                                'rating',
+                                                                star,
+                                                            )
+                                                        }
+                                                        className="focus:outline-none"
+                                                    >
+                                                        <Star
+                                                            className={`h-6 w-6 transition-colors ${star <= reviewForm.data.rating ? 'fill-yellow-400 text-yellow-400' : 'text-slate-300 hover:text-yellow-400'}`}
+                                                        />
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <Input
+                                            value={reviewForm.data.title}
+                                            onChange={(e) =>
+                                                reviewForm.setData(
+                                                    'title',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className={cn(
+                                                'h-11 w-full rounded border px-3 text-sm font-medium transition-all duration-200',
+                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
+                                                'hover:border-teal-300 hover:bg-white',
+                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
+                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                reviewForm.errors.title
+                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
+                                                    : '',
                                             )}
-                                        </p>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
+                                            placeholder="Titre"
+                                        />
+                                        <Textarea
+                                            value={reviewForm.data.comment}
+                                            onChange={(e) =>
+                                                reviewForm.setData(
+                                                    'comment',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className={cn(
+                                                'w-full rounded border px-3 py-2 text-sm font-medium transition-all duration-200',
+                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
+                                                'hover:border-teal-300 hover:bg-white',
+                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
+                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
+                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
+                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
+                                                reviewForm.errors.comment
+                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
+                                                    : '',
+                                            )}
+                                            placeholder="Commentaire"
+                                            rows={3}
+                                        />
+
+                                        <Button
+                                            type="submit"
+                                            size="lg"
+                                            className="h-8 w-full rounded bg-teal-600 text-base font-semibold text-white transition-all hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
+                                            disabled={reviewForm.processing}
+                                        >
+                                            {reviewForm.processing ? (
+                                                <>
+                                                    <LoaderIcon className="h-6 w-6 animate-spin" />{' '}
+                                                    Envoi en cours...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Send className="h-6 w-6" />{' '}
+                                                    Envoyer
+                                                </>
+                                            )}
+                                        </Button>
+                                    </form>
+                                </CardContent>
+                            </Card>
+                        ) : (
+                            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-center dark:border-slate-800 dark:bg-slate-900/50">
+                                <p className="text-sm text-slate-500">
+                                    <Link
+                                        href={route('login')}
+                                        className="text-teal-600 hover:underline"
+                                    >
+                                        Connectez-vous
+                                    </Link>{' '}
+                                    pour laisser un avis.
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                {/* Lightbox (inchangée) */}
+                {/* Lightbox */}
                 <AnimatePresence>
                     {lightboxOpen && (
                         <Lightbox
@@ -1164,5 +1403,4 @@ function PropertyShow({ property, similarProperties }: Props) {
 PropertyShow.layout = (page: React.ReactNode) => (
     <AppPublicLayout>{page}</AppPublicLayout>
 );
-
 export default PropertyShow;

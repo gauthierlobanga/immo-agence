@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Immo\Central\Property;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Contacts\StoreContactRequest;
 use App\Http\Resources\Property\PropertyResource;
+use App\Http\Resources\Review\ReviewResource;
 use App\Models\Commune;
 use App\Models\Contact;
 use App\Models\Property;
@@ -101,22 +102,35 @@ class PropertyController extends Controller
         ]);
     }
 
-    public function show(Property $property)
-    {
-        $property->incrementViews();
-        $property->load(['agency', 'agent', 'commune', 'quartier', 'media', 'tags']);
+ public function show(Property $property)
+{
+    $property->incrementViews();
+    $property->load([
+        'agency',
+        'agent',
+        'commune',
+        'quartier',
+        'media',
+        'tags',
+        'reviews' => function ($query) {
+            $query->approved()->with('user')->latest();
+        },
+    ]);
 
-        $similarProperties = Property::where('type', $property->type)
-            ->where('id', '!=', $property->id)
-            ->available()
-            ->limit(4)
-            ->get();
+    $similarProperties = Property::where('type', $property->type)
+        ->where('id', '!=', $property->id)
+        ->available()
+        ->when($property->city_id, fn($q) => $q->where('city_id', $property->city_id))
+        ->when($property->commune_id, fn($q) => $q->orWhere('commune_id', $property->commune_id))
+        ->when($property->price, fn($q) => $q->whereBetween('price', [$property->price * 0.7, $property->price * 1.3]))
+        ->limit(4)
+        ->get();
 
-        return Inertia::render('immo/pages/property/show/Show', [
-            'property' => new PropertyResource($property),
-            'similarProperties' => PropertyResource::collection($similarProperties),
-        ]);
-    }
+    return Inertia::render('immo/pages/property/show/Show', [
+        'property' => new PropertyResource($property),
+        'similarProperties' => PropertyResource::collection($similarProperties),
+    ]);
+}
 
     public function contact(StoreContactRequest $request, Property $property)
     {

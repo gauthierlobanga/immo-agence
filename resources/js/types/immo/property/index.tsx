@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // resources/js/types/immobilier/properties.ts
 import type { Key } from 'react';
 
@@ -85,12 +86,25 @@ export interface Favorite {
     user_id: number;
 }
 
+// export interface Review {
+//     id: Key | null | undefined;
+//     rating: number;
+//     comment: string;
+//     user_name?: string;
+//     created_at: string;
+// }
+
 export interface Review {
-    id: Key | null | undefined;
+    id: string;
     rating: number;
+    title?: string | null;
     comment: string;
-    user_name?: string;
+    is_approved: boolean;
     created_at: string;
+    user?: {
+        name: string;
+        avatar_url?: string | null;
+    } | null;
 }
 
 export interface Offer {

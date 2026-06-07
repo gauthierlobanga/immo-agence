@@ -384,7 +384,7 @@ function PropertyList({ properties, filters, communes, propertyTypes }: Props) {
             <Head title="Propriétés" />
 
             {/* HERO FULL WIDTH */}
-            <section className="relative h-125 w-full overflow-hidden lg:h-150">
+            <section className="relative h-120 w-full overflow-hidden lg:h-140">
                 <img
                     src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200"
                     alt="Maison moderne"
@@ -416,10 +416,9 @@ function PropertyList({ properties, filters, communes, propertyTypes }: Props) {
                         >
                             {/* Halo lumineux au focus */}
                             <div className="pointer-events-none absolute -inset-1 rounded-2xl bg-teal-400/20 opacity-0 blur-xl transition-opacity duration-500 group-focus-within:opacity-100 dark:bg-teal-500/20" />
-
-                            <div className="relative flex items-center">
+                            <div className="relative">
                                 {/* Icône de recherche */}
-                                <Search className="absolute left-5 h-5 w-5 text-slate-400 transition-colors duration-300 group-focus-within:text-teal-500 dark:text-slate-500 dark:group-focus-within:text-teal-400" />
+                                <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-teal-500" />
 
                                 {/* Champ de saisie */}
                                 <Input
@@ -427,38 +426,26 @@ function PropertyList({ properties, filters, communes, propertyTypes }: Props) {
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                     className={cn(
-                                        'h-14 w-full rounded-2xl border pr-14 pl-12 text-base backdrop-blur-xl transition-all duration-300',
-                                        'border-slate-200 bg-white/80 text-slate-900 placeholder:text-slate-400',
-                                        'hover:border-teal-300 hover:bg-white hover:shadow-md',
-                                        'focus:border-teal-500 focus:bg-white focus:shadow-lg focus:ring-2 focus:ring-teal-500/20',
+                                        'h-14 w-full rounded-2xl border px-12 text-base shadow-sm backdrop-blur-xl transition-all duration-300',
+                                        // Light mode
+                                        'border-slate-200 bg-white text-slate-900 placeholder:text-slate-400',
+                                        'hover:border-slate-300 hover:bg-white/90',
+                                        'focus:border-teal-500 focus:bg-white',
+                                        // Dark mode
                                         'dark:border-slate-700 dark:bg-slate-900/70 dark:text-white dark:placeholder:text-slate-500',
-                                        'dark:hover:border-teal-700 dark:hover:bg-slate-900/90',
-                                        'dark:focus:border-teal-400 dark:focus:bg-slate-900 dark:focus:ring-teal-400/20',
+                                        'dark:hover:border-slate-600 dark:hover:bg-slate-900/90',
+                                        'dark:focus:border-teal-400 dark:focus:bg-slate-900',
                                     )}
                                 />
 
                                 {/* Bouton de recherche */}
                                 <button
                                     type="submit"
-                                    className={cn(
-                                        'absolute right-2 flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-300',
-                                        'bg-teal-600 text-white shadow-sm hover:bg-teal-700',
-                                        'dark:bg-teal-500 dark:hover:bg-teal-600',
-                                    )}
-                                    aria-label="Rechercher"
+                                    className="absolute top-1/2 right-2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl bg-teal-600 text-white shadow-sm transition hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
                                 >
                                     <Search className="h-4 w-4" />
                                 </button>
                             </div>
-
-                            {/* Suggestions ou message d'aide (optionnel) */}
-                            <p className="mt-2 text-center text-xs text-slate-400 dark:text-slate-500">
-                                Appuyez sur{' '}
-                                <kbd className="rounded-md border border-slate-200 bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
-                                    Entrée
-                                </kbd>{' '}
-                                pour lancer la recherche
-                            </p>
                         </form>
                     </motion.div>
                 </div>
@@ -471,14 +458,14 @@ function PropertyList({ properties, filters, communes, propertyTypes }: Props) {
                 } border-b border-slate-200/60 bg-white/70 shadow-[0_8px_40px_rgba(0,0,0,.08)] backdrop-blur-xl dark:border-slate-800/60 dark:bg-slate-950/70`}
             >
                 <div className="absolute inset-0 -z-10 overflow-hidden">
-                    <div className="absolute -top-20 left-1/4 h-40 w-96 rounded-full bg-teal-400/10 blur-3xl dark:bg-teal-500/5" />
+                    <div className="absolute -top-50 left-1/4 h-40 w-96 rounded-full bg-teal-400/10 blur-3xl dark:bg-teal-500/5" />
                 </div>
 
                 <div className="mx-auto max-w-360 px-4">
                     <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
                             {activeFiltersCount > 0 && (
-                                <Badge className="gap-1 bg-teal-100 px-3 py-1 text-xs font-medium text-teal-700 dark:bg-teal-900/50 dark:text-teal-300">
+                                <Badge className="gap-1 rounded bg-teal-100 px-3 py-4 text-sm font-medium text-teal-700 dark:bg-teal-900/50 dark:text-teal-300">
                                     {activeFiltersCount} filtre
                                     {activeFiltersCount > 1 ? 's' : ''}
                                 </Badge>
@@ -486,7 +473,7 @@ function PropertyList({ properties, filters, communes, propertyTypes }: Props) {
                             <Button
                                 variant="outline"
                                 size="sm"
-                                className="rounded-xl border-slate-200 bg-white/80 backdrop-blur-sm lg:hidden"
+                                className="rounded border-slate-200 bg-white/80 backdrop-blur-sm lg:hidden"
                                 onClick={() => setMobileFiltersOpen(true)}
                             >
                                 <SlidersHorizontal className="mr-2 h-4 w-4" />
@@ -508,10 +495,10 @@ function PropertyList({ properties, filters, communes, propertyTypes }: Props) {
                                         onClick={() =>
                                             setType(t === 'Tous' ? '' : t)
                                         }
-                                        className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+                                        className={`rounded px-3 py-2 text-sm font-normal transition-all ${
                                             (t === 'Tous' && !type) ||
                                             type === t
-                                                ? 'bg-teal-600 text-white shadow-md'
+                                                ? 'bg-teal-600 text-white'
                                                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
                                         }`}
                                     >
@@ -525,9 +512,9 @@ function PropertyList({ properties, filters, communes, propertyTypes }: Props) {
                                     <button
                                         key={b}
                                         onClick={() => toggleBedroom(b)}
-                                        className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+                                        className={`rounded px-2 py-2 text-sm font-normal transition-all ${
                                             bedrooms.includes(b)
-                                                ? 'bg-teal-600 text-white shadow-md'
+                                                ? 'bg-teal-600 text-white'
                                                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
                                         }`}
                                     >
@@ -541,7 +528,7 @@ function PropertyList({ properties, filters, communes, propertyTypes }: Props) {
                             <Select value={sort} onValueChange={setSort}>
                                 <SelectTrigger
                                     className={cn(
-                                        'h-10 w-44 rounded-xl border px-3 text-sm font-medium transition-all duration-200',
+                                        'h-10 w-44 rounded border px-3 text-sm font-medium transition-all duration-200',
                                         'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
                                         'hover:border-teal-300 hover:bg-white',
                                         'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
@@ -559,25 +546,25 @@ function PropertyList({ properties, filters, communes, propertyTypes }: Props) {
                                     align="start"
                                     sideOffset={8}
                                     className={cn(
-                                        'rounded-xl border border-slate-200/80 bg-white/95 p-1 shadow-lg backdrop-blur-xl',
+                                        'rounded border border-slate-200/80 bg-white/95 p-1 shadow-lg backdrop-blur-xl',
                                         'dark:border-slate-800/80 dark:bg-slate-950/95',
                                     )}
                                 >
                                     <SelectItem
                                         value="created_at"
-                                        className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                        className="rounded px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
                                     >
                                         Nouveautés
                                     </SelectItem>
                                     <SelectItem
                                         value="price"
-                                        className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                        className="rounded px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
                                     >
                                         Prix
                                     </SelectItem>
                                     <SelectItem
                                         value="views_count"
-                                        className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                        className="rounded px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
                                     >
                                         Les plus vus
                                     </SelectItem>
@@ -793,21 +780,22 @@ function PropertyList({ properties, filters, communes, propertyTypes }: Props) {
             </Sheet>
 
             {/* Indicateur de chargement */}
-            <AnimatePresence>
+            {/* <AnimatePresence>
                 {isLoading && (
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-x-0 top-16 z-40 flex justify-center"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="pointer-events-none fixed inset-x-0 bottom-8 z-40 flex justify-center"
                     >
-                        <div className="mt-2 rounded-full bg-teal-600 px-4 py-1 text-xs text-white shadow-lg">
-                            <Loader2 className="mr-1 inline h-3 w-3 animate-spin" />{' '}
-                            Mise à jour...
+                        <div className="flex items-center gap-2 rounded-full bg-white/70 px-4 py-2 text-sm font-medium text-slate-500 shadow-lg shadow-slate-200/20 backdrop-blur-md dark:bg-slate-900/70 dark:text-slate-400 dark:shadow-slate-900/30">
+                            <Loader2 className="h-3.5 w-3.5 animate-spin text-teal-500" />
+                            <span>Chargement en cours…</span>
                         </div>
                     </motion.div>
                 )}
-            </AnimatePresence>
+            </AnimatePresence> */}
 
             {/* Liste des propriétés */}
             <div className="mx-auto max-w-7xl px-4 py-8">
