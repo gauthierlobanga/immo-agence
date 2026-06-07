@@ -2,7 +2,8 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\ManageAppSettings;
+use App\Filament\Admin\Pages\ManageAppSettings;
+use App\Filament\Admin\Pages\ManageFooter;
 use App\Http\Middleware\EnsureUserIsSuperAdmin;
 use App\Settings\SettingApp;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -58,6 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
                 ManageAppSettings::class,
+                ManageFooter::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\Filament\Admin\Widgets')
             ->widgets([

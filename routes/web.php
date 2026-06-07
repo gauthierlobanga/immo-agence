@@ -29,7 +29,7 @@ Route::get('/', [HeroController::class, 'Index'])->name('home');
 Route::prefix('properties')->name('properties.')->group(function () {
     Route::get('/', [PropertyController::class, 'index'])->name('index');
     Route::get('/{property:slug}', [PropertyController::class, 'show'])->name('show');
-
+    Route::post('/properties/{property}/contact', [PropertyController::class, 'contact'])->name('contact');
     Route::middleware('auth')->group(function () {
         Route::post('/{property}/favorite', [UserActionController::class, 'toggleFavorite'])->name('favorite');
         Route::post('/{property}/visit', [UserActionController::class, 'requestVisit'])->name('visit');

@@ -141,7 +141,7 @@ const categoryDetails: Record<
         message: '',
     });
 
-    function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
         post(route('page.contact.store'), {
             preserveScroll: true,

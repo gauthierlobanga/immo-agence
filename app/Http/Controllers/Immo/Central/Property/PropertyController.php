@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Immo\Central\Property;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Contacts\StoreContactRequest;
 use App\Http\Resources\Property\PropertyResource;
 use App\Models\Commune;
+use App\Models\Contact;
 use App\Models\Property;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -114,5 +116,26 @@ class PropertyController extends Controller
             'property' => new PropertyResource($property),
             'similarProperties' => PropertyResource::collection($similarProperties),
         ]);
+    }
+
+    public function contact(StoreContactRequest $request, Property $property)
+    {
+        $validated = $request->validated();
+
+        $property->contacts()->create([
+            'nom' => $validated['nom'],
+            'prenom' => $validated['prenom'] ?? null,
+            'email' => $validated['email'],
+            'telephone' => $validated['telephone'] ?? null,
+            'sujet' => $validated['sujet'],
+            'message' => $validated['message'],
+            'categorie' => $validated['categorie'],
+            'priorite' => Contact::inferPriority($validated['categorie'], $validated['message']),
+            'status' => Contact::STATUS_EN_ATTENTE,
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
+
+        return back()->with('success', 'Votre demande de visite a bien été envoyée. L’agent vous contactera très vite.');
     }
 }

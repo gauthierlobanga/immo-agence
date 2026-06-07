@@ -28,7 +28,13 @@ createInertiaApp({
         return (
             <TooltipProvider delayDuration={0}>
                 {app}
-                <Toaster />
+                <Toaster
+                    position="top-right"
+                    richColors
+                    closeButton
+                    expand={true}
+                    duration={5000}
+                />
             </TooltipProvider>
         );
     },

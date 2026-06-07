@@ -16,13 +16,6 @@ export default function AppPublicLayout({
     return (
         <AppLayoutTemplate breadcrumbs={breadcrumbs} {...props}>
             {children}
-            <Toaster
-                position="top-right"
-                richColors
-                closeButton
-                expand={true}
-                duration={5000}
-            />
             <FooterSection />
         </AppLayoutTemplate>
     );

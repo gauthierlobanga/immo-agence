@@ -47,6 +47,18 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => $appSettings->name,
             'app_logo' => $appSettings->logoUrl(),
+            'contactInfo' => [
+                'address' => $appSettings->address,
+                'phone' => $appSettings->phone,
+                'email' => $appSettings->email,
+            ],
+            'socialLinks' => [
+                'facebook' => $appSettings->facebook_url,
+                'instagram' => $appSettings->instagram_url,
+                'x' => $appSettings->x_url,
+                'linkedin' => $appSettings->linkedin_url,
+                'youtube' => $appSettings->youtube_url,
+            ],
             'auth' => $this->getAuthData($user),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => $this->getFlashData($request),
