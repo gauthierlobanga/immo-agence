@@ -4,19 +4,35 @@ namespace App\Models;
 
 use App\Concerns\GeneratesUniqueTeamSlugs;
 use App\Enums\TeamRole;
-use Database\Factories\TeamFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Tags\HasTags;
 
 #[Fillable(['name', 'slug', 'is_personal'])]
 class Team extends Model
 {
     /** @use HasFactory<TeamFactory> */
     use GeneratesUniqueTeamSlugs, HasFactory, SoftDeletes;
+    use HasUuids,HasTags;
+
+    /**
+     * Indique que les clés primaires sont de type string (UUID)
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
+     * Indique que les clés primaires ne sont pas auto-incrémentées
+     *
+     * @var bool
+     */
+    public $incrementing = false;
 
     /**
      * Bootstrap the model and its traits.

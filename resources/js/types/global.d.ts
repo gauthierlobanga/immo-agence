@@ -1,5 +1,7 @@
+import type { route as routeFn } from 'ziggy-js';
 import type { Auth } from '@/types/auth';
 import type { Team } from '@/types/teams';
+
 
 declare module 'react' {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -19,4 +21,8 @@ declare module '@inertiajs/core' {
             [key: string]: unknown;
         };
     }
+}
+
+declare global {
+    var route: typeof routeFn;
 }

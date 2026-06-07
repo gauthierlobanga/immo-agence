@@ -8,11 +8,17 @@
     "nightwatch": false,
     "sail": false,
     "skills": [
+        "ai-sdk-development",
+        "cashier-stripe-development",
         "fortify-development",
         "laravel-best-practices",
+        "pulse-development",
+        "scout-development",
+        "socialite-development",
         "wayfinder-development",
         "pest-testing",
         "inertia-react-development",
+        "echo-react-development",
         "tailwindcss-development"
     ]
 }

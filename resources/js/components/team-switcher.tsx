@@ -80,7 +80,7 @@ export function TeamSwitcher({ inHeader = false }: TeamSwitcherProps) {
                         <span
                             className={
                                 inHeader
-                                    ? 'max-w-[120px] truncate font-medium'
+                                    ? 'max-w-30 truncate font-medium'
                                     : 'truncate font-semibold'
                             }
                         >

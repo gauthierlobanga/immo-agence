@@ -14,9 +14,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\URL;
+use Spatie\Permission\Traits\HasRoles;
 
 trait HasTeams
 {
+    use HasRoles;
     /**
      * Get all of the teams the user belongs to.
      *

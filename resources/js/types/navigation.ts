@@ -7,6 +7,7 @@ export type BreadcrumbItem = {
 };
 
 export type NavItem = {
+    content?: React.ReactNode;  // pour les méga‑menus
     title: string;
     href: NonNullable<InertiaLinkProps['href']>;
     icon?: LucideIcon | null;

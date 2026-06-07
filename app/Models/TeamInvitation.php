@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\TeamRole;
 use Database\Factories\TeamInvitationFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,21 @@ class TeamInvitation extends Model
 {
     /** @use HasFactory<TeamInvitationFactory> */
     use HasFactory;
+    use HasUuids;
+
+    /**
+     * Indique que les clés primaires ne sont pas auto-incrémentées
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * Le type de la clé primaire
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
 
     /**
      * Bootstrap the model and its traits.

@@ -1,5 +1,6 @@
+//src/components/app-header.tsx
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Menu, Search, Home, Building2 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import AppLogoIcon from '@/components/app-logo-icon';
 import { Breadcrumbs } from '@/components/breadcrumbs';
@@ -70,7 +71,36 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
             href: dashboardUrl,
             icon: LayoutGrid,
         },
+        {
+            title: 'Propriétés',
+            href: route('properties.index'),
+            icon: Home,
+        },
+        {
+            title: 'Agences',
+            href: route('agencies.index'),
+            icon: Building2,
+        },
     ];
+
+     // Extraire et typer correctement les valeurs
+    const user = auth.user;
+
+    // Sécuriser l'URL de l'avatar
+    const avatarUrl = (() => {
+        if (!user?.avatar_url) {
+            return undefined;
+        }
+
+        const url = String(user.avatar_url);
+
+        return url.startsWith('http') || url.startsWith('/') ? url : undefined;
+    })();
+
+    // Sécuriser le nom
+    const userName =
+        user?.name && typeof user.name === 'string' ? user.name : 'Utilisateur';
+    const userInitials = getInitials(userName);
 
     return (
         <>
@@ -83,7 +113,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="mr-2 h-[34px] w-[34px]"
+                                    className="mr-2 h-8.5 w-8.5"
                                 >
                                     <Menu className="h-5 w-5" />
                                 </Button>
@@ -225,18 +255,22 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                     className="size-10 rounded-full p-1"
                                 >
                                     <Avatar className="size-8 overflow-hidden rounded-full">
-                                        <AvatarImage
-                                            src={auth.user.avatar}
-                                            alt={auth.user.name}
-                                        />
-                                        <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                            {getInitials(auth.user.name)}
-                                        </AvatarFallback>
+                                        {/* Utilisation sécurisée */}
+                                        {avatarUrl ? (
+                                            <AvatarImage
+                                                src={avatarUrl}
+                                                alt={userName}
+                                            />
+                                        ) : (
+                                            <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                                                {userInitials}
+                                            </AvatarFallback>
+                                        )}
                                     </Avatar>
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-56" align="end">
-                                <UserMenuContent user={auth.user} />
+                                <UserMenuContent user={auth?.user} />
                             </DropdownMenuContent>
                         </DropdownMenu>
 
