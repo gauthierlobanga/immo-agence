@@ -4,9 +4,7 @@ import {
     ArrowRight,
     BookOpen,
     HelpCircle,
-    ImageOff,
     Mail,
-    Sparkles,
     Building2,
     Home,
     Key,
@@ -27,183 +25,110 @@ interface HeaderData {
     categories: Category[];
 }
 
-const resources = [
-    {
-        icon: BookOpen,
-        label: 'Actualités Immo',
-        description: 'Conseils, tendances et guides du marché',
-        href: route('blog.index'),
-    },
-    {
-        icon: HelpCircle,
-        label: "Centre d'aide",
-        description: 'Réponses à vos questions juridiques',
-        href: route('page.help'),
-    },
-    {
-        icon: Home,
-        label: 'À propos',
-        description: 'Votre partenaire de confiance',
-        href: route('page.about'),
-    },
-    {
-        icon: Mail,
-        label: 'Contact',
-        description: 'Prenez rendez-vous avec un expert',
-        href: route('page.contact'),
-    },
+const propertyTypes = [
+    { icon: Building2, label: 'Appartements', href: '#', count: '124' },
+    { icon: Home, label: 'Villas & Maisons', href: '#', count: '86' },
+    { icon: Warehouse, label: 'Terrains', href: '#', count: '42' },
+    { icon: Store, label: 'Locaux Commerciaux', href: '#', count: '15' },
+    { icon: Key, label: 'Locations Vacances', href: '#', count: '31' },
+    { icon: LayoutGrid, label: 'Bureaux', href: '#', count: '12' },
 ];
 
-const propertyTypes = [
-    { icon: Building2, label: 'Appartements', href: '#' },
-    { icon: Home, label: 'Villas & Maisons', href: '#' },
-    { icon: Warehouse, label: 'Terrains', href: '#' },
-    { icon: Store, label: 'Locaux Commerciaux', href: '#' },
-    { icon: Key, label: 'Locations Vacances', href: '#' },
-    { icon: LayoutGrid, label: 'Bureaux', href: '#' },
+const quickLinks = [
+    { icon: BookOpen, label: 'Blog & Actu', href: route('blog.index') },
+    { icon: HelpCircle, label: 'FAQ', href: route('page.help') },
+    { icon: Mail, label: 'Contact', href: route('page.contact') },
 ];
 
 export function ChooseYetuContent() {
     const { headerData } = usePage().props as { headerData?: HeaderData };
-    const categories = headerData?.categories ?? [];
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: -20, scaleY: 0.96, filter: 'blur(4px)' }}
-            animate={{ opacity: 1, y: 0, scaleY: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, y: -20, scaleY: 0.96, filter: 'blur(4px)' }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            style={{ transformOrigin: 'top center' }}
-            className="w-full"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="w-full bg-white dark:bg-slate-950"
         >
-            <div className="relative overflow-hidden">
-                {/* Fond décoratif */}
-                <div className="absolute inset-0 bg-linear-to-br from-white/60 via-slate-50/40 to-teal-50/30 dark:from-slate-950/60 dark:via-slate-900/40 dark:to-teal-950/20" />
-                <div className="absolute top-0 left-0 h-64 w-64 rounded-full bg-teal-400/10 blur-3xl" />
-                <div className="absolute right-0 bottom-0 h-64 w-64 rounded-full bg-slate-400/10 blur-3xl dark:bg-slate-600/10" />
-
-                <div className="relative grid grid-cols-1 gap-6 p-6 lg:grid-cols-[1fr_360px] xl:grid-cols-[2fr_340px]">
-                    {/* Colonne principale : Catégories */}
-                    <div className="space-y-6">
-                        {/* Entête */}
-                        <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="mx-auto max-w-screen-2xl">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px]">
+                    {/* Section Principale - Types de Biens */}
+                    <div className="p-8">
+                        <div className="mb-6 flex items-center justify-between">
                             <div>
-                                <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-teal-200/70 bg-teal-50/80 px-3 py-1 text-[11px] font-semibold tracking-wide text-teal-700 uppercase backdrop-blur-sm dark:border-teal-800/60 dark:bg-teal-950/30 dark:text-teal-300">
-                                    <Sparkles className="h-3.5 w-3.5" />
-                                    Explorez le Marché
-                                </div>
-                                <h3 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
-                                    Types de Biens Immobiliers
+                                <h3 className="text-sm font-bold tracking-wider text-slate-400 uppercase dark:text-slate-500">
+                                    Catégories Immobilières
                                 </h3>
-                                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                                    Trouvez le type de propriété qui correspond à vos besoins.
-                                </p>
                             </div>
-
                             <Link
                                 href={route('properties.index')}
-                                className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm backdrop-blur-sm transition-all duration-300 hover:border-teal-200 hover:bg-teal-50 hover:text-teal-700 hover:shadow-md dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-teal-800 dark:hover:bg-teal-950/30 dark:hover:text-teal-300"
+                                className="group flex items-center gap-1.5 text-sm font-semibold text-teal-600 transition-colors hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300"
                             >
                                 Voir tout le catalogue
-                                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                             </Link>
                         </div>
 
-                        {/* Grille de types de biens */}
-                        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                            {propertyTypes.map((type, index) => (
-                                <motion.div
+                        <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                            {propertyTypes.map((type) => (
+                                <Link
                                     key={type.label}
-                                    initial={{ opacity: 0, y: 18 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{
-                                        duration: 0.4,
-                                        delay: index * 0.05,
-                                    }}
-                                    whileHover={{ y: -6, scale: 1.02 }}
-                                    className="group"
+                                    href={type.href}
+                                    className="group relative flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50/50 p-4 transition-all duration-300 hover:border-teal-200 hover:bg-white hover:shadow-xl hover:shadow-teal-500/5 dark:border-slate-800 dark:bg-slate-900/40 dark:hover:border-teal-900 dark:hover:bg-slate-900"
                                 >
-                                    <Link
-                                        href={type.href}
-                                        className="relative isolate block overflow-hidden rounded-2xl border border-slate-200/70 bg-white/75 p-4 shadow-sm ring-1 ring-slate-100/60 backdrop-blur-xl transition-all duration-500 hover:border-teal-300/70 hover:shadow-xl hover:shadow-teal-500/10 dark:border-slate-800 dark:bg-slate-900/80 dark:ring-slate-800/60 dark:hover:border-teal-800"
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-600 transition-colors group-hover:bg-teal-100 dark:bg-teal-950/30 dark:text-teal-400 dark:group-hover:bg-teal-900/40">
-                                                <type.icon className="h-5 w-5" />
-                                            </div>
-                                            <h4 className="text-sm font-semibold text-slate-900 transition-colors duration-300 group-hover:text-teal-600 dark:text-slate-100 dark:group-hover:text-teal-400">
-                                                {type.label}
-                                            </h4>
-                                        </div>
-                                    </Link>
-                                </motion.div>
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-slate-600 shadow-sm ring-1 ring-slate-200/50 transition-all group-hover:bg-teal-600 group-hover:text-white group-hover:ring-teal-600 dark:bg-slate-800 dark:text-slate-400 dark:ring-slate-700">
+                                        <type.icon className="h-6 w-6" />
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                        <h4 className="text-sm font-bold text-slate-900 transition-colors group-hover:text-teal-600 dark:text-slate-100 dark:group-hover:text-teal-400">
+                                            {type.label}
+                                        </h4>
+                                        <p className="text-xs font-medium text-slate-500 dark:text-slate-500">
+                                            {type.count} annonces
+                                        </p>
+                                    </div>
+                                </Link>
                             ))}
                         </div>
                     </div>
 
-                    {/* Colonne secondaire : Ressources & CTA */}
-                    <div className="space-y-6">
-                        {/* Ressources */}
-                        <div className="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-sm ring-1 ring-slate-100/60 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/80 dark:ring-slate-800/60">
-                            <div className="mb-4">
-                                <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
-                                    Informations Utiles
-                                </h4>
-                            </div>
-
-                            <div className="space-y-1">
-                                {resources.map((resource) => (
-                                    <Link
-                                        key={resource.label}
-                                        href={resource.href}
-                                        className="group flex items-start gap-3 rounded-xl px-3 py-3 transition-all duration-300 hover:bg-slate-50 dark:hover:bg-slate-800/60"
-                                    >
-                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-600 ring-1 ring-teal-100 dark:bg-teal-950/30 dark:text-teal-400 dark:ring-teal-900/40">
-                                            <resource.icon className="h-4 w-4" />
-                                        </div>
-                                        <div className="min-w-0 flex-1">
-                                            <p className="text-sm font-medium text-slate-800 transition-colors group-hover:text-teal-600 dark:text-slate-200 dark:group-hover:text-teal-400">
-                                                {resource.label}
-                                            </p>
-                                            <p className="text-xs text-slate-500 dark:text-slate-400">
-                                                {resource.description}
-                                            </p>
-                                        </div>
-                                        <ArrowRight className="mt-1 h-4 w-4 text-slate-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-teal-500 dark:text-slate-500" />
-                                    </Link>
-                                ))}
-                            </div>
+                    {/* Section Latérale - Liens Rapides & Ressources */}
+                    <div className="border-l border-slate-100 bg-slate-50/30 p-8 dark:border-slate-800 dark:bg-slate-900/20">
+                        <h3 className="mb-6 text-sm font-bold tracking-wider text-slate-400 uppercase dark:text-slate-500">
+                            Ressources
+                        </h3>
+                        
+                        <div className="space-y-2">
+                            {quickLinks.map((link) => (
+                                <Link
+                                    key={link.label}
+                                    href={link.href}
+                                    className="group flex items-center gap-3 rounded-xl p-3 transition-all hover:bg-white hover:shadow-md hover:shadow-slate-200/50 dark:hover:bg-slate-800 dark:hover:shadow-none"
+                                >
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-slate-400 ring-1 ring-slate-200/50 transition-colors group-hover:bg-teal-50 group-hover:text-teal-600 dark:bg-slate-800 dark:text-slate-500 dark:ring-slate-700 dark:group-hover:bg-teal-900/30 dark:group-hover:text-teal-400">
+                                        <link.icon className="h-4.5 w-4.5" />
+                                    </div>
+                                    <span className="text-sm font-semibold text-slate-700 transition-colors group-hover:text-teal-700 dark:text-slate-300 dark:group-hover:text-teal-400">
+                                        {link.label}
+                                    </span>
+                                </Link>
+                            ))}
                         </div>
 
-                        {/* CTA */}
-                        <motion.div
-                            whileHover={{ y: -2 }}
-                            transition={{ duration: 0.2 }}
-                            className="relative overflow-hidden rounded-2xl border border-teal-200/70 bg-linear-to-br from-teal-50 via-white to-slate-50 p-6 shadow-lg shadow-teal-500/5 dark:border-teal-900/50 dark:from-teal-950/30 dark:via-slate-900 dark:to-slate-900"
-                        >
-                            <div className="absolute -top-10 -right-10 h-24 w-24 rounded-full bg-teal-400/10 blur-2xl" />
-
-                            <div className="relative">
-                                <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-teal-100 text-teal-600 shadow-sm dark:bg-teal-900/30 dark:text-teal-400">
-                                    <Sparkles className="h-5 w-5" />
-                                </div>
-
-                                <h4 className="text-base font-bold text-slate-900 dark:text-white">
-                                    Rejoignez notre Réseau
-                                </h4>
-                                <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                                    Propriétaires ou agences, boostez la visibilité de vos biens dès aujourd'hui.
-                                </p>
-
-                                <Link
-                                    href={'#'}
-                                    className="group mt-5 inline-flex items-center gap-2 rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-teal-600/20 transition-all duration-300 hover:bg-teal-700 hover:shadow-xl hover:shadow-teal-600/30 dark:bg-teal-500 dark:hover:bg-teal-400"
-                                >
-                                    Publier une annonce
-                                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                                </Link>
-                            </div>
-                        </motion.div>
+                        {/* Petite Bannière CTA compacte */}
+                        <div className="mt-8 rounded-2xl bg-teal-600 p-5 text-white shadow-lg shadow-teal-600/20">
+                            <h4 className="text-sm font-bold">Vendre votre bien ?</h4>
+                            <p className="mt-1 text-xs text-teal-50/80">
+                                Confiez-nous votre annonce pour une visibilité maximale.
+                            </p>
+                            <Link
+                                href="#"
+                                className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold transition-transform hover:translate-x-1"
+                            >
+                                Commencer ici
+                                <ArrowRight className="h-3.5 w-3.5" />
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
