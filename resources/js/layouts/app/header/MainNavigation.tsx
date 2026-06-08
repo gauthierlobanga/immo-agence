@@ -36,6 +36,20 @@ export function MainNavigation({ items }: Props) {
 
     return (
         <nav className="flex h-full items-center gap-6">
+            {/* Overlay d'arrière-plan pour le focus */}
+            <AnimatePresence>
+                {openIndex !== null && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="fixed inset-0 top-[65px] z-40 bg-slate-900/30 backdrop-blur-[2px] dark:bg-black/50"
+                        onClick={() => setOpenIndex(null)}
+                    />
+                )}
+            </AnimatePresence>
+
             {items.map((item, index) => (
                 <div
                     key={index}
@@ -54,7 +68,7 @@ export function MainNavigation({ items }: Props) {
                             >
                                 {item.title}
                                 <ChevronDown
-                                    className={`h-4 w-4 transition-transform duration-300 ${
+                                    className={`h-4 w-4 transition-transform duration-500 ${
                                         openIndex === index
                                             ? 'rotate-180 text-teal-600'
                                             : 'text-slate-400 group-hover:text-teal-500'
@@ -67,14 +81,32 @@ export function MainNavigation({ items }: Props) {
                                     <>
                                         <div className="absolute top-full h-5 w-full" />
                                         <motion.div
-                                            initial={{ opacity: 0, y: 15 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: 15 }}
-                                            transition={{
-                                                duration: 0.3,
-                                                ease: [0.23, 1, 0.32, 1],
+                                            initial={{
+                                                opacity: 0,
+                                                y: -10,
+                                                scaleY: 0.95,
+                                                filter: 'blur(10px)',
                                             }}
-                                            className="fixed top-16 left-0 w-full border-b border-slate-200/60 bg-white/95 shadow-2xl backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/95"
+                                            animate={{
+                                                opacity: 1,
+                                                y: 0,
+                                                scaleY: 1,
+                                                filter: 'blur(0px)',
+                                            }}
+                                            exit={{
+                                                opacity: 0,
+                                                y: -10,
+                                                scaleY: 0.95,
+                                                filter: 'blur(10px)',
+                                            }}
+                                            transition={{
+                                                duration: 0.4,
+                                                ease: [0.16, 1, 0.3, 1], // Quintic ease out pour un effet rideau fluide
+                                            }}
+                                            style={{
+                                                transformOrigin: 'top center',
+                                            }}
+                                            className="fixed top-16 left-0 z-50 w-full border-b border-slate-200 bg-white shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] dark:border-slate-800 dark:bg-slate-950"
                                             onMouseEnter={clearTimer}
                                         >
                                             <div className="mx-auto max-w-screen-2xl">
