@@ -53,7 +53,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                 initial={{ y: -10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.3 }}
-                className="sticky top-0 z-50 w-full border-b border-slate-200/60 bg-white/80 shadow-sm backdrop-blur-xl dark:border-slate-700/50 dark:bg-slate-900/80"
+                className="sticky top-0 z-50 w-full border-b border-slate-200/60 bg-white shadow-sm dark:border-slate-700/50 dark:bg-slate-900"
             >
                 <div className="mx-auto flex h-16 max-w-screen-2xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center gap-8">
