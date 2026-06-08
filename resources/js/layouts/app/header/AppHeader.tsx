@@ -6,6 +6,8 @@ import AppLogo from '@/components/app-logo';
 import AppLogoIcon from '@/components/app-logo-icon';
 import AppearanceToogle from '@/components/appearance-toogle';
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import { CentreAcheteurs } from '@/components/navigation/CentreAcheteurs';
+import { ChooseYetuContent } from '@/components/navigation/ChooseYetuContent';
 import { ProductsMenuContent } from '@/components/navigation/ProductsMenuContent';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -26,7 +28,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
     const navItems: NavItem[] = [
         {
             title: 'Immobilier',
-            content: <ProductsMenuContent />,
+            content: <ChooseYetuContent />,
             href: '',
         },
         {
@@ -34,15 +36,14 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
             content: <ProductsMenuContent />,
             href: '',
         },
-
         {
-            title: 'Services',
-            href: '#',
+            title: 'Espace Client',
+            content: <CentreAcheteurs />,
+            href: '',
         },
         {
             title: 'Support',
-            content: <ProductsMenuContent />,
-            href: '',
+            href: route('page.help'),
         },
     ];
 
