@@ -42,7 +42,7 @@ export default function RemoveMemberModal({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent aria-describedby={undefined}>
                 <DialogHeader>
                     <DialogTitle>Remove team member</DialogTitle>
                     <DialogDescription>

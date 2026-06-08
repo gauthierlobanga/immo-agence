@@ -48,7 +48,7 @@ export default function InviteMemberModal({
 
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
-            <DialogContent>
+            <DialogContent aria-describedby={undefined}>
                 <Form
                     key={String(open)}
                     {...storeInvitation.form(team.slug)}

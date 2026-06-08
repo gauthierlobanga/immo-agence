@@ -38,7 +38,7 @@ IMMO Agence est une solution logicielle complète pour la gestion et la promotio
 - **UI/UX** : Tailwind CSS 4 + Radix UI + Framer Motion
 - **Base de données** : PostgreSQL
 - **Cache/File d'attente** : Redis (Memurai sur Windows)
-- **Admin Panel** : Filament v3
+- **Admin Panel** : Filament v5
 - **Outils de Dev** : Vite, TypeScript, Pest (Testing)
 
 ## 📋 Prérequis
@@ -51,6 +51,69 @@ Avant de commencer, assurez-vous d'avoir installé :
 - **Laravel Herd** (Recommandé pour Windows/Mac)
 - **PostgreSQL**
 - **Memurai** (Serveur Redis pour Windows) : [Télécharger ici](https://www.memurai.com/)
+- **php_redis-6.3.0-8.4-nts-vs17-x64** (Extension PHP Redis pour Windows) : [Télécharger ici](https://downloads.php.net/~windows/pecl/releases/redis/6.3.0/)
+- **cacert.pem** (Certificats d'autorité de certification) : [Télécharger ici](https://curl.se/docs/caextract.html)
+
+## Comment intégré Memurai, php_redis et cacert
+
+### Configurations
+
+1. **Configuration de Mamurai** : Suivez toutes ces instructions correctement en ordre
+
+    - Télécharger Mamurai avec Extension **.exe ou .msi** [Ici](https://www.memurai.com/)
+    - Lancer l'installateur Mamurai **(.exe ou .msi)** [Memurai-for-Redis-v8.2-RC1.msi]
+    - Vérifie que le service Mamurai est en cours d'exécution :
+
+    ```powershell
+    Get-Service -Name Memurai
+    ```
+
+    ```bash
+    sc query Memurai | grep STATE
+    ```
+
+2. **Configuration l'extension php_redis** : Suivez toutes les instructions
+
+    - Télécharger php_redis avec Extension **.zip** [Ici](https://downloads.php.net/~windows/pecl/releases/redis/6.3.0/)
+    - Lancer la décompression
+    - Copié le fichier **php_redis.dll**
+    - Allez dans le dossier où php est installé selon votre système Ex: C:/php/ext/
+    - Coller le fichier **php_redis.dll** dans le sous dossier **ext** Ex: C:/php/ext/
+    - Vérifie que l'extension est activé :
+
+    ```powershell
+    php -m | Select-String "redis"
+    ```
+
+    ```bash
+    php -m | grep -i redis
+    ```
+
+3. **Configuration de certificat** : Suivez toutes les instructions
+
+    1. Télécharger le fichier cacert.pem
+
+        - Télécharger Certificats d'autorité de certification [Ici]( https://curl.se/docs/caextract.html)
+
+    2. Placer le fichier dans un dossier stable
+
+        - Dans le dossier d’installation de PHP : **C:\php\cacert.pem**
+        - Ou dans un dossier dédié : **C:\php\extras\cacert.pem**
+
+    3. Configurer php.ini
+
+        - Ouvrez le fichier php.ini utilisé par votre installation (celui indiqué par php --ini en ligne de commande).
+        -Cherchez (ou ajoutez) ces directives et renseignez le chemin complet vers cacert.pem :
+
+    [curl]
+    curl.cainfo = C:\php\cacert.pem
+
+    [openssl]
+    openssl.cafile = C:\php\cacert.pem
+
+    ```powershell
+    php -i | Select-String "cainfo|cafile"
+    ```
 
 ## 🔧 Installation
 
@@ -89,10 +152,13 @@ Avant de commencer, assurez-vous d'avoir installé :
 
 6. **Migration et Seed de la base de données** :
    Pour initialiser la base de données avec des données de test (création de 50 utilisateurs et remplissage des propriétés via `PropertySeeder`) :
+
    ```bash
    php artisan migrate --seed
    ```
+
    *Ou si la base est déjà migrée :*
+
    ```bash
    php artisan db:seed
    ```
@@ -106,15 +172,20 @@ Avant de commencer, assurez-vous d'avoir installé :
    - **Créer un compte** : Rendez-vous sur la page d'inscription de l'application et créez un nouvel utilisateur.
    - **Récupérer l'UUID** : Identifiez l'UUID de l'utilisateur créé (via la base de données).
    - **Installer Shield** :
+
      ```bash
      php artisan shield:install
      ```
+
    - **Générer les permissions** :
+
      ```bash
      php artisan shield:generate --all
      ```
+
      *(Choisissez l'option `permissions` lors de la demande).*
    - **Assigner le rôle Super Admin** :
+
      ```bash
      php artisan shield:super-admin --user=VOTRE_UUID_ICI --panel=admin
      ```

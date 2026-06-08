@@ -67,7 +67,7 @@ export default function PasskeyItem({ passkey, onDelete }: Props) {
                         <span className="sr-only">Remove</span>
                     </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
                     <DialogTitle>Remove passkey</DialogTitle>
                     <DialogDescription>
                         Are you sure you want to remove the "{passkey.name}"
