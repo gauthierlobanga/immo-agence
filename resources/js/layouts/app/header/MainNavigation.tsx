@@ -35,7 +35,7 @@ export function MainNavigation({ items }: Props) {
     }, []);
 
     return (
-        <nav className="flex h-full items-center gap-10">
+        <nav className="flex h-full items-center gap-6">
             {items.map((item, index) => (
                 <div
                     key={index}
@@ -46,16 +46,18 @@ export function MainNavigation({ items }: Props) {
                     {item.content ? (
                         <>
                             <button
-                                className={`inline-flex items-center gap-1.5 text-[1.0rem] font-medium transition-colors duration-200 focus:outline-none ${
+                                className={`group inline-flex items-center gap-1.5 text-sm font-semibold transition-all duration-300 focus:outline-none ${
                                     openIndex === index
-                                        ? 'text-foreground'
-                                        : 'text-muted-foreground hover:text-foreground'
+                                        ? 'text-teal-600 dark:text-teal-400'
+                                        : 'text-slate-600 hover:text-teal-600 dark:text-slate-400 dark:hover:text-teal-400'
                                 }`}
                             >
                                 {item.title}
                                 <ChevronDown
-                                    className={`h-4 w-4 transition-transform duration-200 ${
-                                        openIndex === index ? 'rotate-180' : ''
+                                    className={`h-4 w-4 transition-transform duration-300 ${
+                                        openIndex === index
+                                            ? 'rotate-180 text-teal-600'
+                                            : 'text-slate-400 group-hover:text-teal-500'
                                     }`}
                                 />
                             </button>
@@ -65,17 +67,17 @@ export function MainNavigation({ items }: Props) {
                                     <>
                                         <div className="absolute top-full h-5 w-full" />
                                         <motion.div
-                                            initial={{ opacity: 0, y: 10 }}
+                                            initial={{ opacity: 0, y: 15 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: 10 }}
+                                            exit={{ opacity: 0, y: 15 }}
                                             transition={{
-                                                duration: 0.2,
-                                                ease: 'easeOut',
+                                                duration: 0.3,
+                                                ease: [0.23, 1, 0.32, 1],
                                             }}
-                                            className="fixed top-16 left-0 w-full border-b border-border/40 bg-background shadow-xs backdrop-blur-md"
+                                            className="fixed top-16 left-0 w-full border-b border-slate-200/60 bg-white/95 shadow-2xl backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/95"
                                             onMouseEnter={clearTimer}
                                         >
-                                            <div className="mx-auto">
+                                            <div className="mx-auto max-w-screen-2xl">
                                                 {item.content}
                                             </div>
                                         </motion.div>
@@ -86,7 +88,7 @@ export function MainNavigation({ items }: Props) {
                     ) : (
                         <Link
                             href={item.href || '#'}
-                            className="text-[1.0rem] font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                            className="text-sm font-semibold text-slate-600 transition-all duration-300 hover:text-teal-600 dark:text-slate-400 dark:hover:text-teal-400"
                         >
                             {item.title}
                         </Link>

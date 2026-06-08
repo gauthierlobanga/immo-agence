@@ -60,76 +60,109 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                 className="sticky top-0 z-50 w-full border-b border-slate-200/60 bg-white/80 shadow-sm backdrop-blur-xl dark:border-slate-700/50 dark:bg-slate-900/80"
             >
                 <div className="mx-auto flex h-16 max-w-screen-2xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-                    {/* Menu mobile */}
-                    <div className="lg:hidden">
-                        <Sheet>
-                            <SheetTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-10 w-10 rounded-full"
-                                    aria-label="Menu principal"
+                    <div className="flex items-center gap-8">
+                        {/* Menu mobile */}
+                        <div className="lg:hidden">
+                            <Sheet>
+                                <SheetTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-teal-50 hover:text-teal-600 dark:bg-slate-800/50 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
+                                        aria-label="Menu principal"
+                                    >
+                                        <Menu className="h-5 w-5" />
+                                    </Button>
+                                </SheetTrigger>
+                                <SheetContent
+                                    side="left"
+                                    className="flex w-80 flex-col border-r border-slate-200 bg-white p-0 dark:border-slate-800 dark:bg-slate-900"
                                 >
-                                    <Menu className="h-5 w-5" />
-                                </Button>
-                            </SheetTrigger>
-                            <SheetContent side="left" className="w-80 p-0">
-                                <SheetHeader className="border-b border-slate-200 p-5 dark:border-slate-700">
-                                    <SheetTitle className="flex items-center gap-3">
-                                        <AppLogoIcon className="h-7 w-7" />
-                                        <span className="text-lg font-bold text-slate-800 dark:text-white">
-                                            Menu
-                                        </span>
-                                    </SheetTitle>
-                                </SheetHeader>
-                                <div className="flex h-full flex-col justify-between">
-                                    <MobileNavigation items={navItems} />
-                                    <div className="border-t border-slate-200 p-5 dark:border-slate-700">
+                                    <SheetHeader className="border-b border-slate-100 bg-slate-50/50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                                        <div className="flex items-center justify-between">
+                                            <SheetTitle className="flex items-center gap-3">
+                                                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600 text-white shadow-lg shadow-teal-200 dark:bg-teal-500 dark:shadow-teal-900/40">
+                                                    <AppLogoIcon className="h-6 w-6 fill-current" />
+                                                </div>
+                                                <div className="flex flex-col items-start leading-tight">
+                                                    <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
+                                                        IMMO
+                                                    </span>
+                                                    <span className="text-xs font-medium text-teal-600 dark:text-teal-400">
+                                                        Agence Immobilière
+                                                    </span>
+                                                </div>
+                                            </SheetTitle>
+                                        </div>
+                                    </SheetHeader>
+
+                                    <div className="flex-1 overflow-y-auto px-2 py-4">
+                                        <div className="space-y-1">
+                                            <MobileNavigation items={navItems} />
+                                        </div>
+                                    </div>
+
+                                    <div className="border-t border-slate-100 bg-slate-50/50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
                                         {!auth.user ? (
-                                            <Button
-                                                asChild
-                                                className="w-full"
-                                                size="lg"
-                                            >
-                                                <Link href={login()}>
-                                                    Se connecter
-                                                </Link>
-                                            </Button>
+                                            <div className="flex flex-col gap-3">
+                                                <Button
+                                                    asChild
+                                                    variant="outline"
+                                                    className="w-full border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
+                                                >
+                                                    <Link href={login()}>
+                                                        Se connecter
+                                                    </Link>
+                                                </Button>
+                                                <Button
+                                                    asChild
+                                                    className="w-full bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
+                                                >
+                                                    <Link
+                                                        href={route(
+                                                            'properties.index',
+                                                        )}
+                                                    >
+                                                        Voir les biens
+                                                    </Link>
+                                                </Button>
+                                            </div>
                                         ) : (
                                             <Button
                                                 asChild
-                                                className="w-full"
-                                                size="lg"
+                                                className="w-full bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
                                             >
                                                 <Link href={route('dashboard')}>
-                                                    Tableau de bord
+                                                    Accéder au Dashboard
                                                 </Link>
                                             </Button>
                                         )}
                                     </div>
-                                </div>
-                            </SheetContent>
-                        </Sheet>
-                    </div>
+                                </SheetContent>
+                            </Sheet>
+                        </div>
 
-                    {/* Logo */}
-                    <div className="flex shrink-0 items-center">
-                        <Link
-                            href={route('home')}
-                            className="flex items-center gap-2 transition-opacity hover:opacity-80"
-                        >
-                            <AppLogo />
-                        </Link>
-                    </div>
+                        {/* Logo */}
+                        <div className="flex shrink-0 items-center">
+                            <Link
+                                href={route('home')}
+                                className="flex items-center gap-2 transition-transform hover:scale-[1.02] active:scale-95"
+                            >
+                                <AppLogo className="h-8 w-auto" />
+                            </Link>
+                        </div>
 
-                    {/* Navigation principale desktop */}
-                    <div className="hidden h-full items-center lg:flex">
-                        <MainNavigation items={navItems} />
+                        {/* Navigation principale desktop */}
+                        <div className="hidden h-full items-center border-l border-slate-200/60 pl-8 lg:flex dark:border-slate-700/50">
+                            <MainNavigation items={navItems} />
+                        </div>
                     </div>
 
                     {/* Actions à droite */}
                     <div className="flex items-center gap-2 sm:gap-3">
-                        <AppearanceToogle />
+                        <div className="hidden sm:block">
+                            <AppearanceToogle />
+                        </div>
 
                         {auth.user ? (
                             <div className="flex items-center gap-3">
