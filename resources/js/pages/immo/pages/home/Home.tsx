@@ -285,29 +285,6 @@ function CommentCaMarcheSection() {
     );
 }
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="mt-12"
-                >
-                    <Button
-                        size="lg"
-                        asChild
-                        className="rounded-full bg-teal-600 px-10 py-6 text-lg font-semibold text-white shadow-lg shadow-teal-500/20 hover:bg-teal-700"
-                    >
-                        <Link href={route('properties.index')}>
-                            Voir les propriétés
-                            <ArrowRight className="ml-2 h-5 w-5" />
-                        </Link>
-                    </Button>
-                </motion.div>
-            </div>
-        </section>
-    );
-}
-
 // ----------------------------------------------------------------------
 // Section CTA Finale (adaptée)
 // ----------------------------------------------------------------------
