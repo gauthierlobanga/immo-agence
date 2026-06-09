@@ -34,8 +34,8 @@ IMMO Agence est une solution logicielle complète pour la gestion et la promotio
 ## 🛠️ Stack Technique
 
 - **Backend** : Laravel 11+
-- **Frontend** : React 19 + Inertia.js 3.0
-- **UI/UX** : Tailwind CSS 4 + Radix UI + Framer Motion
+- **Frontend** : React 19 + Inertia.js 3.0 (avec SSR)
+- **UI/UX** : Tailwind CSS 4 + Radix UI + Framer Motion + Three.js (Globe 3D interactif)
 - **Base de données** : PostgreSQL
 - **Cache/File d'attente** : Redis (Memurai sur Windows)
 - **Admin Panel** : Filament v5
@@ -110,6 +110,8 @@ Avant de commencer, assurez-vous d'avoir installé :
 
     [openssl]
     openssl.cafile = C:\php\cacert.pem
+
+    `Powershell`
 
     ```powershell
     php -i | Select-String "cainfo|cafile"

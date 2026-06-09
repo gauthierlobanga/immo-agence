@@ -63,7 +63,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                 href={route('home')}
                                 className="flex items-center gap-2 transition-transform hover:scale-[1.02] active:scale-95"
                             >
-                                <AppLogo className="h-8 w-auto" />
+                                <AppLogo/>
                             </Link>
                         </div>
 

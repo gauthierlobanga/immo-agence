@@ -26,8 +26,10 @@
         "eslint-plugin-import": "^2.32.0",
         "eslint-plugin-react": "^7.37.3",
         "eslint-plugin-react-hooks": "^7.0.0",
+        "laravel-echo": "^2.3.7",
         "prettier": "^3.4.2",
         "prettier-plugin-tailwindcss": "^0.6.11",
+        "pusher-js": "^8.5.0",
         "tailwindcss": "^4.3.0",
         "typescript-eslint": "^8.23.0"
     },
@@ -100,6 +102,7 @@
         "react-day-picker": "^10.0.1",
         "react-dom": "^19.2.0",
         "react-dropzone": "^15.0.0",
+        "react-globe.gl": "^2.38.0",
         "react-hook-form": "^7.72.0",
         "react-icons": "^5.6.0",
         "react-instantsearch": "^7.28.1",

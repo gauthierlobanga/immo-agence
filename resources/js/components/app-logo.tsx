@@ -13,7 +13,7 @@ export default function AppLogo() {
                     <img
                         src={logoUrl}
                         alt={displayName}
-                        className="h-10 w-auto object-contain"
+                        className="h-8 w-auto object-contain"
                         onError={(e) => {
                             const el = e.currentTarget;
                             el.style.display = 'none';

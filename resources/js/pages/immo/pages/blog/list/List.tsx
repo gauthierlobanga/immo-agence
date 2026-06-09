@@ -188,8 +188,8 @@ function List({
         maxLength = 120,
     ): string => {
         if (!excerpt) {
-return '';
-}
+            return '';
+        }
 
         let text = '';
 
@@ -267,12 +267,12 @@ return '';
                 overrides.sort !== undefined ? overrides.sort : selectedSort;
 
             if (search && search.trim() !== '') {
-params.search = search.trim();
-}
+                params.search = search.trim();
+            }
 
             if (category !== 'all') {
-params.tag = category;
-}
+                params.tag = category;
+            }
 
             const [sortField, direction] = sort.split(':');
 
@@ -282,8 +282,8 @@ params.tag = category;
             }
 
             if (overrides.page && overrides.page > 1) {
-params.page = overrides.page;
-}
+                params.page = overrides.page;
+            }
 
             return params;
         },
@@ -295,18 +295,18 @@ params.page = overrides.page;
             const filterKey = JSON.stringify(params);
 
             if (filterKey === previousFiltersRef.current) {
-return;
-}
+                return;
+            }
 
             if (isNavigatingRef.current) {
-return;
-}
+                return;
+            }
 
             isNavigatingRef.current = true;
 
             if (isPageChange) {
-setIsChangingPage(true);
-}
+                setIsChangingPage(true);
+            }
 
             previousFiltersRef.current = filterKey;
 
@@ -340,8 +340,8 @@ setIsChangingPage(true);
             setSearchTerm(value);
 
             if (searchTimeoutRef.current) {
-clearTimeout(searchTimeoutRef.current);
-}
+                clearTimeout(searchTimeoutRef.current);
+            }
 
             if (value.trim() === '') {
                 const params = buildFilterParams({ search: '', page: 1 });
@@ -365,8 +365,8 @@ clearTimeout(searchTimeoutRef.current);
         (e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') {
                 if (searchTimeoutRef.current) {
-clearTimeout(searchTimeoutRef.current);
-}
+                    clearTimeout(searchTimeoutRef.current);
+                }
 
                 const params = buildFilterParams({
                     search: searchTerm,
@@ -379,8 +379,8 @@ clearTimeout(searchTimeoutRef.current);
                 setSearchTerm('');
 
                 if (searchTimeoutRef.current) {
-clearTimeout(searchTimeoutRef.current);
-}
+                    clearTimeout(searchTimeoutRef.current);
+                }
 
                 const params = buildFilterParams({ search: '', page: 1 });
                 applyFilters(params, false);
@@ -395,8 +395,8 @@ clearTimeout(searchTimeoutRef.current);
         setSearchTerm('');
 
         if (searchTimeoutRef.current) {
-clearTimeout(searchTimeoutRef.current);
-}
+            clearTimeout(searchTimeoutRef.current);
+        }
 
         const params = buildFilterParams({ search: '', page: 1 });
         applyFilters(params, false);
@@ -425,8 +425,8 @@ clearTimeout(searchTimeoutRef.current);
     const handlePageChange = useCallback(
         (page: number) => {
             if (page === posts.current_page) {
-return;
-}
+                return;
+            }
 
             const params = buildFilterParams({ page });
             applyFilters(params, true);
@@ -436,8 +436,8 @@ return;
 
     const clearFilters = useCallback(() => {
         if (searchTimeoutRef.current) {
-clearTimeout(searchTimeoutRef.current);
-}
+            clearTimeout(searchTimeoutRef.current);
+        }
 
         setSearchTerm('');
         setSelectedCategory('all');
@@ -469,23 +469,23 @@ clearTimeout(searchTimeoutRef.current);
         const urlSortValue = `${urlSort}:${urlDirection}`;
 
         if (urlSearch !== searchTerm) {
-setSearchTerm(urlSearch);
-}
+            setSearchTerm(urlSearch);
+        }
 
         if (urlCategory !== selectedCategory) {
-setSelectedCategory(urlCategory);
-}
+            setSelectedCategory(urlCategory);
+        }
 
         if (urlSortValue !== selectedSort) {
-setSelectedSort(urlSortValue);
-}
+            setSelectedSort(urlSortValue);
+        }
     }, [initialFilters, searchTerm, selectedCategory, selectedSort]);
 
     useEffect(() => {
         return () => {
             if (searchTimeoutRef.current) {
-clearTimeout(searchTimeoutRef.current);
-}
+                clearTimeout(searchTimeoutRef.current);
+            }
         };
     }, []);
 
@@ -802,10 +802,10 @@ clearTimeout(searchTimeoutRef.current);
                                             e.preventDefault();
 
                                             if (posts.current_page > 1) {
-handlePageChange(
+                                                handlePageChange(
                                                     posts.current_page - 1,
                                                 );
-}
+                                            }
                                         }}
                                         className={
                                             posts.current_page === 1
@@ -872,10 +872,10 @@ handlePageChange(
                                                 posts.current_page <
                                                 posts.last_page
                                             ) {
-handlePageChange(
+                                                handlePageChange(
                                                     posts.current_page + 1,
                                                 );
-}
+                                            }
                                         }}
                                         className={
                                             posts.current_page ===

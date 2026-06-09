@@ -2,7 +2,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'motion/react';
-import type { ProcessedPost } from '@/types/posts/posts';
+import type { ProcessedPost } from '@/types/immo/posts/posts';
 
 interface AnimatedPostGridProps {
     posts: ProcessedPost[];

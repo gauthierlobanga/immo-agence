@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/static-components */
-// resources/js/Pages/immo/pages/property/show/Show.tsx
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -27,6 +26,8 @@ import {
     Loader2,
     BadgeDollarSign,
     LoaderIcon,
+    Share2,
+    Heart,
 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -102,16 +103,16 @@ function Lightbox({
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'ArrowLeft') {
-            prev();
-        }
+prev();
+}
 
         if (e.key === 'ArrowRight') {
-            next();
-        }
+next();
+}
 
         if (e.key === 'Escape') {
-            onClose();
-        }
+onClose();
+}
     };
 
     return (
@@ -119,65 +120,70 @@ function Lightbox({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl"
             onClick={onClose}
             onKeyDown={handleKeyDown}
             tabIndex={0}
         >
             <button
                 onClick={onClose}
-                className="absolute top-5 right-5 z-10 rounded-full bg-white/10 p-2 text-white backdrop-blur transition hover:bg-white/20"
+                className="absolute top-8 right-8 z-10 rounded-full bg-white/10 p-3 text-white backdrop-blur-lg transition hover:bg-white/20"
             >
                 <X className="h-6 w-6" />
             </button>
-            <div className="absolute top-5 left-5 z-10 rounded-full bg-white/10 px-3 py-1 text-sm text-white backdrop-blur">
+            <div className="absolute top-8 left-8 z-10 rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-white backdrop-blur-lg">
                 {current + 1} / {images.length}
             </div>
+
             <div
-                className="flex h-full w-full items-center justify-center p-8"
+                className="relative flex h-full w-full items-center justify-center p-4 md:p-12"
                 onClick={(e) => e.stopPropagation()}
             >
-                <img
-                    src={images[current]?.url}
-                    alt={images[current]?.alt}
-                    className="max-h-full max-w-full rounded-2xl object-contain shadow-2xl"
-                />
+                <AnimatePresence mode="wait">
+                    <motion.img
+                        key={current}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 1.1 }}
+                        src={images[current]?.url}
+                        alt={images[current]?.alt}
+                        className="max-h-full max-w-full rounded-3xl object-contain shadow-2xl shadow-black"
+                    />
+                </AnimatePresence>
             </div>
+
             <button
                 onClick={(e) => {
-                    e.stopPropagation();
-                    prev();
-                }}
-                className="absolute top-1/2 left-5 z-10 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white backdrop-blur transition hover:bg-white/20"
+ e.stopPropagation(); prev();
+}}
+                className="absolute top-1/2 left-8 z-10 -translate-y-1/2 rounded-full bg-white/10 p-4 text-white backdrop-blur-lg transition hover:bg-white/20 disabled:opacity-30"
                 disabled={current === 0}
             >
-                <ChevronLeft className="h-6 w-6" />
+                <ChevronLeft className="h-8 w-8" />
             </button>
             <button
                 onClick={(e) => {
-                    e.stopPropagation();
-                    next();
-                }}
-                className="absolute top-1/2 right-5 z-10 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white backdrop-blur transition hover:bg-white/20"
+ e.stopPropagation(); next();
+}}
+                className="absolute top-1/2 right-8 z-10 -translate-y-1/2 rounded-full bg-white/10 p-4 text-white backdrop-blur-lg transition hover:bg-white/20 disabled:opacity-30"
                 disabled={current === images.length - 1}
             >
-                <ChevronRightIcon className="h-6 w-6" />
+                <ChevronRightIcon className="h-8 w-8" />
             </button>
-            <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2 overflow-x-auto rounded-full bg-white/10 p-2 backdrop-blur">
+
+            <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 gap-3 overflow-x-auto rounded-[2rem] bg-white/10 p-3 backdrop-blur-lg max-w-[90vw] no-scrollbar">
                 {images.map((img, idx) => (
                     <button
                         key={idx}
                         onClick={(e) => {
-                            e.stopPropagation();
-                            goTo(idx);
-                        }}
-                        className={`h-12 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition ${idx === current ? 'border-teal-400 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}
+ e.stopPropagation(); goTo(idx);
+}}
+                        className={cn(
+                            "h-16 w-24 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-300",
+                            idx === current ? "border-teal-500 scale-110 opacity-100 shadow-lg shadow-teal-500/50" : "border-transparent opacity-40 hover:opacity-100"
+                        )}
                     >
-                        <img
-                            src={img.url}
-                            alt=""
-                            className="h-full w-full object-cover"
-                        />
+                        <img src={img.url} alt="" className="h-full w-full object-cover" />
                     </button>
                 ))}
             </div>
@@ -191,78 +197,40 @@ function PropertyShow({ property, similarProperties }: Props) {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [initialImageIndex, setInitialImageIndex] = useState(0);
 
-    const { data, setData, processing, errors } = useForm({
-        name: '',
-        email: '',
-        phone: '',
-        message: `${p.title}`,
-    });
-
     const visitForm = useForm({
         name: '',
         email: '',
         phone: '',
-        message: `${p.title}`,
+        message: `Je souhaiterais visiter ce bien : ${p.title}`,
     });
 
     const offerForm = useForm({
         amount: '',
-        currency: 'USD',
+        currency: p.currency || 'USD',
         type: 'purchase',
         message: '',
     });
 
     const reviewForm = useForm({ rating: 5, title: '', comment: '' });
 
-    const submitContact = (e: React.SubmitEvent<HTMLFormElement>) => {
+    const submitContact = (e: React.SubmitEvent) => {
         e.preventDefault();
         visitForm.post(route('properties.contact', p.id), {
             preserveScroll: true,
-            showProgress: false,
             onSuccess: () => {
                 visitForm.reset();
-                toast.success('Demande envoyée !', {
-                    description: "Votre message a été envoyé à l'agent.",
-                    style: getToastStyle('success'),
-                });
+                toast.success('Demande envoyée !', { style: getToastStyle('success') });
             },
-            onError: () =>
-                toast.error('Erreur dans le formulaire.', {
-                    style: getToastStyle('error'),
-                }),
         });
     };
 
-    const submitOffer = (e: React.SubmitEvent<HTMLFormElement>) => {
+    const submitOffer = (e: React.SubmitEvent) => {
         e.preventDefault();
         offerForm.post(route('offers.store', p.id), {
             preserveScroll: true,
-            showProgress: false,
             onSuccess: () => {
                 offerForm.reset();
-                toast.success('Offre envoyée !', {
-                    description: "Votre proposition a été transmise à l'agent.",
-                    style: getToastStyle('success'),
-                });
-            },
-            onError: () =>
-                toast.error("Erreur lors de l'envoi de l'offre.", {
-                    style: getToastStyle('error'),
-                }),
-        });
-    };
-
-    const submitReview = (e: React.SubmitEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        reviewForm.post(route('reviews.store', p.id), {
-            preserveScroll: true,
-            showProgress: false,
-            onSuccess: () => {
-                reviewForm.reset();
-                toast.success('Avis soumis !', {
-                    description: 'Votre avis sera publié après validation.',
-                    style: getToastStyle('success'),
-                });
+                toast.success('Offre envoyée !', { style: getToastStyle('success') });
             },
         });
     };
@@ -274,57 +242,22 @@ function PropertyShow({ property, similarProperties }: Props) {
             minimumFractionDigits: 0,
         }).format(price);
 
-    const featuresList: string[] = (() => {
-        if (!p.features) {
-            return [];
-        }
+    const featuresList: string[] = Array.isArray(p.features) ? p.features : [];
 
-        if (Array.isArray(p.features)) {
-            return p.features;
-        }
-
-        try {
-            const parsed = JSON.parse(p.features);
-
-            return Array.isArray(parsed) ? parsed : [];
-        } catch {
-            return [];
-        }
-    })();
-
-    const allImages: { url: string; alt: string }[] = (() => {
-        const images: { url: string; alt: string }[] = [];
-
-        if (p.main_image) {
-            images.push({ url: p.main_image, alt: p.title });
-        }
-
-        (p.images || []).forEach((img) => {
-            if (img.url) {
-                images.push({
-                    url: img.url,
-                    alt: img.alt || `${p.title} photo`,
-                });
-            }
-        });
-
-        return images;
-    })();
-
-    const mainImageUrl =
-        allImages[0]?.url ||
-        'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200';
+    const allImages: { url: string | undefined; alt: string }[] = [
+        { url: p.main_image, alt: p.title },
+        ...(p.images || []).map(img => ({ url: img.url, alt: img.alt || p.title }))
+    ];
 
     const openLightbox = (index: number) => {
         setInitialImageIndex(index);
         setLightboxOpen(true);
     };
 
-    // Composant contenu riche (inchangé)
     const RichContentText = ({ content }: { content: string }) => {
         return (
             <div
-                className="prose prose-sm dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-h1:mt-4 prose-h1:mb-4 prose-h1:text-2xl prose-h1:text-slate-900 dark:prose-h1:text-white prose-h2:mt-8 prose-h2:mb-4 prose-h2:border-b prose-h2:border-emerald-100 prose-h2:pb-2 prose-h2:text-xl dark:prose-h2:border-emerald-900/40 prose-h3:mt-6 prose-h3:mb-3 prose-h3:text-lg prose-h3:text-slate-800 dark:prose-h3:text-slate-200 prose-p:mt-3 prose-p:mb-3 prose-p:leading-relaxed prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-a:text-emerald-600 prose-a:no-underline hover:prose-a:underline dark:prose-a:text-emerald-400 prose-blockquote:my-6 prose-blockquote:rounded-r-lg prose-blockquote:border-l-4 prose-blockquote:border-emerald-400 prose-blockquote:bg-slate-50 prose-blockquote:py-2 prose-blockquote:pl-4 prose-blockquote:text-slate-600 prose-blockquote:italic dark:prose-blockquote:border-emerald-600 dark:prose-blockquote:bg-slate-900/30 dark:prose-blockquote:text-slate-300 prose-code:rounded-md prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-emerald-700 dark:prose-code:bg-slate-800 dark:prose-code:text-emerald-400 prose-pre:my-6 prose-pre:rounded-xl prose-pre:border prose-pre:border-slate-200 prose-pre:bg-slate-50 dark:prose-pre:border-slate-800 dark:prose-pre:bg-slate-900/60 prose-li:text-slate-600 dark:prose-li:text-slate-300 prose-img:rounded-xl prose-img:shadow-md max-w-none"
+                className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-black prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-emerald"
                 dangerouslySetInnerHTML={{ __html: content }}
             />
         );
@@ -332,1072 +265,268 @@ function PropertyShow({ property, similarProperties }: Props) {
 
     return (
         <>
-            <Head title={p.title} />
+            <Head title={`${p.title} - Immobilier de Prestige`} />
 
-            {/* HERO */}
-            <section className="relative h-120 w-full overflow-hidden lg:h-140">
-                <img
-                    src={mainImageUrl}
+            {/* HERO DYNAMIQUE */}
+            <section className="relative h-[50vh] w-full overflow-hidden lg:h-[65vh]">
+                <motion.img
+                    initial={{ scale: 1.1 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 1.5, ease: "easeOut" }}
+                    src={p.main_image}
                     alt={p.title}
                     className="absolute inset-0 h-full w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-linear-to-r from-slate-900/80 via-slate-900/50 to-slate-900/30" />
-                <div className="relative z-10 mx-auto flex h-full max-w-7xl items-end px-4 pb-12 sm:px-6 lg:px-8 lg:pb-20">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="w-full"
-                    >
-                        <div className="flex flex-wrap items-start justify-between gap-4">
-                            <div>
-                                <Badge className="mb-4 gap-1.5 border-teal-300 bg-teal-500/20 px-4 py-2.5 text-sm text-teal-100 backdrop-blur-sm">
-                                    <Sparkles className="h-3.5 w-3.5" />
-                                    {p.type === 'maison'
-                                        ? 'Maison'
-                                        : p.type === 'appartement'
-                                          ? 'Appartement'
-                                          : p.type === 'terrain'
-                                            ? 'Terrain'
-                                            : p.type}
-                                    {p.subtype && ` · ${p.subtype}`}
-                                </Badge>
-                                <h1 className="text-3xl font-extrabold tracking-tight text-white md:text-5xl lg:text-6xl">
+                <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/40 to-transparent" />
+
+                <div className="relative z-10 mx-auto flex h-full max-w-7xl items-end px-4 pb-16 sm:px-6 lg:px-8">
+                    <div className="w-full">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
+                        >
+                            <div className="space-y-4">
+                                <div className="flex gap-2">
+                                    <Badge className="rounded-full bg-teal-600 px-4 py-1.5 text-sm font-bold text-white shadow-xl shadow-teal-500/20">
+                                        {p.status === 'available' ? 'Exclusivité' : p.status}
+                                    </Badge>
+                                    <Badge className="rounded-full bg-white/10 px-4 py-1.5 text-sm font-bold text-white backdrop-blur-md">
+                                        {p.type}
+                                    </Badge>
+                                </div>
+                                <h1 className="text-4xl font-black tracking-tight text-white md:text-6xl lg:text-7xl">
                                     {p.title}
                                 </h1>
-                                <div className="mt-4 flex flex-wrap items-center gap-4 text-slate-200">
-                                    <div className="flex items-center gap-2">
-                                        <MapPin className="h-5 w-5 text-teal-300" />
-                                        <span className="text-lg">
-                                            {p.address}, {p.city?.name}
-                                            {p.commune?.name
-                                                ? `, ${p.commune.name}`
-                                                : ''}
-                                        </span>
-                                    </div>
-                                    {p.rating && (
-                                        <div className="flex items-center gap-1">
-                                            <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                                            <span>{p.rating}</span>
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-200">
-                                    {p.bedrooms !== null && (
-                                        <span className="flex items-center gap-1">
-                                            <Bed className="h-4 w-4" />{' '}
-                                            {p.bedrooms} ch.
-                                        </span>
-                                    )}
-                                    {p.bathrooms !== null && (
-                                        <span className="flex items-center gap-1">
-                                            <Bath className="h-4 w-4" />{' '}
-                                            {p.bathrooms} sdb
-                                        </span>
-                                    )}
-                                    {p.area && (
-                                        <span className="flex items-center gap-1">
-                                            <Maximize className="h-4 w-4" />{' '}
-                                            {p.area} m²
-                                        </span>
-                                    )}
-                                    {p.land_area && (
-                                        <span className="flex items-center gap-1">
-                                            <Maximize className="h-4 w-4" />{' '}
-                                            Terrain {p.land_area} m²
-                                        </span>
-                                    )}
+                                <div className="flex items-center gap-2 text-xl text-slate-300">
+                                    <MapPin className="h-6 w-6 text-teal-400" />
+                                    <span>{p.address}, {p.city?.name}</span>
                                 </div>
                             </div>
-                            <div className="shrink-0 text-right">
-                                <div className="text-4xl font-bold text-white lg:text-5xl">
+
+                            <div className="flex flex-col items-start gap-4 md:items-end">
+                                <div className="text-5xl font-black text-white lg:text-7xl">
                                     {formatPrice(p.price, p.currency)}
                                 </div>
-                                {p.price_negotiable && (
-                                    <Badge className="mt-2 border border-yellow-400/30 bg-yellow-400/20 text-yellow-300">
-                                        Prix négociable
-                                    </Badge>
-                                )}
-                                <div className="mt-4 flex gap-2">
-                                    <Button
-                                        className="bg-teal-600 text-white hover:bg-teal-700"
-                                        asChild
-                                    >
-                                        <a href="#visit">
-                                            Planifier une visite
-                                        </a>
+                                <div className="flex gap-3">
+                                    <Button size="icon" variant="outline" className="h-14 w-14 rounded-2xl border-white/20 bg-white/10 text-white backdrop-blur-md hover:bg-white/20">
+                                        <Heart className="h-6 w-6" />
                                     </Button>
-                                    <Button
-                                        variant="outline"
-                                        className="border-white/30 text-white hover:bg-white/10"
-                                        asChild
-                                    >
-                                        <Link href={route('properties.index')}>
-                                            Voir d'autres biens
-                                            <ArrowRight className="ml-2 h-4 w-4" />
-                                        </Link>
+                                    <Button size="icon" variant="outline" className="h-14 w-14 rounded-2xl border-white/20 bg-white/10 text-white backdrop-blur-md hover:bg-white/20">
+                                        <Share2 className="h-6 w-6" />
+                                    </Button>
+                                    <Button size="lg" className="h-14 rounded-2xl bg-teal-600 px-8 text-lg font-bold text-white shadow-2xl shadow-teal-500/20 hover:bg-teal-500" asChild>
+                                        <a href="#contact">Contactez l'expert</a>
                                     </Button>
                                 </div>
                             </div>
-                        </div>
-                    </motion.div>
+                        </motion.div>
+                    </div>
                 </div>
             </section>
 
-            <div className="mx-auto max-w-7xl px-4 py-4 lg:py-8">
-                <nav className="mb-6 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                    <Link href="/" className="hover:text-teal-600">
-                        Accueil
-                    </Link>
-                    <ChevronRight className="h-4 w-4" />
-                    <Link
-                        href={route('properties.index')}
-                        className="hover:text-teal-600"
-                    >
-                        Propriétés
-                    </Link>
-                    <ChevronRight className="h-4 w-4" />
-                    <span className="truncate font-medium text-slate-900 dark:text-white">
-                        {p.title}
-                    </span>
-                </nav>
+            <div className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+                {/* GRID PRINCIPALE */}
+                <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
 
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                    {/* ---- Main Content ---- */}
-                    <div className="space-y-6 lg:col-span-2">
-                        {/* Galerie interactive (inchangée) */}
-                        <div className="grid grid-cols-3 gap-3">
-                            <div className="relative col-span-3 aspect-4/3 overflow-hidden rounded-2xl md:col-span-2">
-                                <img
-                                    src={allImages[0]?.url}
-                                    alt={allImages[0]?.alt}
-                                    className="h-full w-full cursor-pointer object-cover transition hover:scale-105"
-                                    onClick={() => openLightbox(0)}
-                                />
-                            </div>
-                            <div className="col-span-3 grid grid-cols-2 gap-3 md:col-span-1 md:grid-cols-1">
-                                {allImages.slice(1, 2).map((img, i) => (
-                                    <div
-                                        key={i}
-                                        className="relative aspect-4/3 cursor-pointer overflow-hidden rounded-2xl"
-                                        onClick={() => openLightbox(i + 1)}
-                                    >
-                                        <img
-                                            src={img.url}
-                                            alt={img.alt}
-                                            className="h-full w-full object-cover transition hover:scale-105"
-                                        />
-                                    </div>
-                                ))}
+                    {/* COLONNE GAUCHE - CONTENU */}
+                    <div className="space-y-16 lg:col-span-8">
+
+                        {/* GALLERY BENTO */}
+                        <div className="grid grid-cols-12 grid-rows-2 gap-4 h-150">
+                            <motion.div
+                                whileHover={{ scale: 0.99 }}
+                                className="col-span-8 row-span-2 relative overflow-hidden rounded-[2.5rem] cursor-pointer group"
+                                onClick={() => openLightbox(0)}
+                            >
+                                <img src={allImages[0]?.url} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
+                            </motion.div>
+                            <motion.div
+                                whileHover={{ scale: 0.98 }}
+                                className="col-span-4 row-span-1 relative overflow-hidden rounded-[2.5rem] cursor-pointer group"
+                                onClick={() => openLightbox(1)}
+                            >
+                                <img src={allImages[1]?.url} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
+                            </motion.div>
+                            <motion.div
+                                whileHover={{ scale: 0.98 }}
+                                className="col-span-4 row-span-1 relative overflow-hidden rounded-[2.5rem] cursor-pointer group"
+                                onClick={() => openLightbox(2)}
+                            >
+                                <img src={allImages[2]?.url} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                                 {allImages.length > 3 && (
-                                    <div
-                                        className="relative aspect-4/3 cursor-pointer overflow-hidden rounded-2xl"
-                                        onClick={() => openLightbox(3)}
-                                    >
-                                        <img
-                                            src={allImages[3]?.url}
-                                            alt="Plus de photos"
-                                            className="h-full w-full object-cover opacity-80"
-                                        />
-                                        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                                            <span className="text-3xl font-bold text-white">
-                                                +{allImages.length - 3}
-                                            </span>
-                                            <Camera className="absolute right-2 bottom-2 h-5 w-5 text-white/80" />
-                                        </div>
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-[2px]">
+                                        <span className="text-4xl font-black text-white">+{allImages.length - 3}</span>
                                     </div>
                                 )}
+                            </motion.div>
+                        </div>
+
+                        {/* DESCRIPTION SECTION */}
+                        <section className="space-y-6">
+                            <div className="flex items-center gap-4">
+                                <div className="h-1 w-12 bg-teal-500" />
+                                <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Présentation du bien</h2>
                             </div>
-                        </div>
+                            <RichContentText content={p.description} />
+                        </section>
 
-                        {/* Description*/}
-                        <RichContentText
-                            content={
-                                typeof p.description === 'string'
-                                    ? p.description
-                                    : JSON.stringify(p.description)
-                            }
-                        />
+                        {/* CARACTÉRISTIQUES */}
+                        <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                            {[
+                                { label: 'Chambres', value: p.bedrooms, icon: Bed },
+                                { label: 'Salles de bain', value: p.bathrooms, icon: Bath },
+                                { label: 'Surface', value: `${p.area} m²`, icon: Maximize },
+                                { label: 'Type', value: p.type, icon: Home }
+                            ].map((item, idx) => (
+                                <Card key={idx} className="rounded-[2rem] border-slate-100 bg-slate-50/50 p-6 text-center transition-all hover:bg-white hover:shadow-xl dark:border-slate-800 dark:bg-slate-900/50">
+                                    <item.icon className="mx-auto h-8 w-8 text-teal-600" />
+                                    <p className="mt-4 text-sm font-bold text-slate-500 uppercase tracking-widest">{item.label}</p>
+                                    <p className="mt-1 text-2xl font-black text-slate-900 dark:text-white">{item.value || 'N/A'}</p>
+                                </Card>
+                            ))}
+                        </section>
 
-                        {/* Équipements  */}
-                        <div className="space-y-4">
-                            <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                                Équipements & Caractéristiques
-                            </h2>
-                            <Card className="border-slate-200 bg-white/80 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
-                                <CardContent>
-                                    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                                        {featuresList.map((feature, index) => {
-                                            const normalized = feature
-                                                .toLowerCase()
-                                                .replace(/\s+/g, '_');
-                                            const Icon =
-                                                amenityIconMap[normalized] ||
-                                                Home;
-
-                                            return (
-                                                <div
-                                                    key={index}
-                                                    className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300"
-                                                >
-                                                    <Icon className="h-4 w-4 text-teal-500" />
-                                                    <span>{feature}</span>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </div>
-
-                        {/* Détails */}
-                        <div className="space-y-4">
-                            <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                                Détails du bien
-                            </h2>
-                            <Card className="border-slate-200 bg-white/80 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
-                                <CardContent className="divide-y text-sm [&>div]:flex [&>div]:items-center [&>div]:justify-between [&>div]:py-4">
-                                    <div>
-                                        <span className="text-slate-500">
-                                            Statut
-                                        </span>
-                                        <Badge className="bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300">
-                                            {p.status === 'available'
-                                                ? 'Disponible'
-                                                : p.status === 'pending'
-                                                  ? 'En attente'
-                                                  : p.status}
-                                        </Badge>
-                                    </div>
-                                    <div>
-                                        <span className="text-slate-500">
-                                            Adresse
-                                        </span>
-                                        <span className="font-medium text-slate-800 dark:text-slate-200">
-                                            {p.address}, {p.city?.name},{' '}
-                                            {p.commune?.name}
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <span className="text-slate-500">
-                                            Surface habitable
-                                        </span>
-                                        <span className="font-medium">
-                                            {p.area} m²
-                                        </span>
-                                    </div>
-                                    {p.land_area && (
-                                        <div>
-                                            <span className="text-slate-500">
-                                                Terrain
-                                            </span>
-                                            <span className="font-medium">
-                                                {p.land_area} m²
-                                            </span>
+                        {/* AMENITIES */}
+                        <section className="space-y-8">
+                            <h3 className="text-2xl font-black text-slate-900 dark:text-white">Équipements inclus</h3>
+                            <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
+                                {featuresList.map((feature, i) => (
+                                    <div key={i} className="flex items-center gap-4 group">
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-50 text-teal-600 transition-colors group-hover:bg-teal-600 group-hover:text-white dark:bg-teal-900/20">
+                                            <CheckCircle className="h-6 w-6" />
                                         </div>
-                                    )}
-                                    <div>
-                                        <span className="text-slate-500">
-                                            Chambres
-                                        </span>
-                                        <span className="font-medium">
-                                            {p.bedrooms}
-                                        </span>
+                                        <span className="text-lg font-medium text-slate-700 dark:text-slate-300">{feature}</span>
                                     </div>
-                                    <div>
-                                        <span className="text-slate-500">
-                                            Salles de bain
-                                        </span>
-                                        <span className="font-medium">
-                                            {p.bathrooms}
-                                        </span>
-                                    </div>
-                                    {p.year_built && (
-                                        <div>
-                                            <span className="text-slate-500">
-                                                Année
-                                            </span>
-                                            <span className="font-medium">
-                                                {p.year_built}
-                                            </span>
-                                        </div>
-                                    )}
-                                </CardContent>
-                            </Card>
-                        </div>
+                                ))}
+                            </div>
+                        </section>
 
-                        {/* ---- NOUVEAU : Propriétés similaires en carrousel ---- */}
+                        {/* SIMILAR PROPERTIES CAROUSEL */}
                         {similarProperties.data.length > 0 && (
-                            <div className="space-y-4">
-                                <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                                    Propriétés similaires
-                                </h2>
+                            <section className="space-y-8">
+                                <h3 className="text-2xl font-black text-slate-900 dark:text-white">Biens similaires</h3>
                                 <Swiper
-                                    modules={[Navigation]}
-                                    navigation
-                                    spaceBetween={16}
+                                    modules={[Navigation, Pagination]}
+                                    spaceBetween={24}
                                     slidesPerView={1}
-                                    breakpoints={{
-                                        640: { slidesPerView: 2 },
-                                        1024: { slidesPerView: 3 },
-                                    }}
-                                    className="w-full"
+                                    breakpoints={{ 640: { slidesPerView: 2 } }}
+                                    className="w-full pb-12"
                                 >
                                     {similarProperties.data.map((sim) => (
                                         <SwiperSlide key={sim.id}>
-                                            <Link
-                                                href={route(
-                                                    'properties.show',
-                                                    sim.slug,
-                                                )}
-                                                className="group block h-full"
-                                            >
-                                                <Card className="overflow-hidden border-slate-200 bg-white/80 shadow-sm backdrop-blur transition-all hover:-translate-y-1 hover:shadow-md dark:border-slate-800 dark:bg-slate-900/80">
-                                                    <div className="relative aspect-4/3 overflow-hidden">
-                                                        <img
-                                                            src={sim.main_image}
-                                                            alt={sim.title}
-                                                            className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
-                                                        />
-                                                        <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
-                                                        <div className="absolute bottom-2 left-2">
-                                                            <Badge className="bg-teal-600 text-white">
-                                                                {sim.type}
-                                                            </Badge>
-                                                        </div>
+                                            <Link href={route('properties.show', sim.slug)} className="group block">
+                                                <div className="relative aspect-4/5 overflow-hidden rounded-[2.5rem] shadow-xl">
+                                                    <img src={sim.main_image} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
+                                                    <div className="absolute bottom-6 left-6 right-6">
+                                                        <Badge className="mb-2 bg-teal-600 text-white">{sim.type}</Badge>
+                                                        <h4 className="text-xl font-black text-white truncate">{sim.title}</h4>
+                                                        <p className="mt-1 text-2xl font-bold text-teal-400">{formatPrice(sim.price, sim.currency)}</p>
                                                     </div>
-                                                    <CardContent className="p-4">
-                                                        <h4 className="truncate font-bold text-slate-900 group-hover:text-teal-600 dark:text-white">
-                                                            {sim.title}
-                                                        </h4>
-                                                        <p className="text-xs text-slate-500">
-                                                            {sim.city?.name}
-                                                        </p>
-                                                        <p className="mt-2 text-lg font-bold text-teal-600">
-                                                            {formatPrice(
-                                                                sim.price,
-                                                                sim.currency,
-                                                            )}
-                                                        </p>
-                                                    </CardContent>
-                                                </Card>
+                                                </div>
                                             </Link>
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>
-                            </div>
+                            </section>
                         )}
-
-                        {/* ---- NOUVEAU : Avis des clients  ---- */}
-                        <div className="space-y-4">
-                            <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                                Avis des clients
-                            </h2>
-                            {p.reviews && p.reviews.length > 0 ? (
-                                <div className="space-y-4">
-                                    {p.reviews.map((review) => (
-                                        <Card
-                                            key={review.id}
-                                            className="border-slate-200 bg-white/80 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80"
-                                        >
-                                            <CardContent className="p-4">
-                                                <div className="flex items-start gap-3">
-                                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-100 text-sm font-bold text-teal-700">
-                                                        {review.user?.name?.charAt(
-                                                            0,
-                                                        ) || '?'}
-                                                    </div>
-                                                    <div className="flex-1">
-                                                        <div className="flex items-center justify-between">
-                                                            <h4 className="font-semibold text-slate-900 dark:text-white">
-                                                                {review.user
-                                                                    ?.name ||
-                                                                    'Anonyme'}
-                                                            </h4>
-                                                            <span className="text-xs text-slate-500">
-                                                                {new Date(
-                                                                    review.created_at,
-                                                                ).toLocaleDateString()}
-                                                            </span>
-                                                        </div>
-                                                        <div className="mt-1 flex items-center gap-1">
-                                                            {Array.from({
-                                                                length: 5,
-                                                            }).map((_, i) => (
-                                                                <Star
-                                                                    key={i}
-                                                                    className={`h-4 w-4 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-slate-300'}`}
-                                                                />
-                                                            ))}
-                                                        </div>
-                                                        {review.title && (
-                                                            <p className="mt-2 font-medium text-slate-800 dark:text-slate-200">
-                                                                {review.title}
-                                                            </p>
-                                                        )}
-                                                        <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-                                                            {review.comment}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </CardContent>
-                                        </Card>
-                                    ))}
-                                </div>
-                            ) : (
-                                <p className="text-sm text-slate-500">
-                                    Aucun avis pour le moment. Soyez le premier
-                                    à donner votre avis !
-                                </p>
-                            )}
-                        </div>
                     </div>
 
-                    {/* ---- Sidebar ---- */}
-                    <div className="space-y-6">
-                        {/* Carte Agent */}
-                        <Card className="overflow-hidden border-slate-200 bg-white/80 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
-                            <CardContent className="space-y-6 p-6">
-                                {/* Photo + infos */}
-                                <div className="flex items-start gap-4">
-                                    <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl ring-2 ring-teal-100 dark:ring-teal-900/50">
-                                        <img
-                                            src={
-                                                p.agent?.avatar_url ||
-                                                `https://ui-avatars.com/api/?name=${encodeURIComponent(p.agent?.name || 'Agent')}&background=0d9488&color=fff&size=128&bold=true`
-                                            }
-                                            alt={p.agent?.name}
-                                            className="h-full w-full object-cover"
-                                        />
-                                    </div>
-                                    <div className="min-w-0 flex-1">
-                                        <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-                                            {p.agent?.name}
-                                        </h3>
-                                        <p className="text-sm text-slate-500">
-                                            {p.agent?.email}
-                                        </p>
-                                        <div className="mt-2 flex items-center gap-1">
-                                            {Array.from({ length: 5 }).map(
-                                                (_, i) => (
-                                                    <Star
-                                                        key={i}
-                                                        className="h-4 w-4 fill-yellow-400 text-yellow-400"
-                                                    />
-                                                ),
-                                            )}
-                                            <span className="ml-1 text-xs text-slate-500">
-                                                5.0 (12 avis)
-                                            </span>
+                    {/* COLONNE DROITE - SIDEBAR STICKY */}
+                    <aside className="lg:col-span-4">
+                        <div className="sticky top-32 space-y-8" id="contact">
+
+                            {/* AGENT CARD PREMIUN */}
+                            <Card className="rounded-[3rem] border-none bg-slate-900 p-8 shadow-2xl shadow-slate-950 text-white overflow-hidden relative">
+                                <div className="absolute top-0 right-0 h-32 w-32 bg-teal-500/20 blur-3xl rounded-full" />
+                                <div className="relative z-10 space-y-6">
+                                    <div className="flex items-center gap-4">
+                                        <div className="h-20 w-20 rounded-[1.5rem] overflow-hidden border-2 border-teal-500/50 p-1">
+                                            <img src={p.agent?.avatar_url || `https://ui-avatars.com/api/?name=${p.agent?.name}&background=0d9488&color=fff`} className="h-full w-full object-cover rounded-[1.2rem]" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-bold text-teal-400 uppercase tracking-widest">Conseiller expert</p>
+                                            <h3 className="text-2xl font-black">{p.agent?.name}</h3>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Coordonnées */}
-                                <div className="space-y-3 rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/50">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm text-slate-500">
-                                            Téléphone
-                                        </span>
-                                        <span className="text-sm font-medium text-slate-900 dark:text-white">
-                                            {p.agent?.phone ? (
-                                                <a
-                                                    href={`tel:${p.agent.phone}`}
-                                                    className="transition-colors hover:text-teal-600 dark:hover:text-teal-400"
-                                                >
-                                                    {p.agent.phone}
-                                                </a>
-                                            ) : (
-                                                '—'
-                                            )}
-                                        </span>
-                                    </div>
-                                    <Separator className="bg-slate-200 dark:bg-slate-700" />
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm text-slate-500">
-                                            Email
-                                        </span>
-                                        <span className="text-sm font-medium text-slate-900 dark:text-white">
-                                            <a
-                                                href={`mailto:${p.agent?.email}`}
-                                                className="transition-colors hover:text-teal-600 dark:hover:text-teal-400"
-                                            >
-                                                {p.agent?.email}
-                                            </a>
-                                        </span>
+                                    <div className="space-y-4 pt-4">
+                                        <Button className="w-full h-14 rounded-2xl bg-teal-600 text-lg font-bold hover:bg-teal-500 transition-all shadow-xl shadow-teal-500/20" asChild>
+                                            <a href={`tel:${p.agent?.phone}`}><Phone className="mr-3 h-5 w-5" /> Contacter par téléphone</a>
+                                        </Button>
+                                        <Button variant="outline" className="w-full h-14 rounded-2xl border-white/10 bg-white/5 text-lg font-bold hover:bg-white/10" asChild>
+                                            <a href={`mailto:${p.agent?.email}`}><Mail className="mr-3 h-5 w-5" /> Envoyer un email</a>
+                                        </Button>
                                     </div>
                                 </div>
+                            </Card>
 
-                                {/* Actions */}
-                                <div className="flex gap-3">
-                                    {p.agent?.phone ? (
-                                        <Button
-                                            className="flex-1 bg-teal-600 text-white hover:bg-teal-700"
-                                            asChild
-                                        >
-                                            <a href={`tel:${p.agent.phone}`}>
-                                                <Phone className="mr-2 h-4 w-4" />
-                                                Appeler
-                                            </a>
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            className="flex-1 cursor-not-allowed bg-slate-300 text-slate-500"
-                                            disabled
-                                        >
-                                            <Phone className="mr-2 h-4 w-4" />
-                                            Pas de téléphone
-                                        </Button>
-                                    )}
-                                    <Button
-                                        variant="outline"
-                                        className="flex-1 border-slate-200 dark:border-slate-700"
-                                        asChild
-                                    >
-                                        <a href={`mailto:${p.agent?.email}`}>
-                                            <Mail className="mr-2 h-4 w-4" />
-                                            Écrire
-                                        </a>
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        {/* Formulaire */}
-                        <Card
-                            className="border-slate-200 bg-white/80 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80"
-                            id="visit"
-                        >
-                            <CardHeader>
-                                <CardTitle className="text-slate-900 dark:text-white">
-                                    Planifier une visite
-                                </CardTitle>
-                                <CardDescription>
-                                    Envoyez une demande à l'agent pour visiter
-                                    ce bien.
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <form
-                                    onSubmit={submitContact}
-                                    className="space-y-5"
-                                >
-                                    {/* Champ Nom */}
+                            {/* VISIT FORM CARD */}
+                            <Card className="rounded-[3rem] border-slate-100 bg-white p-8 shadow-xl dark:border-slate-800 dark:bg-slate-900/50 backdrop-blur-xl">
+                                <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-6">Demande de visite</h3>
+                                <form onSubmit={submitContact} className="space-y-4">
                                     <div className="space-y-2">
-                                        <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                            Nom complet{' '}
-                                            <span className="text-red-400">
-                                                *
-                                            </span>
-                                        </Label>
+                                        <Label className="font-bold ml-1">Nom complet</Label>
                                         <Input
                                             placeholder="Votre nom"
-                                            className={cn(
-                                                'w-full rounded border px-3 py-2 text-sm font-medium transition-all duration-200',
-                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
-                                                'hover:border-teal-300 hover:bg-white',
-                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
-                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
-                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
-                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
-                                                 errors.name
-                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                    : '',
-                                            )}
-
-                                            value={data.name}
-                                            onChange={(e) =>
-                                                setData('name', e.target.value)
-                                            }
+                                            value={visitForm.data.name}
+                                            onChange={e => visitForm.setData('name', e.target.value)}
+                                            className="h-14 rounded-2xl bg-slate-50 border-none dark:bg-slate-800 focus:ring-2 focus:ring-teal-500"
                                         />
-                                        <InputError message={errors.name} />
                                     </div>
-
-                                    {/* Champ Email */}
                                     <div className="space-y-2">
-                                        <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                            Email{' '}
-                                            <span className="text-red-400">
-                                                *
-                                            </span>
-                                        </Label>
+                                        <Label className="font-bold ml-1">Email</Label>
                                         <Input
                                             type="email"
                                             placeholder="votre@email.com"
-                                            className={cn(
-                                                'w-full rounded border px-3 py-2 text-sm font-medium transition-all duration-200',
-                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
-                                                'hover:border-teal-300 hover:bg-white',
-                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
-                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
-                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
-                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
-                                                 errors.email
-                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                    : '',
-                                            )}
-                                            value={data.email}
-                                            onChange={(e) =>
-                                                setData('email', e.target.value)
-                                            }
+                                            value={visitForm.data.email}
+                                            onChange={e => visitForm.setData('email', e.target.value)}
+                                            className="h-14 rounded-2xl bg-slate-50 border-none dark:bg-slate-800 focus:ring-2 focus:ring-teal-500"
                                         />
-                                        <InputError message={errors.email} />
                                     </div>
-
-                                    {/* Champ Téléphone */}
                                     <div className="space-y-2">
-                                        <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                            Téléphone
-                                        </Label>
-                                        <Input
-                                            type="tel"
-                                            placeholder="+243 123 456 789"
-                                             className={cn(
-                                                'w-full rounded border px-3 py-2 text-sm font-medium transition-all duration-200',
-                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
-                                                'hover:border-teal-300 hover:bg-white',
-                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
-                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
-                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
-                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
-                                                 errors.phone
-                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                    : '',
-                                            )}
-                                            value={data.phone}
-                                            onChange={(e) =>
-                                                setData('phone', e.target.value)
-                                            }
-                                        />
-                                        <InputError message={errors.phone} />
-                                    </div>
-
-                                    {/* Champ Message */}
-                                    <div className="space-y-2">
-                                        <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                            Message{' '}
-                                            <span className="text-red-400">
-                                                *
-                                            </span>
-                                        </Label>
+                                        <Label className="font-bold ml-1">Message</Label>
                                         <Textarea
-                                            placeholder="Votre message..."
-                                            rows={5}
-                                             className={cn(
-                                                'w-full rounded border px-3 py-2 text-sm font-medium transition-all duration-200',
-                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
-                                                'hover:border-teal-300 hover:bg-white',
-                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
-                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
-                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
-                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
-                                                errors.message
-                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                    : '',
-                                            )}
-
-                                            value={data.message}
-                                            onChange={(e) =>
-                                                setData(
-                                                    'message',
-                                                    e.target.value,
-                                                )
-                                            }
+                                            rows={4}
+                                            value={visitForm.data.message}
+                                            onChange={e => visitForm.setData('message', e.target.value)}
+                                            className="rounded-2xl bg-slate-50 border-none dark:bg-slate-800 focus:ring-2 focus:ring-teal-500"
                                         />
-                                        <InputError message={errors.message} />
                                     </div>
-
-                                    {/* Bouton d’envoi */}
                                     <Button
                                         type="submit"
-                                        size="lg"
-                                        className="h-8 w-full rounded bg-teal-600 text-base font-semibold text-white shadow-lg shadow-teal-500/20 transition-all hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
-                                        disabled={processing}
+                                        disabled={visitForm.processing}
+                                        className="w-full h-16 rounded-2xl bg-slate-900 text-white font-black text-lg hover:bg-slate-800 transition-all dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
                                     >
-                                        {processing ? (
-                                            <>
-                                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                                Envoi en cours...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Mail className="mr-2 h-5 w-5" />
-                                                Envoyer la demande
-                                            </>
-                                        )}
+                                        {visitForm.processing ? <Loader2 className="animate-spin h-6 w-6" /> : "Planifier maintenant"}
                                     </Button>
                                 </form>
-                            </CardContent>
-                        </Card>
-
-                        {/* Formulaire d'offre */}
-                        <Card className="overflow-hidden border-slate-200 bg-white/80 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
-                                    <BadgeDollarSign className="h-5 w-5 text-teal-500" />
-                                    Faire une offre
-                                </CardTitle>
-                                <CardDescription>
-                                    Proposez un prix pour ce bien.
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <form
-                                    onSubmit={submitOffer}
-                                    className="space-y-5"
-                                >
-                                    {/* Type d'offre */}
-                                    <div className="space-y-2">
-                                        <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                            Type{' '}
-                                            <span className="text-red-400">
-                                                *
-                                            </span>
-                                        </Label>
-                                        <Select
-                                            value={offerForm.data.type}
-                                            onValueChange={(value) =>
-                                                offerForm.setData('type', value)
-                                            }
-                                        >
-                                            <SelectTrigger
-                                                className={cn(
-                                                    'h-11 w-full rounded border px-3 text-sm font-medium transition-all duration-200',
-                                                    'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
-                                                    'hover:border-teal-300 hover:bg-white',
-                                                    'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
-                                                    'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
-                                                    'dark:hover:border-teal-700 dark:hover:bg-slate-900',
-                                                    'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
-                                                    offerForm.errors.type
-                                                        ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                        : '',
-                                                )}
-                                            >
-                                                <SelectValue placeholder="Choisir le type" />
-                                            </SelectTrigger>
-                                            <SelectContent
-                                                position="popper"
-                                                side="bottom"
-                                                align="start"
-                                                sideOffset={8}
-                                                className={cn(
-                                                    'rounded border border-slate-200/80 bg-white/95 p-1 shadow-lg backdrop-blur-xl',
-                                                    'dark:border-slate-800/80 dark:bg-slate-950/95',
-                                                )}
-                                            >
-                                                <SelectItem
-                                                    value="purchase"
-                                                    className="rounded px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
-                                                >
-                                                    Achat
-                                                </SelectItem>
-                                                <SelectItem
-                                                    value="rent"
-                                                    className="rounded px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
-                                                >
-                                                    Location
-                                                </SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <InputError
-                                            message={offerForm.errors.type}
-                                        />
-                                    </div>
-
-                                    {/* Devise */}
-                                    <div className="space-y-2">
-                                        <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                            Devise
-                                        </Label>
-                                        <Select
-                                            value={offerForm.data.currency}
-                                            onValueChange={(value) =>
-                                                offerForm.setData(
-                                                    'currency',
-                                                    value,
-                                                )
-                                            }
-                                        >
-                                            <SelectTrigger
-                                                className={cn(
-                                                    'h-11 w-full rounded border px-3 text-sm font-medium transition-all duration-200',
-                                                    'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
-                                                    'hover:border-teal-300 hover:bg-white',
-                                                    'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
-                                                    'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
-                                                    'dark:hover:border-teal-700 dark:hover:bg-slate-900',
-                                                    'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
-                                                    offerForm.errors.currency
-                                                        ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                        : '',
-                                                )}
-                                            >
-                                                <SelectValue placeholder="Choisir la devise" />
-                                            </SelectTrigger>
-                                            <SelectContent
-                                                position="popper"
-                                                side="bottom"
-                                                align="start"
-                                                sideOffset={8}
-                                                className={cn(
-                                                    'rounded-xl border border-slate-200/80 bg-white/95 p-1 shadow-lg backdrop-blur-xl',
-                                                    'dark:border-slate-800/80 dark:bg-slate-950/95',
-                                                )}
-                                            >
-                                                <SelectItem
-                                                    value="USD"
-                                                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
-                                                >
-                                                    USD
-                                                </SelectItem>
-                                                <SelectItem
-                                                    value="CDF"
-                                                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
-                                                >
-                                                    CDF
-                                                </SelectItem>
-                                                <SelectItem
-                                                    value="EUR"
-                                                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-teal-50 hover:text-teal-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
-                                                >
-                                                    EUR
-                                                </SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <InputError
-                                            message={offerForm.errors.currency}
-                                        />
-                                    </div>
-
-                                    {/* Montant */}
-                                    <div className="space-y-2">
-                                        <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                            Montant{' '}
-                                            <span className="text-red-400">
-                                                *
-                                            </span>
-                                        </Label>
-                                        <Input
-                                            type="number"
-                                            placeholder="Ex: 150000"
-                                            value={offerForm.data.amount}
-                                            onChange={(e) =>
-                                                offerForm.setData(
-                                                    'amount',
-                                                    e.target.value,
-                                                )
-                                            }
-                                            className={cn(
-                                                'h-11 w-full rounded border px-3 text-sm font-medium transition-all duration-200',
-                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
-                                                'hover:border-teal-300 hover:bg-white',
-                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
-                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
-                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
-                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
-                                                offerForm.errors.amount
-                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                    : '',
-                                            )}
-                                        />
-                                        <InputError
-                                            message={offerForm.errors.amount}
-                                        />
-                                    </div>
-
-                                    {/* Message optionnel */}
-                                    <div className="space-y-2">
-                                        <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                            Message
-                                        </Label>
-                                        <Textarea
-                                            rows={3}
-                                            placeholder="Ajoutez un message..."
-                                            value={offerForm.data.message}
-                                            onChange={(e) =>
-                                                offerForm.setData(
-                                                    'message',
-                                                    e.target.value,
-                                                )
-                                            }
-                                            className={cn(
-                                                'w-full rounded border px-3 py-2 text-sm font-medium transition-all duration-200',
-                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
-                                                'hover:border-teal-300 hover:bg-white',
-                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
-                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
-                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
-                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
-                                                offerForm.errors.message
-                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                    : '',
-                                            )}
-                                        />
-                                        <InputError
-                                            message={offerForm.errors.message}
-                                        />
-                                    </div>
-
-                                    <Button
-                                        type="submit"
-                                        size="lg"
-                                        className="h-8 w-full rounded bg-teal-600 text-base font-semibold text-white shadow-md shadow-teal-200 transition-all hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-300 dark:bg-teal-500 dark:shadow-teal-900/30 dark:hover:bg-teal-600 dark:hover:shadow-teal-800/40"
-                                        disabled={offerForm.processing}
-                                    >
-                                        {offerForm.processing ? (
-                                            <>
-                                                <LoaderIcon className="h-6 w-6 animate-spin" />{' '}
-                                                Envoi en cours...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Send className="h-6 w-6" />{' '}
-                                                Envoyer l'offre
-                                            </>
-                                        )}
-                                    </Button>
-                                </form>
-                            </CardContent>
-                        </Card>
-
-                        {/* Formulaire avis */}
-                        {usePage().props.auth.user ? (
-                            <Card className="border-slate-200 bg-white/80 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
-                                <CardHeader>
-                                    <CardTitle className="text-lg text-slate-900 dark:text-white">
-                                        Laisser un avis
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <form
-                                        onSubmit={submitReview}
-                                        className="space-y-4"
-                                    >
-                                        {/* Note */}
-                                        <div className="space-y-2">
-                                            <Label className="text-sm font-medium">
-                                                Note{' '}
-                                                <span className="text-red-400">
-                                                    *
-                                                </span>
-                                            </Label>
-                                            <div className="flex items-center gap-1">
-                                                {[1, 2, 3, 4, 5].map((star) => (
-                                                    <button
-                                                        key={star}
-                                                        type="button"
-                                                        onClick={() =>
-                                                            reviewForm.setData(
-                                                                'rating',
-                                                                star,
-                                                            )
-                                                        }
-                                                        className="focus:outline-none"
-                                                    >
-                                                        <Star
-                                                            className={`h-6 w-6 transition-colors ${star <= reviewForm.data.rating ? 'fill-yellow-400 text-yellow-400' : 'text-slate-300 hover:text-yellow-400'}`}
-                                                        />
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <Input
-                                            value={reviewForm.data.title}
-                                            onChange={(e) =>
-                                                reviewForm.setData(
-                                                    'title',
-                                                    e.target.value,
-                                                )
-                                            }
-                                            className={cn(
-                                                'h-11 w-full rounded border px-3 text-sm font-medium transition-all duration-200',
-                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
-                                                'hover:border-teal-300 hover:bg-white',
-                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
-                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
-                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
-                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
-                                                reviewForm.errors.title
-                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                    : '',
-                                            )}
-                                            placeholder="Titre"
-                                        />
-                                        <Textarea
-                                            value={reviewForm.data.comment}
-                                            onChange={(e) =>
-                                                reviewForm.setData(
-                                                    'comment',
-                                                    e.target.value,
-                                                )
-                                            }
-                                            className={cn(
-                                                'w-full rounded border px-3 py-2 text-sm font-medium transition-all duration-200',
-                                                'border-slate-200 bg-white/80 text-slate-700 shadow-sm backdrop-blur',
-                                                'hover:border-teal-300 hover:bg-white',
-                                                'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
-                                                'dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300',
-                                                'dark:hover:border-teal-700 dark:hover:bg-slate-900',
-                                                'dark:focus:border-teal-400 dark:focus:ring-teal-400/20',
-                                                reviewForm.errors.comment
-                                                    ? 'border-red-400 focus:border-red-500 dark:border-red-500'
-                                                    : '',
-                                            )}
-                                            placeholder="Commentaire"
-                                            rows={3}
-                                        />
-
-                                        <Button
-                                            type="submit"
-                                            size="lg"
-                                            className="h-8 w-full rounded bg-teal-600 text-base font-semibold text-white transition-all hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
-                                            disabled={reviewForm.processing}
-                                        >
-                                            {reviewForm.processing ? (
-                                                <>
-                                                    <LoaderIcon className="h-6 w-6 animate-spin" />{' '}
-                                                    Envoi en cours...
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <Send className="h-6 w-6" />{' '}
-                                                    Envoyer
-                                                </>
-                                            )}
-                                        </Button>
-                                    </form>
-                                </CardContent>
                             </Card>
-                        ) : (
-                            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-center dark:border-slate-800 dark:bg-slate-900/50">
-                                <p className="text-sm text-slate-500">
-                                    <Link
-                                        href={route('login')}
-                                        className="text-teal-600 hover:underline"
-                                    >
-                                        Connectez-vous
-                                    </Link>{' '}
-                                    pour laisser un avis.
-                                </p>
-                            </div>
-                        )}
-                    </div>
+                        </div>
+                    </aside>
                 </div>
-
-                {/* Lightbox */}
-                <AnimatePresence>
-                    {lightboxOpen && (
-                        <Lightbox
-                            images={allImages}
-                            initialIndex={initialImageIndex}
-                            onClose={() => setLightboxOpen(false)}
-                        />
-                    )}
-                </AnimatePresence>
             </div>
+
+            {/* LIGHTBOX */}
+            <AnimatePresence>
+                {lightboxOpen && (
+                    <Lightbox
+                        images={allImages}
+                        initialIndex={initialImageIndex}
+                        onClose={() => setLightboxOpen(false)}
+                    />
+                )}
+            </AnimatePresence>
         </>
     );
+}
+
+// Composant Helper CheckCircle non importé
+function CheckCircle({ className }: { className?: string }) {
+    return <Sparkles className={className} />;
 }
 
 PropertyShow.layout = (page: React.ReactNode) => (

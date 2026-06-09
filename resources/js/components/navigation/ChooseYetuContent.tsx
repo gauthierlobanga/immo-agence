@@ -34,14 +34,14 @@ const propertyTypes = [
     { icon: LayoutGrid, label: 'Bureaux', href: '#', count: '12' },
 ];
 
-const quickLinks = [
-    { icon: BookOpen, label: 'Blog & Actu', href: route('blog.index') },
-    { icon: HelpCircle, label: 'FAQ', href: route('page.help') },
-    { icon: Mail, label: 'Contact', href: route('page.contact') },
-];
-
 export function ChooseYetuContent() {
     const { headerData } = usePage().props as { headerData?: HeaderData };
+
+    const quickLinks = [
+        { icon: BookOpen, label: 'Blog & Actu', href: route('blog.index') },
+        { icon: HelpCircle, label: 'FAQ', href: route('page.help') },
+        { icon: Mail, label: 'Contact', href: route('page.contact') },
+    ];
 
     return (
         <motion.div

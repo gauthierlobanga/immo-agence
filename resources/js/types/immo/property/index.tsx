@@ -86,14 +86,6 @@ export interface Favorite {
     user_id: number;
 }
 
-// export interface Review {
-//     id: Key | null | undefined;
-//     rating: number;
-//     comment: string;
-//     user_name?: string;
-//     created_at: string;
-// }
-
 export interface Review {
     id: string;
     rating: number;
@@ -128,6 +120,7 @@ export interface FeaturedListing {
 
 // --- Interface Property principale ---
 export interface Property {
+    created_at: string | number | Date;
     images?: Array<{ id?: number; url: string; alt?: string }>;
     id: string;                     // UUID
     agency_id: string | null;
