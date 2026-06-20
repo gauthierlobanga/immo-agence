@@ -35,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->default()
-             ->brandLogo(function () {
+            ->brandLogo(function () {
                 $settings = app(SettingApp::class);
                 $logoUrl = $settings->logoUrl();
                 $name = $settings->name ?: config('app.name');

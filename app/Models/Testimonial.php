@@ -55,6 +55,4 @@ class Testimonial extends Model implements HasMedia
     {
         return $this->getFirstMediaUrl('client_photo') ?: null;
     }
-
-
 }

@@ -23,7 +23,7 @@ class AgencyUser extends Pivot
      */
     protected $keyType = 'string';
 
-     protected $table = 'agency_user';
+    protected $table = 'agency_user';
 
     protected $fillable = ['agency_id', 'user_id'];
 

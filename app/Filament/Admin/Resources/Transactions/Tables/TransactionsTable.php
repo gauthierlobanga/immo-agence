@@ -53,7 +53,7 @@ class TransactionsTable
                         'success' => 'completed',
                         'danger' => 'cancelled',
                     ])
-                    ->formatStateUsing(fn ($state) => match($state) {
+                    ->formatStateUsing(fn ($state) => match ($state) {
                         'in_progress' => 'En cours',
                         'completed' => 'Finalisée',
                         'cancelled' => 'Annulée',

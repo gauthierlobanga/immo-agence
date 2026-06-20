@@ -600,7 +600,6 @@ function Entreprise(_props: Props) {
     );
 }
 
-
 Entreprise.layout = (page: React.ReactNode) => (
     <AppPublicLayout>{page}</AppPublicLayout>
 );

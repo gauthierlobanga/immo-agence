@@ -16,12 +16,36 @@ import {
 } from 'lucide-react';
 
 const services = [
-    { icon: Key, title: 'Gestion Locative', desc: 'Confiez-nous la gestion de vos biens en toute sérénité.' },
-    { icon: ClipboardCheck, title: 'Expertise Immobilière', desc: 'Estimation précise de la valeur vénale de vos propriétés.' },
-    { icon: FileText, title: 'Rédaction de Bail', desc: 'Sécurisez vos locations avec des contrats conformes.' },
-    { icon: ShieldCheck, title: 'Assurance GLI', desc: 'Garantie Loyers Impayés pour protéger vos revenus.' },
-    { icon: Users, title: 'Syndic de Copropriété', desc: 'Une gestion transparente et efficace de vos immeubles.' },
-    { icon: Calculator, title: 'Simulateur de Rentabilité', desc: 'Calculez le rendement de vos investissements locatifs.' },
+    {
+        icon: Key,
+        title: 'Gestion Locative',
+        desc: 'Confiez-nous la gestion de vos biens en toute sérénité.',
+    },
+    {
+        icon: ClipboardCheck,
+        title: 'Expertise Immobilière',
+        desc: 'Estimation précise de la valeur vénale de vos propriétés.',
+    },
+    {
+        icon: FileText,
+        title: 'Rédaction de Bail',
+        desc: 'Sécurisez vos locations avec des contrats conformes.',
+    },
+    {
+        icon: ShieldCheck,
+        title: 'Assurance GLI',
+        desc: 'Garantie Loyers Impayés pour protéger vos revenus.',
+    },
+    {
+        icon: Users,
+        title: 'Syndic de Copropriété',
+        desc: 'Une gestion transparente et efficace de vos immeubles.',
+    },
+    {
+        icon: Calculator,
+        title: 'Simulateur de Rentabilité',
+        desc: 'Calculez le rendement de vos investissements locatifs.',
+    },
 ];
 
 const solutions = [
@@ -57,7 +81,8 @@ export function ProductsMenuContent() {
                             Accompagnement Immobilier Complet
                         </h4>
                         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                            Des solutions sur mesure pour chaque étape de votre projet.
+                            Des solutions sur mesure pour chaque étape de votre
+                            projet.
                         </p>
 
                         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -100,7 +125,9 @@ export function ProductsMenuContent() {
                                             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
                                                 <sol.icon className="h-4 w-4" />
                                             </div>
-                                            <span className="font-medium">{sol.label}</span>
+                                            <span className="font-medium">
+                                                {sol.label}
+                                            </span>
                                         </Link>
                                     </li>
                                 ))}
@@ -115,7 +142,8 @@ export function ProductsMenuContent() {
                                     Estimez votre bien
                                 </p>
                                 <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
-                                    Obtenez une estimation gratuite en 2 minutes.
+                                    Obtenez une estimation gratuite en 2
+                                    minutes.
                                 </p>
                                 <Link
                                     href={'#'}

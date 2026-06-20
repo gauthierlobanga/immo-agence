@@ -30,7 +30,7 @@ class AgencyController extends Controller
     public function show(Agency $agency)
     {
         $agency->loadCount('properties');
-        
+
         $properties = $agency->properties()
             ->with(['commune', 'media'])
             ->available()

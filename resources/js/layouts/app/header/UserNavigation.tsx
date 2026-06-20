@@ -60,7 +60,7 @@ export function UserNavigation({ user }: UserNavigationProps) {
                     variant="ghost"
                     className={cn(
                         'group relative h-11 rounded-xl px-1.5 pr-3 transition-all duration-300',
-                        'border border-slate-200/80 bg-white/80 ',
+                        'border border-slate-200/80 bg-white/80',
                         'hover:border-teal-300 hover:bg-white',
                         'dark:border-slate-700 dark:bg-slate-900/80',
                         'dark:hover:border-teal-700 dark:hover:bg-slate-900',
@@ -79,7 +79,6 @@ export function UserNavigation({ user }: UserNavigationProps) {
                         <span className="hidden text-sm font-medium text-slate-700 sm:inline dark:text-slate-200">
                             {userName}
                         </span>
-
                     </div>
                 </Button>
             </DropdownMenuTrigger>

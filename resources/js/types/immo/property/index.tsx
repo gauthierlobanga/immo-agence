@@ -5,9 +5,9 @@ import type { Key } from 'react';
 // --- Media Spatie (images/vidéos) ---
 export interface MediaItem {
     id: number;
-    url: string;           // URL du média original
-    thumb?: string;        // URL miniature (conversion 'thumb')
-    medium?: string;       // URL taille moyenne (conversion 'medium')
+    url: string; // URL du média original
+    thumb?: string; // URL miniature (conversion 'thumb')
+    medium?: string; // URL taille moyenne (conversion 'medium')
     mime_type: string;
     name: string;
     size: number;
@@ -122,7 +122,7 @@ export interface FeaturedListing {
 export interface Property {
     created_at: string | number | Date;
     images?: Array<{ id?: number; url: string; alt?: string }>;
-    id: string;                     // UUID
+    id: string; // UUID
     agency_id: string | null;
     agent_id: string | null;
     title: string;
@@ -132,22 +132,22 @@ export interface Property {
     currency: string;
     price_per_sqm: number | null;
     price_negotiable: boolean;
-    type: string;                   // 'apartment', 'house', etc.
+    type: string; // 'apartment', 'house', etc.
     subtype?: string;
-    status: string;                 // 'available', 'sold', 'rented', etc.
+    status: string; // 'available', 'sold', 'rented', etc.
     bedrooms: number;
     bathrooms: number;
     living_rooms: number;
     total_rooms: number;
-    area: number;                   // surface habitable (m²)
+    area: number; // surface habitable (m²)
     address: string;
     land_area: number | null;
     floor_number: number | null;
     total_floors: number | null;
     year_built: number | null;
-    condition: string | null;       // 'new', 'good', 'to renovate'
+    condition: string | null; // 'new', 'good', 'to renovate'
     energy_class: string | null;
-    facing: string | null;          // 'north', 'south', etc.
+    facing: string | null; // 'north', 'south', etc.
     availability_date: string | null;
     property_tax: number | null;
     charges: number | null;
@@ -158,7 +158,7 @@ export interface Property {
     has_swimming_pool: boolean;
     has_garden: boolean;
     has_security: boolean;
-    features: string[] | null;      // JSON casté en tableau
+    features: string[] | null; // JSON casté en tableau
     virtual_tour_url: string | null;
     publication_date: string;
     expires_at: string | null;
@@ -189,10 +189,10 @@ export interface Property {
     featuredListings?: FeaturedListing[];
 
     // Accesseurs Spatie Media Library
-    main_image?: string;            // URL image principale (medium)
-    gallery?: string[];             // URLs images (medium)
+    main_image?: string; // URL image principale (medium)
+    gallery?: string[]; // URLs images (medium)
     videos?: MediaItem[];
-    documents_media?: MediaItem[];  // fichiers PDF/DOC
+    documents_media?: MediaItem[]; // fichiers PDF/DOC
 
     // Accesseur calculé
     price_in_cdf?: number;

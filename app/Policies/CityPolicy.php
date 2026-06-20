@@ -84,5 +84,4 @@ class CityPolicy
     {
         return $authUser->can('Reorder City');
     }
-
 }

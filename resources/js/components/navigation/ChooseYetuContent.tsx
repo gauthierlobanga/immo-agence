@@ -97,7 +97,7 @@ export function ChooseYetuContent() {
                         <h3 className="mb-6 text-sm font-bold tracking-wider text-slate-400 uppercase dark:text-slate-500">
                             Ressources
                         </h3>
-                        
+
                         <div className="space-y-2">
                             {quickLinks.map((link) => (
                                 <Link
@@ -117,9 +117,12 @@ export function ChooseYetuContent() {
 
                         {/* Petite Bannière CTA compacte */}
                         <div className="mt-8 rounded-2xl bg-teal-600 p-5 text-white shadow-lg shadow-teal-600/20">
-                            <h4 className="text-sm font-bold">Vendre votre bien ?</h4>
+                            <h4 className="text-sm font-bold">
+                                Vendre votre bien ?
+                            </h4>
                             <p className="mt-1 text-xs text-teal-50/80">
-                                Confiez-nous votre annonce pour une visibilité maximale.
+                                Confiez-nous votre annonce pour une visibilité
+                                maximale.
                             </p>
                             <Link
                                 href="#"

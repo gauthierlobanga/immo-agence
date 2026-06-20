@@ -1,4 +1,3 @@
-
 /**
  *
  */
@@ -97,7 +96,6 @@ export interface SimpleTag {
     id: number;
     name?: string;
 }
-
 
 export interface Post {
     is_liked: boolean;

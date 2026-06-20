@@ -1,6 +1,14 @@
 //src/components/app-header.tsx
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search, Home, Building2 } from 'lucide-react';
+import {
+    BookOpen,
+    Folder,
+    LayoutGrid,
+    Menu,
+    Search,
+    Home,
+    Building2,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import AppLogoIcon from '@/components/app-logo-icon';
 import { Breadcrumbs } from '@/components/breadcrumbs';
@@ -83,7 +91,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
         },
     ];
 
-     // Extraire et typer correctement les valeurs
+    // Extraire et typer correctement les valeurs
     const user = auth.user;
 
     // Sécuriser l'URL de l'avatar

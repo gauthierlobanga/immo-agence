@@ -1,4 +1,3 @@
-
 //src/components/app-shell.tsx
 import { usePage } from '@inertiajs/react';
 import type { ReactNode } from 'react';

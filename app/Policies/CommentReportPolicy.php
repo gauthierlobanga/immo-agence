@@ -84,5 +84,4 @@ class CommentReportPolicy
     {
         return $authUser->can('Reorder CommentReport');
     }
-
 }

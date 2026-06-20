@@ -51,7 +51,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                     autoComplete="email"
                                     placeholder="vous@exemple.com"
                                     className={cn(
-                                        'h-11 rounded-xl border-slate-200 bg-white/80 text-slate-900 placeholder:text-slate-400 shadow-sm backdrop-blur transition-all duration-200',
+                                        'h-11 rounded-xl border-slate-200 bg-white/80 text-slate-900 shadow-sm backdrop-blur transition-all duration-200 placeholder:text-slate-400',
                                         'hover:border-teal-300 hover:bg-white',
                                         'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
                                         'dark:border-slate-700 dark:bg-slate-900/80 dark:text-white dark:placeholder:text-slate-500',
@@ -160,5 +160,6 @@ export default function Login({ status, canResetPassword }: Props) {
 
 Login.layout = {
     title: 'Connexion à votre compte',
-    description: 'Entrez votre email et votre mot de passe pour accéder à votre espace.',
+    description:
+        'Entrez votre email et votre mot de passe pour accéder à votre espace.',
 };

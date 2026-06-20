@@ -2,10 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\AgencyUser;
-use App\Models\Property;
-use App\Models\Subscription;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +16,7 @@ use Spatie\Tags\HasTags;
 
 class Agency extends Model implements HasMedia
 {
-    use HasFactory,HasTags, SoftDeletes, HasUuids, InteractsWithMedia;
+    use HasFactory,HasTags, HasUuids, InteractsWithMedia, SoftDeletes;
 
     /**
      * Indique que les clés primaires ne sont pas auto-incrémentées.
@@ -63,7 +59,7 @@ class Agency extends Model implements HasMedia
      */
     protected $casts = [
         'is_active' => 'boolean',
-        'metadata'   => 'array',
+        'metadata' => 'array',
     ];
 
     /*
@@ -176,7 +172,7 @@ class Agency extends Model implements HasMedia
 
         static::creating(function ($agency) {
             if (empty($agency->slug)) {
-                $agency->slug = Str::slug($agency->name) . '-' . Str::random(6);
+                $agency->slug = Str::slug($agency->name).'-'.Str::random(6);
             }
         });
     }

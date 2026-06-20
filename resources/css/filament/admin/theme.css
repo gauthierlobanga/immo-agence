@@ -3,8 +3,6 @@
 @source '../../../../app/Filament/Admin/**/*';
 @source '../../../../resources/views/filament/admin/**/*';
 
-
-
 /* Cache le thumb par défaut et prépare la transition */
 ::-webkit-scrollbar {
     width: 6px;

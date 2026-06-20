@@ -84,5 +84,4 @@ class AvenuePolicy
     {
         return $authUser->can('Reorder Avenue');
     }
-
 }

@@ -84,5 +84,4 @@ class CommentMentionPolicy
     {
         return $authUser->can('Reorder CommentMention');
     }
-
 }

@@ -84,5 +84,4 @@ class OfferPolicy
     {
         return $authUser->can('Reorder Offer');
     }
-
 }

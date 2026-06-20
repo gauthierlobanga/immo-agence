@@ -31,5 +31,4 @@ class AboutController extends Controller
             'platformStats' => $platformStats,
         ]);
     }
-
 }

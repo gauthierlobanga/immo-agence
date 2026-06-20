@@ -1,16 +1,22 @@
 import { createInertiaApp } from '@inertiajs/react';
 import { configureEcho } from '@laravel/echo-react';
+import { route as ziggyRoute } from 'ziggy-js';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import { Ziggy } from '@/ziggy';
+
+Object.assign(globalThis, {
+    Ziggy,
+    route: ziggyRoute,
+});
 
 configureEcho({
     broadcaster: 'reverb',
 });
-
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

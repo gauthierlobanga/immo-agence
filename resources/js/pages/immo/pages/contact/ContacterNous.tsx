@@ -276,7 +276,7 @@ function ContactSection() {
 }
 
 ContactSection.layout = (page: React.ReactNode) => (
-    <AppPublicLayout >{page}</AppPublicLayout>
+    <AppPublicLayout>{page}</AppPublicLayout>
 );
 
 export default ContactSection;

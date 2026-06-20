@@ -124,26 +124,31 @@ function Testimonials() {
             <Head title="Témoignages" />
             <section className="py-12 lg:py-20">
                 <div className="container mx-auto px-4">
-                    <section className="relative overflow-hidden bg-linear-to-br from-primary/20 via-primary/10 to-background py-20 lg:py-20 rounded-3xl mb-12">
+                    <section className="relative mb-12 overflow-hidden rounded-3xl bg-linear-to-br from-primary/20 via-primary/10 to-background py-20 lg:py-20">
                         <div className="bg-grid-pattern absolute inset-0 opacity-[0.03]" />
                         <div className="mx-auto max-w-7xl px-4 text-center">
-                            <Badge variant="secondary" className="mb-4 px-4 py-1.5 text-sm">
+                            <Badge
+                                variant="secondary"
+                                className="mb-4 px-4 py-1.5 text-sm"
+                            >
                                 <Star className="mr-2 h-3.5 w-3.5 fill-current" />
                                 Témoignages
                             </Badge>
-                            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl text-slate-900 dark:text-white">
+                            <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl dark:text-white">
                                 Ce que nos clients
                                 <span className="mt-2 block bg-linear-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
                                     disent de nous
                                 </span>
                             </h1>
                             <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-                                La satisfaction de nos clients est notre priorité. Découvrez les retours d'expérience de ceux qui nous ont fait confiance.
+                                La satisfaction de nos clients est notre
+                                priorité. Découvrez les retours d'expérience de
+                                ceux qui nous ont fait confiance.
                             </p>
                         </div>
                     </section>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                         {testimonials.map((testimonial, index) => (
                             <TestimonialCard key={index} item={testimonial} />
                         ))}
@@ -153,7 +158,6 @@ function Testimonials() {
         </>
     );
 }
-
 
 Testimonials.layout = (page: React.ReactNode) => (
     <AppPublicLayout>{page}</AppPublicLayout>

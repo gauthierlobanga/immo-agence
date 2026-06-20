@@ -75,5 +75,5 @@ export default function ConfirmPassword() {
 ConfirmPassword.layout = {
     title: 'Confirmer le mot de passe',
     description:
-        'Ceci est une zone sécurisée de l\'application. Veuillez confirmer votre mot de passe avant de continuer.',
+        "Ceci est une zone sécurisée de l'application. Veuillez confirmer votre mot de passe avant de continuer.",
 };

@@ -10,7 +10,13 @@ import { CentreAcheteurs } from '@/components/navigation/CentreAcheteurs';
 import { ChooseYetuContent } from '@/components/navigation/ChooseYetuContent';
 import { ProductsMenuContent } from '@/components/navigation/ProductsMenuContent';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import {
+    Sheet,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/components/ui/sheet';
 import { UserInfo } from '@/components/user-info';
 import { login, logout } from '@/routes';
 import type { BreadcrumbItem, NavItem } from '@/types';
@@ -63,7 +69,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                 href={route('home')}
                                 className="flex items-center gap-2 transition-transform hover:scale-[1.02] active:scale-95"
                             >
-                                <AppLogo/>
+                                <AppLogo />
                             </Link>
                         </div>
 
@@ -171,7 +177,9 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                         )}
 
                                         <div className="space-y-1">
-                                            <MobileNavigation items={navItems} />
+                                            <MobileNavigation
+                                                items={navItems}
+                                            />
                                         </div>
 
                                         <div className="mt-6 border-t border-slate-100 px-4 pt-6 dark:border-slate-800">
@@ -216,7 +224,9 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                                     className="w-full bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
                                                 >
                                                     <Link
-                                                        href={route('dashboard')}
+                                                        href={route(
+                                                            'dashboard',
+                                                        )}
                                                     >
                                                         Tableau de bord
                                                     </Link>

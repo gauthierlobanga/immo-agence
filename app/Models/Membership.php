@@ -13,7 +13,7 @@ use Spatie\Tags\HasTags;
 #[Fillable(['team_id', 'user_id', 'role'])]
 class Membership extends Pivot
 {
-     use HasUuids,HasTags;
+    use HasTags,HasUuids;
 
     /**
      * Indique que les clés primaires ne sont pas auto-incrémentées
@@ -28,6 +28,7 @@ class Membership extends Pivot
      * @var string
      */
     protected $keyType = 'string';
+
     /**
      * The table associated with the model.
      *

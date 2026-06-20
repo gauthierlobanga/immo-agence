@@ -2,7 +2,6 @@
 
 namespace App\Filament\Admin\Resources\Agencies\Schemas;
 
-use Filament\Forms;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
@@ -34,7 +33,7 @@ class AgencyForm
                                             ->required()
                                             ->maxLength(255)
                                             ->reactive()
-                                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state) . '-' . Str::random(6))),
+                                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state).'-'.Str::random(6))),
 
                                         TextInput::make('slug')
                                             ->label('Slug')

@@ -84,5 +84,4 @@ class PostCategoryPivotPolicy
     {
         return $authUser->can('Reorder PostCategoryPivot');
     }
-
 }

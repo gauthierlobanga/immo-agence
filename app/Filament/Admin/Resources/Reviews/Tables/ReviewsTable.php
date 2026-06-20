@@ -9,7 +9,6 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Notifications\Notification;
-use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -79,7 +78,7 @@ class ReviewsTable
                     ->label('Approuver')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
-                    ->visible(fn (Review $record) => !$record->is_approved)
+                    ->visible(fn (Review $record) => ! $record->is_approved)
                     ->action(function (Review $record) {
                         $record->update(['is_approved' => true]);
                         Notification::make()
@@ -105,7 +104,7 @@ class ReviewsTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     // Approbation en masse
-                   BulkAction::make('approve')
+                    BulkAction::make('approve')
                         ->label('Approuver la sélection')
                         ->icon('heroicon-o-check-circle')
                         ->color('success')

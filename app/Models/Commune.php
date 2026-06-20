@@ -11,7 +11,7 @@ use Spatie\Tags\HasTags;
 
 class Commune extends Model
 {
-     use HasUuids,HasTags;
+    use HasTags,HasUuids;
 
     /**
      * Indique que les clés primaires ne sont pas auto-incrémentées

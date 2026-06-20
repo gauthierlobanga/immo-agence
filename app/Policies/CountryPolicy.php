@@ -84,5 +84,4 @@ class CountryPolicy
     {
         return $authUser->can('Reorder Country');
     }
-
 }

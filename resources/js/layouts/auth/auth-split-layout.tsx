@@ -84,7 +84,7 @@ export default function AuthSplitLayout({
                                     <item.icon className="h-4 w-4" />
                                 </div>
                                 <div>
-                                    <p className="text-lg font-bold leading-none">
+                                    <p className="text-lg leading-none font-bold">
                                         {item.label}
                                     </p>
                                     <p className="mt-1 text-xs text-white/60">
@@ -118,9 +118,7 @@ export default function AuthSplitLayout({
                         <footer className="flex items-center gap-3">
                             <div className="h-8 w-8 rounded-full bg-teal-500/40" />
                             <div>
-                                <p className="text-sm font-medium">
-                                    Marie K.
-                                </p>
+                                <p className="text-sm font-medium">Marie K.</p>
                                 <p className="text-xs text-white/50">
                                     Cliente vérifiée
                                 </p>
@@ -147,7 +145,7 @@ export default function AuthSplitLayout({
             </div>
 
             {/* Colonne droite – inchangée */}
-            <div className="flex flex-col items-center justify-center bg-white px-4 py-12 dark:bg-slate-950 sm:px-6 lg:px-8">
+            <div className="flex flex-col items-center justify-center bg-white px-4 py-12 sm:px-6 lg:px-8 dark:bg-slate-950">
                 <Link
                     href={home()}
                     className="mb-8 flex items-center justify-center lg:hidden"

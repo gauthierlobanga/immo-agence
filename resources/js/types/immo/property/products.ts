@@ -7,10 +7,10 @@ export interface PlatformStats {
     supportResponseTime?: string;
 
     // Statistiques spécifiques à l'immobilier
-    propertiesCount?: number;        // nb total de propriétés
-    transactionsCount?: number;     // transactions réussies
-    agenciesCount?: number;         // nombre d'agences
-    countriesServed?: number;       // pays couverts
+    propertiesCount?: number; // nb total de propriétés
+    transactionsCount?: number; // transactions réussies
+    agenciesCount?: number; // nombre d'agences
+    countriesServed?: number; // pays couverts
 
     // Contenu dynamique (éditable via Spatie Settings)
     testimonials?: Array<{
@@ -32,12 +32,12 @@ export interface PlatformStats {
 }
 
 export interface RecentProperty {
-    id: string;              // UUID
-    title: string;           // titre de la propriété
+    id: string; // UUID
+    title: string; // titre de la propriété
     slug: string;
     price: number;
-    status: string;          // "available", "sold", "rented"...
-    image: string;           // URL image principale (main_image)
-    edit_url: string;        // route d'édition dans l'admin
-    views_count?: number;    // optionnel, pour afficher la popularité
+    status: string; // "available", "sold", "rented"...
+    image: string; // URL image principale (main_image)
+    edit_url: string; // route d'édition dans l'admin
+    views_count?: number; // optionnel, pour afficher la popularité
 }

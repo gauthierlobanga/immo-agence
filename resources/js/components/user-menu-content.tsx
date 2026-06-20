@@ -1,10 +1,6 @@
 // resources/js/components/user-menu-content.tsx
 import { Link, router } from '@inertiajs/react';
-import {
-    LayoutDashboard,
-    LogOut,
-    User2Icon,
-} from 'lucide-react';
+import { LayoutDashboard, LogOut, User2Icon } from 'lucide-react';
 import {
     DropdownMenuGroup,
     DropdownMenuItem,
@@ -71,7 +67,7 @@ export function UserMenuContent({ user }: Props) {
             {/* Déconnexion */}
             <DropdownMenuItem asChild>
                 <Link
-                    className="block cursor-pointer w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition-all duration-200 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+                    className="block w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition-all duration-200 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
                     href={logout()}
                     as="button"
                     onClick={handleLogout}

@@ -11,5 +11,4 @@ class CookieController extends Controller
     {
         return Inertia::render('immo/pages/cookies/Cookies');
     }
-
 }

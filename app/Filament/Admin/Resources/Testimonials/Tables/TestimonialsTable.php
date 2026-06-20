@@ -21,7 +21,7 @@ class TestimonialsTable
                     ->collection('client_photo')
                     ->conversion('thumb')
                     ->circular()
-                    ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name=' . urlencode($record->client_name) . '&background=F59E0B&color=FFFFFF&size=128&bold=true'),
+                    ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name='.urlencode($record->client_name).'&background=F59E0B&color=FFFFFF&size=128&bold=true'),
 
                 TextColumn::make('client_name')
                     ->label('Client')

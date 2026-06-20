@@ -26,14 +26,14 @@ use Spatie\Tags\HasTags;
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasMedia, HasName, PasskeyUser
 {
     use HasFactory,
+        HasTags,
+        HasTeams,
+        HasUuids,
+        InteractsWithMedia,
         Notifiable,
         PasskeyAuthenticatable,
-        TwoFactorAuthenticatable,
-        HasTeams,
-        InteractsWithMedia,
-        HasTags,
-        HasUuids,
-        SoftDeletes;
+        SoftDeletes,
+        TwoFactorAuthenticatable;
 
     /**
      * Indique que les clés primaires ne sont pas auto-incrémentées.
@@ -87,13 +87,13 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasMedia,
     protected function casts(): array
     {
         return [
-            'email_verified_at'        => 'datetime',
-            'password'                 => 'hashed',
-            'two_factor_confirmed_at'  => 'datetime',
-            'is_active'                => 'boolean',
-            'is_agent'                 => 'boolean',
-            'last_login_at'            => 'datetime',
-            'metadata'                 => 'array',
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'two_factor_confirmed_at' => 'datetime',
+            'is_active' => 'boolean',
+            'is_agent' => 'boolean',
+            'last_login_at' => 'datetime',
+            'metadata' => 'array',
         ];
     }
 
@@ -157,7 +157,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasMedia,
         return $this->hasMany(Post::class, 'user_id');
     }
 
-        /*
+    /*
     |--------------------------------------------------------------------------
     | Media Library
     |--------------------------------------------------------------------------
@@ -188,7 +188,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasMedia,
             ->optimize()
             ->performOnCollections('avatar');
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -238,8 +237,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasMedia,
         // Fallback : génération par initiales
         $initials = $this->initials;
 
-        return 'https://ui-avatars.com/api/?name=' . urlencode($initials)
-            . '&background=F59E0B&color=FFFFFF&size=128&bold=true';
+        return 'https://ui-avatars.com/api/?name='.urlencode($initials)
+            .'&background=F59E0B&color=FFFFFF&size=128&bold=true';
     }
 
     public function getInitialsAttribute(): string
@@ -248,7 +247,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasMedia,
         $parts = preg_split('/\s+/', $name, -1, PREG_SPLIT_NO_EMPTY);
 
         return collect($parts)
-            ->map(fn($part) => strtoupper(mb_substr($part, 0, 1)))
+            ->map(fn ($part) => strtoupper(mb_substr($part, 0, 1)))
             ->take(2)
             ->implode('');
     }

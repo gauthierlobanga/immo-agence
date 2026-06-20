@@ -57,19 +57,19 @@ const profiles = [
         icon: Users,
         label: 'Primo-accédants',
         description: 'Conseils pour votre premier achat immobilier.',
-        href: "#",
+        href: '#',
     },
     {
         icon: Building2,
         label: 'Investisseurs',
         description: 'Optimisez votre rentabilité locative.',
-        href: "#",
+        href: '#',
     },
     {
         icon: Briefcase,
         label: 'Professionnels',
         description: 'Bureaux et locaux commerciaux adaptés.',
-        href: "#",
+        href: '#',
     },
 ];
 
@@ -106,7 +106,8 @@ export function CentreAcheteurs() {
                             Trouvez le bien de vos rêves en toute simplicité
                         </h3>
                         <p className="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                            Tous les outils pour réussir votre achat ou votre location immobilière.
+                            Tous les outils pour réussir votre achat ou votre
+                            location immobilière.
                         </p>
                     </div>
                     <div className="hidden items-center gap-2 lg:flex">

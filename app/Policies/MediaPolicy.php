@@ -84,5 +84,4 @@ class MediaPolicy
     {
         return $authUser->can('Reorder Media');
     }
-
 }

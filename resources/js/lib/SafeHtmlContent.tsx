@@ -7,7 +7,11 @@ interface SafeHtmlContentProps {
     sanitize?: boolean;
 }
 
-export function SafeHtmlContent({ html, className, sanitize = true }: SafeHtmlContentProps) {
+export function SafeHtmlContent({
+    html,
+    className,
+    sanitize = true,
+}: SafeHtmlContentProps) {
     const cleanHtml = sanitize ? DOMPurify.sanitize(html) : html;
 
     return (

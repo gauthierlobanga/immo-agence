@@ -14,7 +14,6 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
-
 class AgenciesTable
 {
     public static function configure(Table $table): Table
@@ -25,7 +24,7 @@ class AgenciesTable
                     ->collection('logo')
                     ->conversion('thumb')
                     ->circular()
-                    ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name=' . urlencode($record->name) . '&background=F59E0B&color=FFFFFF&size=128&bold=true'),
+                    ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name='.urlencode($record->name).'&background=F59E0B&color=FFFFFF&size=128&bold=true'),
 
                 TextColumn::make('name')
                     ->label('Agence')

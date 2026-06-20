@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Immo\Central\Pages\Review;
 
 use App\Http\Controllers\Controller;
-use Inertia\Inertia;
 use App\Models\Property;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -14,8 +13,8 @@ class ReviewController extends Controller
     public function store(Request $request, Property $property)
     {
         $request->validate([
-            'rating'  => 'required|integer|min:1|max:5',
-            'title'   => 'nullable|string|max:255',
+            'rating' => 'required|integer|min:1|max:5',
+            'title' => 'nullable|string|max:255',
             'comment' => 'required|string|min:10|max:1000',
         ]);
 
@@ -29,10 +28,10 @@ class ReviewController extends Controller
         }
 
         $property->reviews()->create([
-            'user_id'     => Auth::id(),
-            'rating'      => $request->rating,
-            'title'       => $request->title,
-            'comment'     => $request->comment,
+            'user_id' => Auth::id(),
+            'rating' => $request->rating,
+            'title' => $request->title,
+            'comment' => $request->comment,
             'is_approved' => false,
         ]);
 

@@ -21,7 +21,7 @@ export default function AuthCardLayout({
     description?: string;
 }>) {
     return (
-        <div className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-slate-50 px-4 py-12 dark:bg-slate-950 sm:px-6 lg:px-8">
+        <div className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-slate-50 px-4 py-12 sm:px-6 lg:px-8 dark:bg-slate-950">
             {/* Cercles décoratifs animés */}
             <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
                 <div className="absolute -top-40 -right-40 h-125 w-125 rounded-full bg-teal-200/20 blur-[120px] dark:bg-teal-800/10" />

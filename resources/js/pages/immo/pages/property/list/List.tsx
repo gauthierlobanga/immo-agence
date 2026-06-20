@@ -531,7 +531,7 @@ function PropertyList({ properties, filters, communes, propertyTypes }: Props) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-7xl"
+                            className="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl"
                         >
                             Découvrez des lieux <br />
                             <span>extraordinaires.</span>

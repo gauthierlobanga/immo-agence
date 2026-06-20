@@ -12,7 +12,6 @@ export default function AppPublicLayout({
     breadcrumbs,
     ...props
 }: AppLayoutProps) {
-
     return (
         <AppLayoutTemplate breadcrumbs={breadcrumbs} {...props}>
             {children}

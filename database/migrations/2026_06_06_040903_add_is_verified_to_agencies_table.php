@@ -10,16 +10,16 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up()
-{
-    Schema::table('agencies', function (Blueprint $table) {
-        $table->boolean('is_verified')->default(false)->after('id'); // ou après une autre colonne
-    });
-}
+    {
+        Schema::table('agencies', function (Blueprint $table) {
+            $table->boolean('is_verified')->default(false)->after('id'); // ou après une autre colonne
+        });
+    }
 
-public function down()
-{
-    Schema::table('agencies', function (Blueprint $table) {
-        $table->dropColumn('is_verified');
-    });
-}
+    public function down()
+    {
+        Schema::table('agencies', function (Blueprint $table) {
+            $table->dropColumn('is_verified');
+        });
+    }
 };

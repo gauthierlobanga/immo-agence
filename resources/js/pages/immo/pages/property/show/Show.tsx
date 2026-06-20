@@ -103,16 +103,16 @@ function Lightbox({
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'ArrowLeft') {
-prev();
-}
+            prev();
+        }
 
         if (e.key === 'ArrowRight') {
-next();
-}
+            next();
+        }
 
         if (e.key === 'Escape') {
-onClose();
-}
+            onClose();
+        }
     };
 
     return (
@@ -154,8 +154,9 @@ onClose();
 
             <button
                 onClick={(e) => {
- e.stopPropagation(); prev();
-}}
+                    e.stopPropagation();
+                    prev();
+                }}
                 className="absolute top-1/2 left-8 z-10 -translate-y-1/2 rounded-full bg-white/10 p-4 text-white backdrop-blur-lg transition hover:bg-white/20 disabled:opacity-30"
                 disabled={current === 0}
             >
@@ -163,27 +164,35 @@ onClose();
             </button>
             <button
                 onClick={(e) => {
- e.stopPropagation(); next();
-}}
+                    e.stopPropagation();
+                    next();
+                }}
                 className="absolute top-1/2 right-8 z-10 -translate-y-1/2 rounded-full bg-white/10 p-4 text-white backdrop-blur-lg transition hover:bg-white/20 disabled:opacity-30"
                 disabled={current === images.length - 1}
             >
                 <ChevronRightIcon className="h-8 w-8" />
             </button>
 
-            <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 gap-3 overflow-x-auto rounded-[2rem] bg-white/10 p-3 backdrop-blur-lg max-w-[90vw] no-scrollbar">
+            <div className="absolute bottom-8 left-1/2 z-10 no-scrollbar flex max-w-[90vw] -translate-x-1/2 gap-3 overflow-x-auto rounded-[2rem] bg-white/10 p-3 backdrop-blur-lg">
                 {images.map((img, idx) => (
                     <button
                         key={idx}
                         onClick={(e) => {
- e.stopPropagation(); goTo(idx);
-}}
+                            e.stopPropagation();
+                            goTo(idx);
+                        }}
                         className={cn(
-                            "h-16 w-24 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-300",
-                            idx === current ? "border-teal-500 scale-110 opacity-100 shadow-lg shadow-teal-500/50" : "border-transparent opacity-40 hover:opacity-100"
+                            'h-16 w-24 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-300',
+                            idx === current
+                                ? 'scale-110 border-teal-500 opacity-100 shadow-lg shadow-teal-500/50'
+                                : 'border-transparent opacity-40 hover:opacity-100',
                         )}
                     >
-                        <img src={img.url} alt="" className="h-full w-full object-cover" />
+                        <img
+                            src={img.url}
+                            alt=""
+                            className="h-full w-full object-cover"
+                        />
                     </button>
                 ))}
             </div>
@@ -219,7 +228,9 @@ function PropertyShow({ property, similarProperties }: Props) {
             preserveScroll: true,
             onSuccess: () => {
                 visitForm.reset();
-                toast.success('Demande envoyée !', { style: getToastStyle('success') });
+                toast.success('Demande envoyée !', {
+                    style: getToastStyle('success'),
+                });
             },
         });
     };
@@ -230,7 +241,9 @@ function PropertyShow({ property, similarProperties }: Props) {
             preserveScroll: true,
             onSuccess: () => {
                 offerForm.reset();
-                toast.success('Offre envoyée !', { style: getToastStyle('success') });
+                toast.success('Offre envoyée !', {
+                    style: getToastStyle('success'),
+                });
             },
         });
     };
@@ -246,7 +259,10 @@ function PropertyShow({ property, similarProperties }: Props) {
 
     const allImages: { url: string | undefined; alt: string }[] = [
         { url: p.main_image, alt: p.title },
-        ...(p.images || []).map(img => ({ url: img.url, alt: img.alt || p.title }))
+        ...(p.images || []).map((img) => ({
+            url: img.url,
+            alt: img.alt || p.title,
+        })),
     ];
 
     const openLightbox = (index: number) => {
@@ -257,7 +273,7 @@ function PropertyShow({ property, similarProperties }: Props) {
     const RichContentText = ({ content }: { content: string }) => {
         return (
             <div
-                className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-black prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-emerald"
+                className="prose prose-lg dark:prose-invert prose-headings:font-black prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-emerald max-w-none"
                 dangerouslySetInnerHTML={{ __html: content }}
             />
         );
@@ -272,7 +288,7 @@ function PropertyShow({ property, similarProperties }: Props) {
                 <motion.img
                     initial={{ scale: 1.1 }}
                     animate={{ scale: 1 }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
+                    transition={{ duration: 1.5, ease: 'easeOut' }}
                     src={p.main_image}
                     alt={p.title}
                     className="absolute inset-0 h-full w-full object-cover"
@@ -289,18 +305,22 @@ function PropertyShow({ property, similarProperties }: Props) {
                             <div className="space-y-4">
                                 <div className="flex gap-2">
                                     <Badge className="rounded-full bg-teal-600 px-4 py-1.5 text-sm font-bold text-white shadow-xl shadow-teal-500/20">
-                                        {p.status === 'available' ? 'Exclusivité' : p.status}
+                                        {p.status === 'available'
+                                            ? 'Exclusivité'
+                                            : p.status}
                                     </Badge>
                                     <Badge className="rounded-full bg-white/10 px-4 py-1.5 text-sm font-bold text-white backdrop-blur-md">
                                         {p.type}
                                     </Badge>
                                 </div>
-                                <h1 className="text-4xl font-black tracking-tight text-white md:text-6xl lg:text-7xl">
+                                <h1 className="text-4xl font-semibold tracking-tight text-white md:text-6xl lg:text-6xl">
                                     {p.title}
                                 </h1>
                                 <div className="flex items-center gap-2 text-xl text-slate-300">
                                     <MapPin className="h-6 w-6 text-teal-400" />
-                                    <span>{p.address}, {p.city?.name}</span>
+                                    <span>
+                                        {p.address}, {p.city?.name}
+                                    </span>
                                 </div>
                             </div>
 
@@ -309,14 +329,28 @@ function PropertyShow({ property, similarProperties }: Props) {
                                     {formatPrice(p.price, p.currency)}
                                 </div>
                                 <div className="flex gap-3">
-                                    <Button size="icon" variant="outline" className="h-14 w-14 rounded-2xl border-white/20 bg-white/10 text-white backdrop-blur-md hover:bg-white/20">
+                                    <Button
+                                        size="icon"
+                                        variant="outline"
+                                        className="h-14 w-14 rounded-2xl border-white/20 bg-white/10 text-white backdrop-blur-md hover:bg-white/20"
+                                    >
                                         <Heart className="h-6 w-6" />
                                     </Button>
-                                    <Button size="icon" variant="outline" className="h-14 w-14 rounded-2xl border-white/20 bg-white/10 text-white backdrop-blur-md hover:bg-white/20">
+                                    <Button
+                                        size="icon"
+                                        variant="outline"
+                                        className="h-14 w-14 rounded-2xl border-white/20 bg-white/10 text-white backdrop-blur-md hover:bg-white/20"
+                                    >
                                         <Share2 className="h-6 w-6" />
                                     </Button>
-                                    <Button size="lg" className="h-14 rounded-2xl bg-teal-600 px-8 text-lg font-bold text-white shadow-2xl shadow-teal-500/20 hover:bg-teal-500" asChild>
-                                        <a href="#contact">Contactez l'expert</a>
+                                    <Button
+                                        size="lg"
+                                        className="h-14 rounded-2xl bg-teal-600 px-8 text-lg font-bold text-white shadow-2xl shadow-teal-500/20 hover:bg-teal-500"
+                                        asChild
+                                    >
+                                        <a href="#contact">
+                                            Contactez l'expert
+                                        </a>
                                     </Button>
                                 </div>
                             </div>
@@ -328,37 +362,46 @@ function PropertyShow({ property, similarProperties }: Props) {
             <div className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
                 {/* GRID PRINCIPALE */}
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-
                     {/* COLONNE GAUCHE - CONTENU */}
                     <div className="space-y-16 lg:col-span-8">
-
                         {/* GALLERY BENTO */}
-                        <div className="grid grid-cols-12 grid-rows-2 gap-4 h-150">
+                        <div className="grid h-150 grid-cols-12 grid-rows-2 gap-4">
                             <motion.div
                                 whileHover={{ scale: 0.99 }}
-                                className="col-span-8 row-span-2 relative overflow-hidden rounded-[2.5rem] cursor-pointer group"
+                                className="group relative col-span-8 row-span-2 cursor-pointer overflow-hidden rounded-[2.5rem]"
                                 onClick={() => openLightbox(0)}
                             >
-                                <img src={allImages[0]?.url} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                <img
+                                    src={allImages[0]?.url}
+                                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                />
                                 <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
                             </motion.div>
                             <motion.div
                                 whileHover={{ scale: 0.98 }}
-                                className="col-span-4 row-span-1 relative overflow-hidden rounded-[2.5rem] cursor-pointer group"
+                                className="group relative col-span-4 row-span-1 cursor-pointer overflow-hidden rounded-[2.5rem]"
                                 onClick={() => openLightbox(1)}
                             >
-                                <img src={allImages[1]?.url} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                <img
+                                    src={allImages[1]?.url}
+                                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                />
                                 <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
                             </motion.div>
                             <motion.div
                                 whileHover={{ scale: 0.98 }}
-                                className="col-span-4 row-span-1 relative overflow-hidden rounded-[2.5rem] cursor-pointer group"
+                                className="group relative col-span-4 row-span-1 cursor-pointer overflow-hidden rounded-[2.5rem]"
                                 onClick={() => openLightbox(2)}
                             >
-                                <img src={allImages[2]?.url} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                <img
+                                    src={allImages[2]?.url}
+                                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                />
                                 {allImages.length > 3 && (
                                     <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-[2px]">
-                                        <span className="text-4xl font-black text-white">+{allImages.length - 3}</span>
+                                        <span className="text-4xl font-black text-white">
+                                            +{allImages.length - 3}
+                                        </span>
                                     </div>
                                 )}
                             </motion.div>
@@ -368,7 +411,9 @@ function PropertyShow({ property, similarProperties }: Props) {
                         <section className="space-y-6">
                             <div className="flex items-center gap-4">
                                 <div className="h-1 w-12 bg-teal-500" />
-                                <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Présentation du bien</h2>
+                                <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
+                                    Présentation du bien
+                                </h2>
                             </div>
                             <RichContentText content={p.description} />
                         </section>
@@ -376,29 +421,55 @@ function PropertyShow({ property, similarProperties }: Props) {
                         {/* CARACTÉRISTIQUES */}
                         <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
                             {[
-                                { label: 'Chambres', value: p.bedrooms, icon: Bed },
-                                { label: 'Salles de bain', value: p.bathrooms, icon: Bath },
-                                { label: 'Surface', value: `${p.area} m²`, icon: Maximize },
-                                { label: 'Type', value: p.type, icon: Home }
+                                {
+                                    label: 'Chambres',
+                                    value: p.bedrooms,
+                                    icon: Bed,
+                                },
+                                {
+                                    label: 'Salles de bain',
+                                    value: p.bathrooms,
+                                    icon: Bath,
+                                },
+                                {
+                                    label: 'Surface',
+                                    value: `${p.area} m²`,
+                                    icon: Maximize,
+                                },
+                                { label: 'Type', value: p.type, icon: Home },
                             ].map((item, idx) => (
-                                <Card key={idx} className="rounded-[2rem] border-slate-100 bg-slate-50/50 p-6 text-center transition-all hover:bg-white hover:shadow-xl dark:border-slate-800 dark:bg-slate-900/50">
+                                <Card
+                                    key={idx}
+                                    className="rounded-[2rem] border-slate-100 bg-slate-50/50 p-6 text-center transition-all hover:bg-white hover:shadow-xl dark:border-slate-800 dark:bg-slate-900/50"
+                                >
                                     <item.icon className="mx-auto h-8 w-8 text-teal-600" />
-                                    <p className="mt-4 text-sm font-bold text-slate-500 uppercase tracking-widest">{item.label}</p>
-                                    <p className="mt-1 text-2xl font-black text-slate-900 dark:text-white">{item.value || 'N/A'}</p>
+                                    <p className="mt-4 text-sm font-bold tracking-widest text-slate-500 uppercase">
+                                        {item.label}
+                                    </p>
+                                    <p className="mt-1 text-2xl font-black text-slate-900 dark:text-white">
+                                        {item.value || 'N/A'}
+                                    </p>
                                 </Card>
                             ))}
                         </section>
 
                         {/* AMENITIES */}
                         <section className="space-y-8">
-                            <h3 className="text-2xl font-black text-slate-900 dark:text-white">Équipements inclus</h3>
+                            <h3 className="text-2xl font-black text-slate-900 dark:text-white">
+                                Équipements inclus
+                            </h3>
                             <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
                                 {featuresList.map((feature, i) => (
-                                    <div key={i} className="flex items-center gap-4 group">
+                                    <div
+                                        key={i}
+                                        className="group flex items-center gap-4"
+                                    >
                                         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-50 text-teal-600 transition-colors group-hover:bg-teal-600 group-hover:text-white dark:bg-teal-900/20">
                                             <CheckCircle className="h-6 w-6" />
                                         </div>
-                                        <span className="text-lg font-medium text-slate-700 dark:text-slate-300">{feature}</span>
+                                        <span className="text-lg font-medium text-slate-700 dark:text-slate-300">
+                                            {feature}
+                                        </span>
                                     </div>
                                 ))}
                             </div>
@@ -407,7 +478,9 @@ function PropertyShow({ property, similarProperties }: Props) {
                         {/* SIMILAR PROPERTIES CAROUSEL */}
                         {similarProperties.data.length > 0 && (
                             <section className="space-y-8">
-                                <h3 className="text-2xl font-black text-slate-900 dark:text-white">Biens similaires</h3>
+                                <h3 className="text-2xl font-black text-slate-900 dark:text-white">
+                                    Biens similaires
+                                </h3>
                                 <Swiper
                                     modules={[Navigation, Pagination]}
                                     spaceBetween={24}
@@ -417,14 +490,32 @@ function PropertyShow({ property, similarProperties }: Props) {
                                 >
                                     {similarProperties.data.map((sim) => (
                                         <SwiperSlide key={sim.id}>
-                                            <Link href={route('properties.show', sim.slug)} className="group block">
+                                            <Link
+                                                href={route(
+                                                    'properties.show',
+                                                    sim.slug,
+                                                )}
+                                                className="group block"
+                                            >
                                                 <div className="relative aspect-4/5 overflow-hidden rounded-[2.5rem] shadow-xl">
-                                                    <img src={sim.main_image} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                                    <img
+                                                        src={sim.main_image}
+                                                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                    />
                                                     <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
-                                                    <div className="absolute bottom-6 left-6 right-6">
-                                                        <Badge className="mb-2 bg-teal-600 text-white">{sim.type}</Badge>
-                                                        <h4 className="text-xl font-black text-white truncate">{sim.title}</h4>
-                                                        <p className="mt-1 text-2xl font-bold text-teal-400">{formatPrice(sim.price, sim.currency)}</p>
+                                                    <div className="absolute right-6 bottom-6 left-6">
+                                                        <Badge className="mb-2 bg-teal-600 text-white">
+                                                            {sim.type}
+                                                        </Badge>
+                                                        <h4 className="truncate text-xl font-black text-white">
+                                                            {sim.title}
+                                                        </h4>
+                                                        <p className="mt-1 text-2xl font-bold text-teal-400">
+                                                            {formatPrice(
+                                                                sim.price,
+                                                                sim.currency,
+                                                            )}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </Link>
@@ -438,70 +529,124 @@ function PropertyShow({ property, similarProperties }: Props) {
                     {/* COLONNE DROITE - SIDEBAR STICKY */}
                     <aside className="lg:col-span-4">
                         <div className="sticky top-32 space-y-8" id="contact">
-
                             {/* AGENT CARD PREMIUN */}
-                            <Card className="rounded-[3rem] border-none bg-slate-900 p-8 shadow-2xl shadow-slate-950 text-white overflow-hidden relative">
-                                <div className="absolute top-0 right-0 h-32 w-32 bg-teal-500/20 blur-3xl rounded-full" />
+                            <Card className="relative overflow-hidden rounded-[3rem] border-none bg-slate-900 p-8 text-white shadow-2xl shadow-slate-950">
+                                <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-teal-500/20 blur-3xl" />
                                 <div className="relative z-10 space-y-6">
                                     <div className="flex items-center gap-4">
-                                        <div className="h-20 w-20 rounded-[1.5rem] overflow-hidden border-2 border-teal-500/50 p-1">
-                                            <img src={p.agent?.avatar_url || `https://ui-avatars.com/api/?name=${p.agent?.name}&background=0d9488&color=fff`} className="h-full w-full object-cover rounded-[1.2rem]" />
+                                        <div className="h-20 w-20 overflow-hidden rounded-[1.5rem] border-2 border-teal-500/50 p-1">
+                                            <img
+                                                src={
+                                                    p.agent?.avatar_url ||
+                                                    `https://ui-avatars.com/api/?name=${p.agent?.name}&background=0d9488&color=fff`
+                                                }
+                                                className="h-full w-full rounded-[1.2rem] object-cover"
+                                            />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-bold text-teal-400 uppercase tracking-widest">Conseiller expert</p>
-                                            <h3 className="text-2xl font-black">{p.agent?.name}</h3>
+                                            <p className="text-sm font-bold tracking-widest text-teal-400 uppercase">
+                                                Conseiller expert
+                                            </p>
+                                            <h3 className="text-2xl font-black">
+                                                {p.agent?.name}
+                                            </h3>
                                         </div>
                                     </div>
 
                                     <div className="space-y-4 pt-4">
-                                        <Button className="w-full h-14 rounded-2xl bg-teal-600 text-lg font-bold hover:bg-teal-500 transition-all shadow-xl shadow-teal-500/20" asChild>
-                                            <a href={`tel:${p.agent?.phone}`}><Phone className="mr-3 h-5 w-5" /> Contacter par téléphone</a>
+                                        <Button
+                                            className="h-14 w-full rounded-2xl bg-teal-600 text-lg font-bold shadow-xl shadow-teal-500/20 transition-all hover:bg-teal-500"
+                                            asChild
+                                        >
+                                            <a href={`tel:${p.agent?.phone}`}>
+                                                <Phone className="mr-3 h-5 w-5" />{' '}
+                                                Contacter par téléphone
+                                            </a>
                                         </Button>
-                                        <Button variant="outline" className="w-full h-14 rounded-2xl border-white/10 bg-white/5 text-lg font-bold hover:bg-white/10" asChild>
-                                            <a href={`mailto:${p.agent?.email}`}><Mail className="mr-3 h-5 w-5" /> Envoyer un email</a>
+                                        <Button
+                                            variant="outline"
+                                            className="h-14 w-full rounded-2xl border-white/10 bg-white/5 text-lg font-bold hover:bg-white/10"
+                                            asChild
+                                        >
+                                            <a
+                                                href={`mailto:${p.agent?.email}`}
+                                            >
+                                                <Mail className="mr-3 h-5 w-5" />{' '}
+                                                Envoyer un email
+                                            </a>
                                         </Button>
                                     </div>
                                 </div>
                             </Card>
 
                             {/* VISIT FORM CARD */}
-                            <Card className="rounded-[3rem] border-slate-100 bg-white p-8 shadow-xl dark:border-slate-800 dark:bg-slate-900/50 backdrop-blur-xl">
-                                <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-6">Demande de visite</h3>
-                                <form onSubmit={submitContact} className="space-y-4">
+                            <Card className="rounded-[3rem] border-slate-100 bg-white p-8 shadow-xl backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/50">
+                                <h3 className="mb-6 text-2xl font-black text-slate-900 dark:text-white">
+                                    Demande de visite
+                                </h3>
+                                <form
+                                    onSubmit={submitContact}
+                                    className="space-y-4"
+                                >
                                     <div className="space-y-2">
-                                        <Label className="font-bold ml-1">Nom complet</Label>
+                                        <Label className="ml-1 font-bold">
+                                            Nom complet
+                                        </Label>
                                         <Input
                                             placeholder="Votre nom"
                                             value={visitForm.data.name}
-                                            onChange={e => visitForm.setData('name', e.target.value)}
-                                            className="h-14 rounded-2xl bg-slate-50 border-none dark:bg-slate-800 focus:ring-2 focus:ring-teal-500"
+                                            onChange={(e) =>
+                                                visitForm.setData(
+                                                    'name',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className="h-14 rounded-2xl border-none bg-slate-50 focus:ring-2 focus:ring-teal-500 dark:bg-slate-800"
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="font-bold ml-1">Email</Label>
+                                        <Label className="ml-1 font-bold">
+                                            Email
+                                        </Label>
                                         <Input
                                             type="email"
                                             placeholder="votre@email.com"
                                             value={visitForm.data.email}
-                                            onChange={e => visitForm.setData('email', e.target.value)}
-                                            className="h-14 rounded-2xl bg-slate-50 border-none dark:bg-slate-800 focus:ring-2 focus:ring-teal-500"
+                                            onChange={(e) =>
+                                                visitForm.setData(
+                                                    'email',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className="h-14 rounded-2xl border-none bg-slate-50 focus:ring-2 focus:ring-teal-500 dark:bg-slate-800"
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="font-bold ml-1">Message</Label>
+                                        <Label className="ml-1 font-bold">
+                                            Message
+                                        </Label>
                                         <Textarea
                                             rows={4}
                                             value={visitForm.data.message}
-                                            onChange={e => visitForm.setData('message', e.target.value)}
-                                            className="rounded-2xl bg-slate-50 border-none dark:bg-slate-800 focus:ring-2 focus:ring-teal-500"
+                                            onChange={(e) =>
+                                                visitForm.setData(
+                                                    'message',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className="rounded-2xl border-none bg-slate-50 focus:ring-2 focus:ring-teal-500 dark:bg-slate-800"
                                         />
                                     </div>
                                     <Button
                                         type="submit"
                                         disabled={visitForm.processing}
-                                        className="w-full h-16 rounded-2xl bg-slate-900 text-white font-black text-lg hover:bg-slate-800 transition-all dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
+                                        className="h-16 w-full rounded-2xl bg-slate-900 text-lg font-black text-white transition-all hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
                                     >
-                                        {visitForm.processing ? <Loader2 className="animate-spin h-6 w-6" /> : "Planifier maintenant"}
+                                        {visitForm.processing ? (
+                                            <Loader2 className="h-6 w-6 animate-spin" />
+                                        ) : (
+                                            'Planifier maintenant'
+                                        )}
                                     </Button>
                                 </form>
                             </Card>

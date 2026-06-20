@@ -3,7 +3,7 @@ import { useInitials } from '@/hooks/use-initials';
 import type { Team, User } from '@/types';
 
 export function UserInfo({
-    user ,
+    user,
     showEmail = false,
     team = null,
 }: {

@@ -19,7 +19,6 @@ function Cookies() {
     );
 }
 
-
 Cookies.layout = (page: React.ReactNode) => (
     <AppPublicLayout breadcrumbs={breadcrumbs}>{page}</AppPublicLayout>
 );

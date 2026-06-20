@@ -4,7 +4,7 @@ use Spatie\LaravelSettings\Migrations\SettingsMigration;
 
 return new class extends SettingsMigration
 {
-     public function up(): void
+    public function up(): void
     {
         $this->migrator->add('app.name', config('app.name'));
         $this->migrator->add('app.logo_url', null);

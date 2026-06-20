@@ -84,5 +84,4 @@ class PostCategoryPolicy
     {
         return $authUser->can('Reorder PostCategory');
     }
-
 }

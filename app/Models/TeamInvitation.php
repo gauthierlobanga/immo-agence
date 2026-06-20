@@ -16,6 +16,7 @@ class TeamInvitation extends Model
 {
     /** @use HasFactory<TeamInvitationFactory> */
     use HasFactory;
+
     use HasUuids;
 
     /**

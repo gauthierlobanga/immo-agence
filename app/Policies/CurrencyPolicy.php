@@ -84,5 +84,4 @@ class CurrencyPolicy
     {
         return $authUser->can('Reorder Currency');
     }
-
 }

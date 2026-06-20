@@ -84,5 +84,4 @@ class LanguagePolicy
     {
         return $authUser->can('Reorder Language');
     }
-
 }

@@ -45,7 +45,7 @@ export default function Register({ passwordRules }: Props) {
                                     name="name"
                                     placeholder="Votre nom complet"
                                     className={cn(
-                                        'h-11 rounded-xl border-slate-200 bg-white/80 text-slate-900 placeholder:text-slate-400 shadow-sm backdrop-blur transition-all duration-200',
+                                        'h-11 rounded-xl border-slate-200 bg-white/80 text-slate-900 shadow-sm backdrop-blur transition-all duration-200 placeholder:text-slate-400',
                                         'hover:border-teal-300 hover:bg-white',
                                         'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
                                         'dark:border-slate-700 dark:bg-slate-900/80 dark:text-white dark:placeholder:text-slate-500',
@@ -75,7 +75,7 @@ export default function Register({ passwordRules }: Props) {
                                     name="email"
                                     placeholder="vous@exemple.com"
                                     className={cn(
-                                        'h-11 rounded-xl border-slate-200 bg-white/80 text-slate-900 placeholder:text-slate-400 shadow-sm backdrop-blur transition-all duration-200',
+                                        'h-11 rounded-xl border-slate-200 bg-white/80 text-slate-900 shadow-sm backdrop-blur transition-all duration-200 placeholder:text-slate-400',
                                         'hover:border-teal-300 hover:bg-white',
                                         'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
                                         'dark:border-slate-700 dark:bg-slate-900/80 dark:text-white dark:placeholder:text-slate-500',
@@ -133,7 +133,9 @@ export default function Register({ passwordRules }: Props) {
                                             'border-red-400 focus:border-red-500 dark:border-red-500',
                                     )}
                                 />
-                                <InputError message={errors.password_confirmation} />
+                                <InputError
+                                    message={errors.password_confirmation}
+                                />
                             </div>
 
                             {/* Bouton d'inscription */}

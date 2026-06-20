@@ -84,5 +84,4 @@ class CommentLikePolicy
     {
         return $authUser->can('Reorder CommentLike');
     }
-
 }

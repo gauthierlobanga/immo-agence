@@ -11,5 +11,4 @@ class HelpController extends Controller
     {
         return Inertia::render('immo/pages/help/Help');
     }
-
 }

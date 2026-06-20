@@ -4,7 +4,10 @@ import { useState } from 'react';
 export function useHttp() {
     const [loading, setLoading] = useState(false);
 
-    const submit = async <T = any>(url: string, config?: object): Promise<T> => {
+    const submit = async <T = any>(
+        url: string,
+        config?: object,
+    ): Promise<T> => {
         setLoading(true);
 
         try {

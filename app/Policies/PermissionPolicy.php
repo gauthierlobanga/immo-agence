@@ -84,5 +84,4 @@ class PermissionPolicy
     {
         return $authUser->can('Reorder Permission');
     }
-
 }

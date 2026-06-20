@@ -19,10 +19,17 @@ import {
     Building,
     UserCheck,
 } from 'lucide-react';
+import { lazy, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import AppPublicLayout from '@/layouts/app-public-layout';
-import { GlobeSection } from './globe-moderne';
+import { route } from 'ziggy-js';
 import type { GlobeSectionProps } from './globe-moderne';
+// Chargement dynamique
+const GlobeSection = lazy(() =>
+    import('./globe-moderne').then((module) => ({
+        default: module.GlobeSection,
+    })),
+);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -274,7 +281,7 @@ function CommentCaMarcheSection() {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.1 }}
-                                className="group relative flex items-center gap-6 rounded-3xl border border-slate-200/50 bg-white p-6 transition-all hover:border-teal-200 hover:shadow-xl hover:shadow-teal-500/5 dark:border-slate-800 dark:bg-slate-950"
+                                className="group relative flex items-center gap-6 rounded-3xl border border-slate-200/50 bg-white p-6 transition-all hover:border-teal-200 dark:border-slate-800 dark:bg-slate-950"
                             >
                                 <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-slate-50 text-2xl font-black text-slate-300 transition-colors group-hover:bg-teal-50 group-hover:text-teal-600 dark:bg-slate-900 dark:text-slate-700 dark:group-hover:bg-teal-900/30">
                                     {item.step}
@@ -309,7 +316,7 @@ function CtaFinalSection() {
             </div>
 
             <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="relative overflow-hidden rounded-[3.5rem] border border-slate-100 bg-slate-50/50 p-8 shadow-2xl backdrop-blur-3xl md:p-20 dark:border-white/10 dark:bg-slate-900/50">
+                <div className="relative overflow-hidden rounded-[3.5rem] border border-slate-100 bg-slate-50/50 p-8 backdrop-blur-3xl md:p-20 dark:border-white/10 dark:bg-slate-900/50">
                     {/* Éléments de décoration */}
                     <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-teal-500/10 blur-3xl dark:bg-teal-500/20" />
                     <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-slate-200/50 blur-3xl dark:bg-slate-500/10" />
@@ -488,7 +495,7 @@ function Home({ globeData, arcsData, globeStats }: GlobeSectionProps) {
                             >
                                 L'immobilier <br />
                                 <span className="relative inline-block text-teal-600">
-                                    réinventé 
+                                    réinventé
                                     <svg
                                         className="absolute -bottom-2 left-0 h-3 w-full text-teal-200 dark:text-teal-900/50"
                                         viewBox="0 0 338 12"
@@ -503,7 +510,7 @@ function Home({ globeData, arcsData, globeStats }: GlobeSectionProps) {
                                         />
                                     </svg>
                                 </span>
-                               <span> pour vous.</span>
+                                <span> pour vous.</span>
                             </motion.h1>
 
                             <motion.p
@@ -655,9 +662,21 @@ function Home({ globeData, arcsData, globeStats }: GlobeSectionProps) {
             <CommentCaMarcheSection />
 
             {/* Section Globe 3D */}
-            <GlobeSection globeData={globeData} arcsData={arcsData} globeStats={globeStats} />
-
-           
+            <Suspense
+                fallback={
+                    <div className="relative overflow-hidden bg-white py-32 dark:bg-slate-950">
+                        <div className="flex h-96 items-center justify-center">
+                            <div className="h-12 w-12 animate-spin rounded-full border-4 border-teal-600 border-t-transparent"></div>
+                        </div>
+                    </div>
+                }
+            >
+                <GlobeSection
+                    globeData={globeData}
+                    arcsData={arcsData}
+                    globeStats={globeStats}
+                />
+            </Suspense>
 
             {/* CTA Finale */}
             <CtaFinalSection />

@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/purity */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Link } from '@inertiajs/react';
+import * as react from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { Building, Users, TrendingUp, MapPin, ArrowRight } from 'lucide-react';
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import Globe from 'react-globe.gl';
 import type { GlobeMethods } from 'react-globe.gl';
 import { Button } from '@/components/ui/button';
+import { useAppearance } from '@/hooks/use-appearance';
+import { route } from 'ziggy-js';
 
 // ----------------------------------------------------------------------
 // Types
@@ -71,7 +72,8 @@ export function GlobeSection({
     globeStats,
 }: GlobeSectionProps) {
     const globeRef = useRef<GlobeMethods | undefined>(undefined);
-    const [isDark, setIsDark] = useState(false);
+    const { resolvedAppearance } = useAppearance();
+    const isDark = resolvedAppearance === 'dark';
     const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
     const [isInteracting, setIsInteracting] = useState(false);
     const [isGlobeHovered, setIsGlobeHovered] = useState(false);
@@ -293,7 +295,11 @@ export function GlobeSection({
                                         width={1000}
                                         height={1000}
                                         backgroundColor="rgba(0, 0, 0, 0)"
-                                        globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
+                                        globeImageUrl={
+                                            isDark
+                                                ? '//unpkg.com/three-globe/example/img/earth-night.jpg'
+                                                : '//unpkg.com/three-globe/example/img/earth-day.jpg'
+                                        }
                                         bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
                                         showAtmosphere
                                         atmosphereColor="" // ✅ demandé : vide
@@ -330,47 +336,46 @@ export function GlobeSection({
                                             const el =
                                                 document.createElement('div');
                                             el.innerHTML = `
-                                                <div
-                                                    class="
-                                                        group
-                                                        pointer-events-auto
-                                                        relative
-                                                        flex
-                                                        cursor-pointer
-                                                        items-center
-                                                        gap-3
-                                                        rounded-full
-                                                        border
-                                                        border-white/20
-                                                        bg-white/20
-                                                        py-2
-                                                        pr-5
-                                                        pl-2.5
-                                                        shadow-[0_8px_32px_0_rgba(31,38,135,0.15)]
-                                                        backdrop-blur-md
-                                                        transition-all
-                                                        duration-500
-                                                        hover:scale-[1.08]
-                                                        hover:border-teal-400/50
-                                                        hover:bg-white/30
-                                                        hover:shadow-[0_0_30px_-5px_rgba(20,184,166,0.4)]
-                                                        dark:border-white/10
-                                                        dark:bg-slate-900/40
-                                                        dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.4)]
-                                                        dark:hover:bg-slate-800/60
-                                                    "
-                                                >
-                                                    <!-- Outer Glow behind the card on hover -->
-                                                    <div class="absolute inset-0 -z-10 rounded-full bg-teal-400/0 blur-md transition-all duration-500 group-hover:bg-teal-400/20"></div>
+                                                <div style="position: absolute; left: -26px; top: -24px;">
+                                                    <div
+                                                        class="
+                                                            group
+                                                            pointer-events-auto
+                                                            relative
+                                                            flex
+                                                            cursor-pointer
+                                                            items-center
+                                                            gap-3
+                                                            rounded-full
+                                                            border
+                                                            border-white/20
+                                                            bg-white/20
+                                                            py-2
+                                                            pr-5
+                                                            pl-2.5
+                                                            shadow-[0_8px_32px_0_rgba(31,38,135,0.15)]
+                                                            backdrop-blur-md
+                                                            transition-all
+                                                            duration-500
+                                                            hover:scale-[1.08]
+                                                            hover:border-teal-400/50
+                                                            hover:bg-white/30
+                                                            dark:border-white/10
+                                                            dark:bg-slate-900/40
+                                                            dark:hover:bg-slate-800/60
+                                                        "
+                                                    >
+                                                        <!-- Outer Glow behind the card on hover -->
+                                                        <div class="absolute inset-0 -z-10 rounded bg-teal-400/0 blur-md transition-all duration-500 group-hover:bg-teal-400/20"></div>
 
                                                     <!-- The pulsating point / Radar effect -->
-                                                    <div class="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/40 shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] dark:bg-slate-800/50 dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
+                                                    <div class="relative flex h-8 w-8 shrink-0 items-center justify-center rounded bg-white/40 dark:bg-slate-800/50">
                                                         <!-- Radar ripples -->
                                                         <span class="absolute h-full w-full animate-[ping_2.5s_cubic-bezier(0,0,0.2,1)_infinite] rounded-full border border-teal-400/60"></span>
                                                         <span class="absolute h-full w-full animate-[ping_2.5s_cubic-bezier(0,0,0.2,1)_infinite_0.5s] rounded-full border border-teal-400/40"></span>
-                                                        
+
                                                         <!-- Core dot -->
-                                                        <span class="relative h-2.5 w-2.5 rounded-full bg-gradient-to-tr from-teal-500 to-cyan-300 shadow-[0_0_10px_rgba(45,212,191,0.8)] group-hover:animate-pulse"></span>
+                                                        <span class="relative h-2.5 w-2.5 rounded-full bg-linear-to-tr from-teal-500 to-cyan-300 shadow-[0_0_10px_rgba(45,212,191,0.8)] group-hover:animate-pulse"></span>
                                                     </div>
 
                                                     <!-- Info text -->
@@ -378,19 +383,28 @@ export function GlobeSection({
                                                         <span class="whitespace-nowrap text-[13px] font-bold tracking-wide text-slate-800 transition-colors group-hover:text-teal-600 dark:text-slate-100 dark:group-hover:text-teal-300">
                                                             ${d.name}
                                                         </span>
-                                                        ${d.region ? `
+                                                        ${
+                                                            d.region
+                                                                ? `
                                                         <span class="-mt-0.5 text-[9px] font-semibold tracking-[0.2em] text-slate-500 uppercase dark:text-slate-400">
                                                             ${d.region}
                                                         </span>
-                                                        ` : ''}
+                                                        `
+                                                                : ''
+                                                        }
                                                     </div>
 
                                                     <!-- Badge -->
-                                                    ${d.value > 0 ? `
+                                                    ${
+                                                        d.value > 0
+                                                            ? `
                                                     <div class="ml-1 flex items-center justify-center rounded-full border border-teal-500/30 bg-teal-500/10 px-2 py-0.5 text-[10px] font-black text-teal-700 ring-1 ring-inset ring-teal-500/30 backdrop-blur-sm dark:text-teal-300">
                                                         ${d.value}
                                                     </div>
-                                                    ` : ''}
+                                                    `
+                                                            : ''
+                                                    }
+                                                </div>
                                                 </div>
                                             `;
 
@@ -529,10 +543,10 @@ export function GlobeSection({
                                 className="h-14 rounded-full bg-teal-600 px-8 text-white shadow-xl shadow-teal-500/20 transition-all hover:scale-105 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
                                 asChild
                             >
-                                <Link href={route('properties.index')}>
+                                <react.Link href={route('properties.index')}>
                                     Découvrir nos offres mondiales
                                     <ArrowRight className="ml-2 h-5 w-5" />
-                                </Link>
+                                </react.Link>
                             </Button>
                         </motion.div>
                     </div>

@@ -19,6 +19,7 @@ use Spatie\Permission\Traits\HasRoles;
 trait HasTeams
 {
     use HasRoles;
+
     /**
      * Get all of the teams the user belongs to.
      *

@@ -84,5 +84,4 @@ class CommunePolicy
     {
         return $authUser->can('Reorder Commune');
     }
-
 }

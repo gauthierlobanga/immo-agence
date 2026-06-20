@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Property;
-use App\Models\Quartier;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +10,7 @@ use Spatie\Tags\HasTags;
 
 class Avenue extends Model
 {
-     use HasUuids,HasTags;
+    use HasTags,HasUuids;
 
     /**
      * Indique que les clés primaires ne sont pas auto-incrémentées
@@ -28,7 +26,7 @@ class Avenue extends Model
      */
     protected $keyType = 'string';
 
-     protected $fillable = ['quartier_id', 'name'];
+    protected $fillable = ['quartier_id', 'name'];
 
     public function quartier(): BelongsTo
     {

@@ -14,8 +14,8 @@ export default function VerifyEmail({ status }: { status?: string }) {
             {status === 'verification-link-sent' && (
                 <div className="mb-6 rounded-xl border border-teal-200 bg-teal-50 p-4 text-center text-sm font-medium text-teal-700 dark:border-teal-800 dark:bg-teal-900/30 dark:text-teal-300">
                     <Mail className="mx-auto mb-2 h-5 w-5" />
-                    Un nouveau lien de vérification a été envoyé à l'adresse email
-                    que vous avez fournie lors de votre inscription.
+                    Un nouveau lien de vérification a été envoyé à l'adresse
+                    email que vous avez fournie lors de votre inscription.
                 </div>
             )}
 
@@ -53,7 +53,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
 }
 
 VerifyEmail.layout = {
-    title: 'Vérification de l\'email',
+    title: "Vérification de l'email",
     description:
         'Veuillez vérifier votre adresse email en cliquant sur le lien que nous venons de vous envoyer.',
 };

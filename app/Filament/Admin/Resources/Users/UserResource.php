@@ -60,7 +60,7 @@ class UserResource extends Resource
         return static::getModel()::count() > 10 ? 'success' : 'warning';
     }
 
-     public static function getRecordRouteBindingEloquentQuery(): Builder
+    public static function getRecordRouteBindingEloquentQuery(): Builder
     {
         return parent::getRecordRouteBindingEloquentQuery()
             ->withoutGlobalScopes([

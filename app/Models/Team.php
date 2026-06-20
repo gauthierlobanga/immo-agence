@@ -18,7 +18,8 @@ class Team extends Model
 {
     /** @use HasFactory<TeamFactory> */
     use GeneratesUniqueTeamSlugs, HasFactory, SoftDeletes;
-    use HasUuids,HasTags;
+
+    use HasTags,HasUuids;
 
     /**
      * Indique que les clés primaires sont de type string (UUID)

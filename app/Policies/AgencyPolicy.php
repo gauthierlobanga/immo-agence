@@ -84,5 +84,4 @@ class AgencyPolicy
     {
         return $authUser->can('Reorder Agency');
     }
-
 }

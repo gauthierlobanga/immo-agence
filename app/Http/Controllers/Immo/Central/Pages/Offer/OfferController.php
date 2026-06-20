@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Immo\Central\Pages\Offer;
 
-
 use App\Http\Controllers\Controller;
 use App\Models\Offer;
 use App\Models\Property;
@@ -14,19 +13,19 @@ class OfferController extends Controller
     public function store(Request $request, Property $property)
     {
         $request->validate([
-            'amount'   => 'required|numeric|min:1',
+            'amount' => 'required|numeric|min:1',
             'currency' => 'required|in:USD,CDF,EUR',
-            'type'     => 'required|in:purchase,rent',
-            'message'  => 'nullable|string|max:1000',
+            'type' => 'required|in:purchase,rent',
+            'message' => 'nullable|string|max:1000',
         ]);
 
         $offer = $property->offers()->create([
-            'user_id'    => Auth::id(),
-            'amount'     => $request->amount,
-            'currency'   => $request->currency,
-            'type'       => $request->type,
-            'message'    => $request->message,
-            'status'     => 'pending',
+            'user_id' => Auth::id(),
+            'amount' => $request->amount,
+            'currency' => $request->currency,
+            'type' => $request->type,
+            'message' => $request->message,
+            'status' => 'pending',
             'expires_at' => now()->addDays(7), // expiration par défaut
         ]);
 

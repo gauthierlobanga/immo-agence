@@ -24,6 +24,7 @@ import agencies from '@/routes/agencies'; // à créer si besoin, sinon on utili
 import blog from '@/routes/blog';
 import page from '@/routes/page';
 import properties from '@/routes/properties';
+import { route } from 'ziggy-js';
 
 const footerSections = [
     {

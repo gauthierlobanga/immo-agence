@@ -90,7 +90,9 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                                         'border-red-400 focus:border-red-500 dark:border-red-500',
                                 )}
                             />
-                            <InputError message={errors.password_confirmation} />
+                            <InputError
+                                message={errors.password_confirmation}
+                            />
                         </div>
 
                         {/* Bouton de réinitialisation */}

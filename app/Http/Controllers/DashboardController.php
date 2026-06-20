@@ -13,7 +13,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        
+
         $favorites = Favorite::with('property.media', 'property.commune')
             ->where('user_id', $user->id)
             ->limit(5)
@@ -32,7 +32,7 @@ class DashboardController extends Controller
             'stats' => [
                 'favorites_count' => Favorite::where('user_id', $user->id)->count(),
                 'visits_count' => Visit::where('user_id', $user->id)->count(),
-            ]
+            ],
         ]);
     }
 }

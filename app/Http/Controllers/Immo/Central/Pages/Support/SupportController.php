@@ -7,10 +7,8 @@ use Inertia\Inertia;
 
 class SupportController extends Controller
 {
-
     public function pageSupport()
     {
         return Inertia::render('immo/pages/support/Support');
     }
-
 }

@@ -84,5 +84,4 @@ class PaymentPolicy
     {
         return $authUser->can('Reorder Payment');
     }
-
 }

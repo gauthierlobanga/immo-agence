@@ -293,7 +293,7 @@ return new class extends Migration
             $table->dropConstrainedforeignUuid('agency_id');
             $table->dropColumn([
                 'phone', 'avatar', 'bio', 'is_agent', 'is_active',
-                'last_login_at', 'metadata', 'deleted_at'
+                'last_login_at', 'metadata', 'deleted_at',
             ]);
         });
         Schema::dropIfExists('agency_user');

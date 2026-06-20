@@ -39,7 +39,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                                     autoFocus
                                     placeholder="vous@exemple.com"
                                     className={cn(
-                                        'h-11 rounded-xl border-slate-200 bg-white/80 text-slate-900 placeholder:text-slate-400 shadow-sm backdrop-blur transition-all duration-200',
+                                        'h-11 rounded-xl border-slate-200 bg-white/80 text-slate-900 shadow-sm backdrop-blur transition-all duration-200 placeholder:text-slate-400',
                                         'hover:border-teal-300 hover:bg-white',
                                         'focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20',
                                         'dark:border-slate-700 dark:bg-slate-900/80 dark:text-white dark:placeholder:text-slate-500',
@@ -88,5 +88,6 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
 ForgotPassword.layout = {
     title: 'Mot de passe oublié',
-    description: 'Entrez votre email pour recevoir un lien de réinitialisation.',
+    description:
+        'Entrez votre email pour recevoir un lien de réinitialisation.',
 };

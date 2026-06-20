@@ -81,5 +81,4 @@ class UserPolicy
     {
         return $authUser->can('Reorder User');
     }
-
 }

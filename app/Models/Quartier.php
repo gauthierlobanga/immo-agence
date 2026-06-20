@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Avenue;
-use App\Models\Commune;
-use App\Models\Property;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,8 +12,8 @@ use Spatie\Tags\HasTags;
 class Quartier extends Model
 {
     use HasFactory;
-    use HasUuids;
     use HasTags;
+    use HasUuids;
 
     /**
      * Indique que la clé primaire est une UUID au lieu d'un entier auto-incrémenté.
@@ -33,7 +30,7 @@ class Quartier extends Model
      */
     protected $keyType = 'string';
 
-     protected $fillable = ['commune_id', 'name'];
+    protected $fillable = ['commune_id', 'name'];
 
     public function commune(): BelongsTo
     {

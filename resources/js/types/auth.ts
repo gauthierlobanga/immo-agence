@@ -19,10 +19,10 @@ export type PermissionsMap = Record<string, Record<string, boolean>>;
 
 export type Auth = {
     [x: string]: any;
-    user: User;  // Peut être null si non connecté
-    permissions: string[];  // Liste plate des permissions
-    permissions_map: PermissionsMap;  // Structure hiérarchique par modèle
-    roles: string[];  // Liste des rôles
+    user: User; // Peut être null si non connecté
+    permissions: string[]; // Liste plate des permissions
+    permissions_map: PermissionsMap; // Structure hiérarchique par modèle
+    roles: string[]; // Liste des rôles
 };
 
 /* @chisel-passkeys */

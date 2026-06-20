@@ -14,7 +14,7 @@ class UserActionController extends Controller
     public function toggleFavorite(Property $property)
     {
         $user = Auth::user();
-        if (!$user) {
+        if (! $user) {
             return response()->json(['message' => 'Non authentifié'], 401);
         }
 
@@ -24,12 +24,13 @@ class UserActionController extends Controller
 
         if ($favorite) {
             $favorite->delete();
+
             return response()->json(['favorite' => false, 'message' => 'Retiré des favoris']);
         }
 
         Favorite::create([
             'user_id' => $user->id,
-            'property_id' => $property->id
+            'property_id' => $property->id,
         ]);
 
         return response()->json(['favorite' => true, 'message' => 'Ajouté aux favoris']);
@@ -38,7 +39,7 @@ class UserActionController extends Controller
     public function requestVisit(Request $request, Property $property)
     {
         $user = Auth::user();
-        
+
         $request->validate([
             'visit_date' => 'required|date|after:today',
             'message' => 'nullable|string|max:500',
